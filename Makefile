@@ -4,9 +4,9 @@ CC = cc
 FLAG = -Werror -Wall -Wextra
 NAME = cube3d
 
-HEADER = ./headers/$(NAME).h
+HEADER = ./headers/$(NAME).h ./headers/parsing.h
 SRC_DIR=src/
-SRC_LIST= main.c map_gen.c
+SRC_LIST= main.c map_gen.c parse_keys.c parse_map.c
 SRC=$(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJ_DIR=obj/
 OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
@@ -25,11 +25,11 @@ BLUE="\033[0;34m"
 END_COLOUR="\033[0m"
 
 define percent
-	@echo -e -n $(BLUE)"[$$(echo -e "scale=2; $$(find $(OBJ_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(GREEN)
+	@echo -n $(BLUE)"[$$(echo "scale=2; $$(find $(OBJ_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(GREEN)
 endef
 
 define prompt
-	@echo -e $1"\n================ $2 ================\n"$(END_COLOUR)
+	@echo $1"\n================ $2 ================\n"$(END_COLOUR)
 endef
 
 define normitest
@@ -57,12 +57,12 @@ all :
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile $(HEADER)
 	$(call percent)
 	$(CC) $(FLAG) -c $< -o $@
-	@echo -e -n $(END_COLOUR)
+	@echo -n $(END_COLOUR)
 
 $(NAME) : $(LIBFT) $(OBJ_DIR) $(OBJ)
 	$(call percent)
 	$(CC) $(FLAG) -o $@ $(OBJ) $(INCLUDE)
-	@echo -e -n $(END_COLOUR)
+	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
 
 $(LIBFT) : $(LIBFT_SRC_FULL) libft/libft.h

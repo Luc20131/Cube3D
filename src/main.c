@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/24 12:54:32 by sjean            ###   ########.fr       */
+/*   Updated: 2024/09/24 15:39:04 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <X11/X.h>
 #include <X11/keysym.h>
 #include <math.h>
-#include "parsing/parsing.h"
+#include "../headers/parsing.h"
 
 #define SIZE_IMG 1024
 #define SKY_COLOR 0xFF5EACFF
@@ -84,7 +84,7 @@ void	wall(t_mlx *vars)
 int	main(int argc, char **argv)
 {
 	if (argc != 2)
-		retrun (0);
+		return (0);
 	else
 		parse_key(argv[1]);
 	char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};

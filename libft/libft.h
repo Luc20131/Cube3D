@@ -6,10 +6,10 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:44:41 by lrichaud          #+#    #+#             */
-/*   Updated: 2023/11/20 01:40:26 by lrichaud         ###   ########lyon.fr   */
-/*   Updated: 2024/03/27 18:48:58 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/09/24 16:21:18 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef LIBFT_H
 # define LIBFT_H
@@ -60,9 +60,9 @@ char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void		ft_striteri(char *s, void (*f)(unsigned int, char*));
 t_list		*ft_lstnew(void *content);
 t_list		*ft_lstlast(t_list *lst);
-void		ft_lstadd_front(t_list **lst, t_list *new);
+void		ft_lstadd_front(t_list **lst, t_list *new_list);
 int			ft_lstsize(t_list *lst);
-void		ft_lstadd_back(t_list **lst, t_list *new);
+void		ft_lstadd_back(t_list **lst, t_list *new_list);
 void		ft_lstdelone(t_list *lst, void (*del)(void*));
 void		ft_lstclear(t_list **lst, void (*del)(void*));
 void		ft_lstiter(t_list *lst, void (*f)(void *));

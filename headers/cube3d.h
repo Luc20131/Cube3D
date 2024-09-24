@@ -6,24 +6,43 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/08/31 14:42:07 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/09/24 16:48:05 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE3D_H
 # define CUBE3D_H
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 #include "../minilibx-linux/mlx.h"
 #include "../libft/libft.h"
 
+
 typedef struct s_pos
 {
-	int x;
-	int y;
+	int	x;
+	int	y;
 }	t_pos;
+
+typedef struct s_posf
+{
+	float	x;
+	float	y;
+}	t_posf;
+
+typedef struct s_vector
+{
+	t_posf		origin;
+	int			direction;
+	float		length;
+	float		delta_x;
+	float		delta_y;
+}	t_vector;
+
+
 
 typedef struct s_data
 {

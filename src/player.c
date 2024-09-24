@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:36:56 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/23 12:12:41 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/09/24 13:17:52 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ typedef struct s_pos
 
 typedef struct s_settings
 {
-	int	fov;
+	int		fov;
 	float	move_speed;
 }	t_settings;
 

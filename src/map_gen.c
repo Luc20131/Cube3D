@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/23 10:34:19 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/09/24 15:44:36 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	map_gen(t_mlx *vars, char **map_tab)
 	index.y = 0;
 	map_size = size_map(map_tab);
 	map_img = new_img_not_square(vars, HEIGHT, WIDTH);
-	while (index.y < map_size.y- 1)
+	while (index.y < map_size.y - 1)
 	{
 		index.x = 0;
 		while (index.x < map_size.x - 1)
