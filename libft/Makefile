@@ -15,7 +15,7 @@ END_COLOUR="\033[0m"
 .PHONY: all clean fclean re bonus
 
 define percent
-	@echo -n $(BLUE)"[$$(echo "scale=2; $$(find $(OBJ_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%] " $(GREEN)
+	@echo -e -n $(BLUE)"[$$(echo -e "scale=2; $$(find $(OBJ_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%] " $(GREEN)
 endef
 
 $(NAME) : $(OBJ) libft.h

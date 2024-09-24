@@ -25,25 +25,25 @@ BLUE="\033[0;34m"
 END_COLOUR="\033[0m"
 
 define percent
-	@echo -n $(BLUE)"[$$(echo "scale=2; $$(find $(OBJ_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(GREEN)
+	@echo -e -n $(BLUE)"[$$(echo -e "scale=2; $$(find $(OBJ_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(GREEN)
 endef
 
 define prompt
-	@echo $1"\n================ $2 ================\n"$(END_COLOUR)
+	@echo -e $1"\n================ $2 ================\n"$(END_COLOUR)
 endef
 
 define normitest
-	@echo $(BLUE)"Test norminette..."$(END_COLOUR)
+	@echo -e $(BLUE)"Test norminette..."$(END_COLOUR)
 	@if norminette $(SRC_LIST) $(HEADER) $(LIBFT_SRC_FULL) | grep Error; then \
-		echo $(RED)"\n================ Norminette KO ================"$(END_COLOUR); \
+		echo -e $(RED)"\n================ Norminette KO ================"$(END_COLOUR); \
 	else \
-		echo $(GREEN)"\n================ Norminette OK ================"$(END_COLOUR); \
+		echo -e $(GREEN)"\n================ Norminette OK ================"$(END_COLOUR); \
 	fi
 endef
 
 define gitignore_gen
 	@if test .gitignore ; then\
-		echo "*.o\n$(NAME)" > .gitignore; \
+		echo -e "*.o\n$(NAME)" > .gitignore; \
 	fi ;
 endef
 
@@ -57,12 +57,12 @@ all :
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile $(HEADER)
 	$(call percent)
 	$(CC) $(FLAG) -c $< -o $@
-	@echo -n $(END_COLOUR)
+	@echo -e -n $(END_COLOUR)
 
 $(NAME) : $(LIBFT) $(OBJ_DIR) $(OBJ)
 	$(call percent)
 	$(CC) $(FLAG) -o $@ $(OBJ) $(INCLUDE)
-	@echo -n $(END_COLOUR)
+	@echo -e -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
 
 $(LIBFT) : $(LIBFT_SRC_FULL) libft/libft.h
@@ -72,7 +72,7 @@ $(OBJ_DIR):
 	@mkdir $@
 
 clean :
-	@echo $(BLUE)Cleaning...$(END_COLOUR)
+	@echo -e $(BLUE)Cleaning...$(END_COLOUR)
 	@$(MAKE) fclean -C libft
 	@rm -rf $(OBJ_DIR)
 

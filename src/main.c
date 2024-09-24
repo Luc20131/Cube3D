@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/23 10:36:31 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/09/24 12:54:32 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <X11/X.h>
 #include <X11/keysym.h>
 #include <math.h>
+#include "parsing/parsing.h"
 
 #define SIZE_IMG 1024
 #define SKY_COLOR 0xFF5EACFF
@@ -80,8 +81,12 @@ void	wall(t_mlx *vars)
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
+	if (argc != 2)
+		retrun (0);
+	else
+		parse_key(argv[1]);
 	char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
 	t_mlx	vars;
 
