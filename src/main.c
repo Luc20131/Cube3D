@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/24 15:39:04 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/09/25 16:17:49 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,11 @@ void	wall(t_mlx *vars)
 
 int	main(int argc, char **argv)
 {
+	t_info info;
 	if (argc != 2)
 		return (0);
 	else
-		parse_key(argv[1]);
+		get_arg(argv[1], info);
 	char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
 	t_mlx	vars;
 
