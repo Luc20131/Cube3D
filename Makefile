@@ -17,6 +17,8 @@ LIBFT_SRC = ft_free_splited.c ft_realloc.c ft_striteri.c ft_strmapi.c ft_strtrim
 LIBFT_SRC_FULL = $(addprefix $(LIBFT_DIR),$(LIBFT_SRC))
 LIBFT = $(LIBFT_DIR)libft.a
 
+MINILIBX = minilibx-linux/libmlx_Linux.a
+
 NB_FILES=$(words $(SRC_LIST))
 
 GREEN="\033[0;32m"
@@ -54,12 +56,12 @@ all :
 	$(call prompt,$(BLUE),"Creating $(NAME)")
 	$(MAKE) $(NAME)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile $(HEADER)
+$(OBJ_DIR)%.o:  $(SRC_DIR)%.c Makefile $(HEADER)
 	$(call percent)
 	$(CC) $(FLAG) -c $< -o $@
 	@echo -n $(END_COLOUR)
 
-$(NAME) : $(LIBFT) $(OBJ_DIR) $(OBJ)
+$(NAME) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ)
 	$(call percent)
 	$(CC) $(FLAG) -o $@ $(OBJ) $(INCLUDE)
 	@echo -n $(END_COLOUR)
@@ -68,12 +70,16 @@ $(NAME) : $(LIBFT) $(OBJ_DIR) $(OBJ)
 $(LIBFT) : $(LIBFT_SRC_FULL) libft/libft.h
 	$(MAKE) libft.a -C libft
 
+$(MINILIBX) :
+	$(MAKE) -C minilibx-linux
+
 $(OBJ_DIR):
 	@mkdir $@
 
 clean :
 	@echo -e $(BLUE)Cleaning...$(END_COLOUR)
 	@$(MAKE) fclean -C libft
+	@$(MAKE) clean -C minilibx-linux
 	@rm -rf $(OBJ_DIR)
 
 fclean : clean

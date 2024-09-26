@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/25 16:17:49 by sjean            ###   ########.fr       */
+/*   Updated: 2024/09/26 15:24:14 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,10 @@ void	wall(t_mlx *vars)
 
 int	main(int argc, char **argv)
 {
-	t_info info;
+	t_info *info;
+
+	info = ft_calloc(1, sizeof(t_info));
+	ft_memset(info, 0, sizeof(t_info));
 	if (argc != 2)
 		return (0);
 	else
