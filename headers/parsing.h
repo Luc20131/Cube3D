@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/09/26 18:01:50 by sjean            ###   ########.fr       */
+/*   Updated: 2024/09/28 13:32:52 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ typedef struct s_info
 {
 	int		map_fd;
 	char	texture_path[4][PATH_MAX];
-	char	ceiling[15];
-	char	floor[15];
+	int		ceiling[3];
+	int		floor[3];
 	char	**map;
 } t_info;
 
