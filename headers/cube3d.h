@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/24 16:48:05 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/09/28 15:46:15 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef struct s_pos
 
 typedef struct s_posf
 {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 }	t_posf;
 
 typedef struct s_vector
@@ -38,11 +38,10 @@ typedef struct s_vector
 	t_posf		origin;
 	int			direction;
 	float		length;
-	float		delta_x;
-	float		delta_y;
+	double		delta_x;
+	double		delta_y;
+	double		angle;
 }	t_vector;
-
-
 
 typedef struct s_data
 {
@@ -74,13 +73,13 @@ void	draw_square(t_data *img, t_pos origin, int size, int color);
 void	my_draw_line(t_pos origin, t_pos end, t_data *img);
 t_tab_size	char_tab_len(char **tab);
 void		print_map(char *map[]);
-t_data	new_img(t_mlx *vars, int size);
+t_data	new_img(t_mlx *vars, int width, int height);
 unsigned int	get_pixel_img(t_data img, int x, int y);
 void	draw_horizon(t_data *img);
 void	draw_line_from_mid(t_data *img, t_pos origin, int distance);
-void	wall(t_mlx *vars);
+void	wall(t_mlx *vars, float distance);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int	create_trgb(int t, int r, int g, int b);
-
-
+int	raycast_one_vector(char **map);
+int	ray_dist(t_mlx *vars);
 #endif

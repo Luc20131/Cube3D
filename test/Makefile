@@ -1,21 +1,17 @@
-MAKE = @make --no-print-directory
+	MAKE = @make --no-print-directory
 
 CC = cc
-FLAG = -Werror -Wall -Wextra
-NAME = cube3d
+FLAG =
+NAME = test
 
-HEADER = ./headers/$(NAME).h ./headers/parsing.h
+HEADER = ./headers/$(NAME).h
 SRC_DIR=src/
-SRC_LIST= main.c map_gen.c parse_keys.c parse_map.c length.c testo.c
+SRC_LIST= testo.c
 SRC=$(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJ_DIR=obj/
 OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
 
-INCLUDE = -L libft -l ft -Lminilibx-linux -lmlx_Linux -lX11 -lXext -lm
-LIBFT_DIR=libft/
-LIBFT_SRC = ft_free_splited.c ft_realloc.c ft_striteri.c ft_strmapi.c ft_strtrim.c ft_split.c ft_itoa.c ft_strjoin.c ft_substr.c ft_strnstr.c ft_memcmp.c ft_strlcpy.c ft_strlcat.c ft_putnbr_fd.c ft_putendl_fd.c ft_putstr_fd.c ft_putchar_fd.c ft_calloc.c ft_strdup.c ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c ft_memchr.c ft_memcpy.c ft_memmove.c ft_memset.c ft_strchr.c ft_strlen.c ft_strncmp.c ft_strrchr.c ft_tolower.c ft_toupper.c ft_printf/ft_printf.c ft_printf/ft_put.c get_next_line/get_next_line.c
-LIBFT_SRC_FULL = $(addprefix $(LIBFT_DIR),$(LIBFT_SRC))
-LIBFT = $(LIBFT_DIR)libft.a
+INCLUDE = -Lminilibx-linux -lmlx_Linux -lX11 -lXext -lm
 
 NB_FILES=$(words $(SRC_LIST))
 
@@ -33,11 +29,11 @@ define prompt
 endef
 
 define normitest
-	@echo -e $(BLUE)"Test norminette..."$(END_COLOUR)
+	@echo $(BLUE)"Test norminette..."$(END_COLOUR)
 	@if norminette $(SRC_LIST) $(HEADER) $(LIBFT_SRC_FULL) | grep Error; then \
-		echo -e $(RED)"\n================ Norminette KO ================"$(END_COLOUR); \
+		echo $(RED)"\n================ Norminette KO ================"$(END_COLOUR); \
 	else \
-		echo -e $(GREEN)"\n================ Norminette OK ================"$(END_COLOUR); \
+		echo $(GREEN)"\n================ Norminette OK ================"$(END_COLOUR); \
 	fi
 endef
 
@@ -59,7 +55,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile $(HEADER)
 	$(CC) $(FLAG) -c $< -o $@
 	@echo -n $(END_COLOUR)
 
-$(NAME) : $(LIBFT) $(OBJ_DIR) $(OBJ)
+$(NAME) : $(OBJ_DIR) $(OBJ)
 	$(call percent)
 	$(CC) $(FLAG) -o $@ $(OBJ) $(INCLUDE)
 	@echo -n $(END_COLOUR)
@@ -83,7 +79,3 @@ fclean : clean
 re :
 	$(MAKE) fclean
 	$(MAKE) all
-
-run :
-	$(MAKE) all
-	@./cube3d 42

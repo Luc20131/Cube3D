@@ -6,11 +6,12 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/24 15:44:36 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/01 13:37:25 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/cube3d.h"
+#include <math.h>
 #include <stdio.h>
 #define HEIGHT 1024
 #define WIDTH 1024
@@ -37,15 +38,15 @@ void	draw_square(t_data *img, t_pos origin, int size, int color)
 
 	current.x = origin.x;
 	current.y = origin.y;
-	while (current.y < origin.y + size)
+	while (current.x < origin.x + size)
 	{
-		current.x = origin.x;
-		while (current.x < origin.x + size)
+		current.y = origin.y;
+		while (current.y < origin.y + size)
 		{
 			my_mlx_pixel_put(img, current.x, current.y, color);
-			current.x++;
+			current.y++;
 		}
-		current.y++;
+		current.x++;
 	}
 }
 
