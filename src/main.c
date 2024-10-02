@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/24 15:39:04 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/01 13:07:56 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@
 #include "../headers/parsing.h"
 
 #define SIZE_IMG 1024
+#define WIDTH 1920
+#define HEIGHT 1080
 #define SKY_COLOR 0xFF5EACFF
 #define GROUND_COLOR 0xFF5E3B10
-#define FOV 60
+#define FOV 90
 
 int	key_hook(int keycode, t_mlx *vars)
 {
 	int		size;
-	char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
+	// char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
 
 	if (keycode == 65307)
 	{
@@ -40,7 +42,7 @@ int	key_hook(int keycode, t_mlx *vars)
 		if (vars->distance < SIZE_IMG - 10)
 			vars->distance += 10;
 		printf("Distance = %d\n", vars->distance);
-		wall(vars);
+		wall(vars, vars->distance);
 		return (0);
 	}
 	else if (keycode == 'l')
@@ -48,25 +50,22 @@ int	key_hook(int keycode, t_mlx *vars)
 		if (vars->distance > 11)
 			vars->distance -= 10;
 		printf("Distance = %d\n", vars->distance);
-		wall(vars);
+		wall(vars, vars->distance);
 		return (0);
 	}
 	else if (keycode == 'c')
 	{
 		size = vars->distance;
 		printf("size : %d", size);
-		map_gen(vars, map);
-		mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+
 	}
 	return (0);
 }
 
-void	wall(t_mlx *vars)
+void	wall(t_mlx *vars, float	distance)
 {
 	t_pos	pos;
-	int		distance;
 
-	distance = vars->distance;
 	pos.y = SIZE_IMG / 2;
 	pos.x = 0;
 	while (pos.x < SIZE_IMG)
@@ -87,18 +86,25 @@ int	main(int argc, char **argv)
 		return (0);
 	else
 		parse_key(argv[1]);
-	char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
+	// char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
 	t_mlx	vars;
+	t_pos	pos;
 
+	pos.x = 100;
+	pos.y = 100;
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, SIZE_IMG, SIZE_IMG, "Cube3D");
-	vars.img = new_img(&vars, SIZE_IMG);
+	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Cube3D");
+	vars.img = new_img(&vars, WIDTH, HEIGHT);
 	// draw_horizon(&vars.img);
-	vars.distance = 300;
-	wall(&vars);
+	vars.distance = 100 * 3;
+
+	draw_square(&vars.img, pos, 100, 0xFFFFFFFF);
+	mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
+	// ray_dist(&vars);
+	// raycast_one_vector(map);
+	// wall(&vars, 10);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_loop(vars.mlx);
-	print_map(map);
 }
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
@@ -107,21 +113,6 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *) dst = color;
-}
-
-t_data	new_img(t_mlx *vars, int size)
-{
-	t_data	frame;
-
-	frame.img = mlx_new_image(vars->mlx, size, size);
-	if (!frame.img)
-	{
-		frame.addr = NULL;
-		return (frame);
-	}
-	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, \
-		&frame.line_length, &frame.endian);
-	return (frame);
 }
 
 t_tab_size	char_tab_len(char **tab)
@@ -150,7 +141,6 @@ void	print_map(char **map)
 	i = 0;
 	while (map[i][y])
 	{
-
 		while (map[i][y])
 		{
 			write(1, &map[i][y], 1);
@@ -218,7 +208,7 @@ void	draw_line_from_mid(t_data *img, t_pos origin, int distance)
 	t_pos	current;
 	int		size;
 
-	size = distance / 4;
+	size = sqrt(distance);
 	current.x = origin.x;
 	current.y = origin.y;
 	while (current.y < origin.y + size)
@@ -227,7 +217,7 @@ void	draw_line_from_mid(t_data *img, t_pos origin, int distance)
 		my_mlx_pixel_put(img, current.x, current.y, create_trgb(255, 255, 255, 255));
 		current.y++;
 	}
-	while (current.y < SIZE_IMG)
+	while (current.y < HEIGHT)
 	{
 		my_mlx_pixel_put(img, current.x, origin.y + (origin.y - current.y), SKY_COLOR);
 		my_mlx_pixel_put(img, current.x, current.y, GROUND_COLOR);
