@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_keys.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:00:05 by sjean             #+#    #+#             */
-/*   Updated: 2024/09/28 15:37:29 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/02 18:00:13 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,65 +74,6 @@ int skip_key_word(char *key_v)
 	return (index);
 }
 
-int get_color_value(char *key_v)
-{
-	int 			i;
-	unsigned int	dest;
-
-	i = -1;
-	dest = 0;
-	while ( ft_isdigit(key_v[i]))
-		dest = dest * 10 + (key_v[i] - 48);
-	if (key_v[i] != ' ' && key_v[i] != '	'\
-	 && key_v[i] != '\n' && key_v[i] != '\0')
-	 return (-1);
-	else
-		return (dest);
-}
-
-int	get_color(char *key_v, t_key key, t_info *info)
-{
-	int	nb;
-	int	index;
-
-	nb = 0;
-	index = skip_key_word(key_v);
-	while (nb < 3)
-	{
-		
-	}
-	
-	return (1);
-}
-	// nb_rgb = -1;
-	// nb_nb = 0;
-	// dest = 0;
-	// while (key_v[index] && ++nb_rgb < 3)
-	// {
-	// 	dest = 0;
-	// 	while (!not_a_word(key_v[index]) && key_v[index] != ',')
-	// 	{
-	// 		if (ft_isdigit(key_v[index]))
-	// 			dest = dest * 10 + (key_v[index] - 48);
-	// 		else
-	// 			return (E_WRONG_COLOR);
-	// 		index++;
-	// 	}
-	// 	index += skip_space(&key_v[index]);
-	// 	if (key_v[index] == ',')
-	// 	{
-	// 		nb_nb++;
-	// 		index++;
-	// 	}
-	// 	index += skip_space(&key_v[index]);
-	// 	if (key == KEY_C)
-	// 		info->ceiling[nb_rgb] = dest;
-	// 	else
-	// 		info->floor[nb_rgb] = dest;
-	// }
-	// if (nb_nb != 3)
-	// 	return (E_WRONG_COLOR);
-
 int	get_key_value(char *key_v, t_key key, t_info *info)
 {
 	int		index;
@@ -159,45 +100,26 @@ int	get_key_value(char *key_v, t_key key, t_info *info)
 	return (1);
 }
 
-int	key_finder(char *line, t_info *info)
+int	key_finder(char *line)
 {
 	char	*key;
 
 	key = get_key_word(line);
 	if (!key)
-		return (1);
+		return (-1);
 	if (ft_strncmp(key, "NO", 2) == 0 && ft_strlen(key) == 2)
-		get_key_value(line, KEY_NO, info);
+		return(free(key), KEY_NO);
 	else if (ft_strncmp(key, "SO", 2) == 0 && ft_strlen(key) == 2)
-		get_key_value(line, KEY_SO, info);
+		return(free(key), KEY_SO);
 	else if (ft_strncmp(key, "WE", 2) == 0 && ft_strlen(key) == 2)
-		get_key_value(line, KEY_WE, info);
+		return(free(key), KEY_WE);
 	else if (ft_strncmp(key, "EA", 2) == 0 && ft_strlen(key) == 2)
-		get_key_value(line, KEY_EA, info);
+		return(free(key), KEY_EA);
 	else if (ft_strncmp(key, "F", 1) == 0 && ft_strlen(key) == 1)
-		get_color(line, KEY_F, info);
+		return(free(key), KEY_F);
 	else if (ft_strncmp(key, "C", 1) == 0 && ft_strlen(key) == 1)
-		get_color(line, KEY_C, info);
+		return(free(key), KEY_C);
 	else
-		return (free(key), 1);
-	return (free(key), 1);
-}
-
-//read file and get the keys for texture and color =============================
-int	get_arg(char *argv, t_info *info)
-{
-	char	*line_key;
-
-	info->map_fd = open(argv, O_RDONLY);
-	if (info->map_fd == -1)
-		return (1);
-	line_key = get_next_line(info->map_fd);
-	while (line_key)
-	{
-		if (!key_finder(line_key, info))
-			return (1);
-		free (line_key);
-		line_key = get_next_line(info->map_fd);
-	}
-	return (0);
+		return (free(key), -1);
+	return (free(key), -1);
 }

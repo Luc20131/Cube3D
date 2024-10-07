@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/09/28 13:32:52 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/02 17:29:53 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,10 @@ typedef struct s_info
 } t_info;
 
 int get_arg(char *argv, t_info *info);
-
+int	skip_space(char *line);
+int	get_key_value(char *key_v, t_key key, t_info *info);
+int	key_finder(char *line);
+int skip_key_word(char *key_v);
+int	get_color(char *key_v, t_key key, t_info *info);
+int parsing_cube(char *arg);
 #endif

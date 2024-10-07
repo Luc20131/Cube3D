@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/26 15:24:14 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/02 17:29:07 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,13 @@ void	wall(t_mlx *vars)
 
 int	main(int argc, char **argv)
 {
-	t_info *info;
-
-	info = ft_calloc(1, sizeof(t_info));
-	ft_memset(info, 0, sizeof(t_info));
 	if (argc != 2)
-		return (0);
+		return (1);
 	else
-		get_arg(argv[1], info);
+	{
+		if (parsing_cube(argv[1]) == 1)
+			return (0);
+	}
 	char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
 	t_mlx	vars;
 

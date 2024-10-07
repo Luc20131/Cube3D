@@ -6,7 +6,7 @@ NAME = cube3d
 
 HEADER = ./headers/$(NAME).h ./headers/parsing.h
 SRC_DIR=src/
-SRC_LIST= main.c map_gen.c parse_keys.c parse_map.c
+SRC_LIST= main.c map_gen.c parse_keys.c parse_map.c parse_color.c parsing.c
 SRC=$(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJ_DIR=obj/
 OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
