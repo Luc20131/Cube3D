@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   parse_color.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 18:00:39 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/02 13:45:25 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/07 15:30:23 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/cube3d.h"
 #include "../headers/parsing.h"
 
-int get_color_value(char *key_v)
+int	get_color_value(char *key_v)
 {
-	int i;
+	int	i;
 	int	dest;
 
 	i = -1;
 	dest = 0;
-	while ( ft_isdigit(key_v[++i]))
+	while (ft_isdigit(key_v[++i]))
 		dest = dest * 10 + (key_v[i] - 48);
 	if (key_v[i] != ' ' && key_v[i] != '	'\
-	 && key_v[i] != '\n' && key_v[i] != '\0' && key_v[i] != ',')
+	&& key_v[i] != '\n' && key_v[i] != '\0' && key_v[i] != ',')
 		return (-1);
 	if (dest < 0 || dest > 255)
 		return (-1);
@@ -34,8 +34,8 @@ int get_color_value(char *key_v)
 int	get_color(char *key_v, t_key key, t_info *info)
 {
 	int	nb;
-	int old_nb;
-	int tmp;
+	int	old_nb;
+	int	tmp;
 	int	index;
 
 	nb = 0;
@@ -53,9 +53,9 @@ int	get_color(char *key_v, t_key key, t_info *info)
 		index += skip_space(&key_v[index]);
 		index += (key_v[index] == ',');
 		index += skip_space(&key_v[index]);
-        nb += (!key_v[index] || key_v[index] != '\n');
-        if (old_nb == nb)
-            return (ft_printf("NUH HUUUUH"), E_WRONG_COLOR);
+		nb += (!key_v[index] || key_v[index] != '\n');
+		if (old_nb == nb)
+			return (ft_printf("NUH HUUUUH"), E_WRONG_COLOR);
 	}
 	return (1);
 }

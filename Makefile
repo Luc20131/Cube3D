@@ -6,7 +6,7 @@ NAME = cube3d
 
 HEADER = ./headers/$(NAME).h ./headers/parsing.h
 SRC_DIR=src/
-SRC_LIST= main.c map_gen.c parse_keys.c parse_map.c parse_color.c parsing.c
+SRC_LIST= main.c map_gen.c parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c
 SRC=$(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJ_DIR=obj/
 OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
@@ -36,7 +36,7 @@ endef
 
 define normitest
 	@echo -e $(BLUE)"Test norminette..."$(END_COLOUR)
-	@if norminette $(SRC_LIST) $(HEADER) $(LIBFT_SRC_FULL) | grep Error; then \
+	@if norminette $(SRC_DIR) $(HEADER) $(LIBFT_SRC_FULL) | grep Error; then \
 		echo -e $(RED)"\n================ Norminette KO ================"$(END_COLOUR); \
 	else \
 		echo -e $(GREEN)"\n================ Norminette OK ================"$(END_COLOUR); \

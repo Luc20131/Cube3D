@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/02 17:29:53 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/07 15:25:16 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ typedef enum e_error
 	E_MALLOC,
 	E_NO_KEY,
 	E_WRONG_KEY,
-	E_WRONG_COLOR
+	E_WRONG_COLOR,
+	E_NO_MORE_KEY
 }			t_error;
 
 typedef struct s_info
@@ -40,13 +41,15 @@ typedef struct s_info
 	int		ceiling[3];
 	int		floor[3];
 	char	**map;
-} t_info;
+}	t_info;
 
-int get_arg(char *argv, t_info *info);
+int	get_arg(char *argv, t_info *info);
 int	skip_space(char *line);
+int	skip_key_word(char *key_v);
+int	not_a_word(char c);
 int	get_key_value(char *key_v, t_key key, t_info *info);
 int	key_finder(char *line);
-int skip_key_word(char *key_v);
+int	skip_key_word(char *key_v);
 int	get_color(char *key_v, t_key key, t_info *info);
-int parsing_cube(char *arg);
+int	parsing_cube(char *arg);
 #endif
