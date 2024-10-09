@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/07 15:57:17 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/09 06:37:24 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	get_arg(char *argv, t_info *info)
 	{
 		key = key_finder(line_key);
 		if (key == -1)
-			return (E_NO_MORE_KEY);
+			return (free(line_key), E_NO_MORE_KEY);
 		else if (key != KEY_C && key != KEY_F)
 			get_key_value(line_key, key, info);
 		else
@@ -40,16 +40,14 @@ int	get_arg(char *argv, t_info *info)
 
 int valid_key(t_info *info)
 {
-	int fd;
 	int i;
 
 	i = 0;
 	while (i < 4)
 	{
-		fd = open(info->texture_path[i++], O_RDONLY);
-		if (fd == -1)
+		if (!info->texture_path[i++][0])
 			return (ft_printf("c'est po bon ca"),0);
-		close(fd);
+
 	}
 	return (1);
 }
@@ -65,9 +63,10 @@ int	parsing_cube(char *arg)
 	if (result == E_NO_MORE_KEY)
 		if (!valid_key(info))
 			return (free(info), 1);
+	ft_printf("NO %s\nSO %s\nWE %s\nEA %s\nF %d %d %d \nC %d %d %d \n",
+	info->texture_path[0], info->texture_path[1], info->texture_path[2],
+	info->texture_path[3], info->floor[0], info->floor[1], info->floor[2],
+	info->ceiling[0], info->ceiling[1], info->ceiling[2]);
+	free(info);
 	return (0);
 }
-// ft_printf("NO %s\nSO %s\nWE %s\nEA %s\nF %d %d %d \nC %d %d %d \n",
-// info->texture_path[0], info->texture_path[1], info->texture_path[2],
-// info->texture_path[3], info->floor[0], info->floor[1], info->floor[2],
-// info->ceiling[0], info->ceiling[1], info->ceiling[2]);

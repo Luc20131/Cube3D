@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 18:00:39 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/07 15:30:23 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/09 07:11:43 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,16 @@ int	get_color_value(char *key_v)
 		return (dest);
 }
 
+int	skip_numbers(char *key_v)
+{
+	int i;
+
+	i = -1;
+	while (ft_isdigit(key_v[++i]))
+		;
+	return (i);
+}
+
 int	get_color(char *key_v, t_key key, t_info *info)
 {
 	int	nb;
@@ -50,10 +60,10 @@ int	get_color(char *key_v, t_key key, t_info *info)
 			info->ceiling[nb] = tmp;
 		else
 			info->floor[nb] = tmp;
-		index += skip_space(&key_v[index]);
+		nb += (!key_v[index] || key_v[index] != '\n');
+		index += skip_numbers(&key_v[index]) + skip_space(&key_v[index + skip_numbers(&key_v[index])]);
 		index += (key_v[index] == ',');
 		index += skip_space(&key_v[index]);
-		nb += (!key_v[index] || key_v[index] != '\n');
 		if (old_nb == nb)
 			return (ft_printf("NUH HUUUUH"), E_WRONG_COLOR);
 	}
