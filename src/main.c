@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/11 14:49:27 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/12 14:56:18 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	main(int argc, char **argv)
 		return (1);
 	else
 	{
-		if (parsing_cube(argv[1]) == 1)
+		if (parsing_cube(argv[1]) == 0)
 			return (1);
 	}
 	exit(EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:00:05 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/07 15:31:57 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/12 14:21:43 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,7 @@ int	get_key_value(char *key_v, t_key key, t_info *info)
 	}
 	ft_strlcpy(str, &key_v[start], (end + 1) - start);
 	assing_key_value(str, key, info);
+	if (valid_key(info))
+		return (E_NO_MORE_KEY);
 	return (1);
 }
