@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/09 06:37:24 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/11 16:05:18 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,12 @@ int valid_key(t_info *info)
 	return (1);
 }
 
+void error_msg(int error)
+{
+	if (error == E_WRONG_COLOR)
+		ft_printf("Error\nWrong color\n");
+}
+
 int	parsing_cube(char *arg)
 {
 	t_info	*info;
@@ -61,8 +67,12 @@ int	parsing_cube(char *arg)
 	ft_memset(info, 0, sizeof(t_info));
 	result = get_arg(arg, info);
 	if (result == E_NO_MORE_KEY)
+	{
 		if (!valid_key(info))
 			return (free(info), 1);
+	}
+	else if (result == E_WRONG_COLOR)
+		return (error_msg(E_WRONG_COLOR), free(info), 1);	
 	ft_printf("NO %s\nSO %s\nWE %s\nEA %s\nF %d %d %d \nC %d %d %d \n",
 	info->texture_path[0], info->texture_path[1], info->texture_path[2],
 	info->texture_path[3], info->floor[0], info->floor[1], info->floor[2],

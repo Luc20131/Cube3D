@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_color.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 18:00:39 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/09 07:11:43 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/11 15:35:41 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,20 @@ int	get_color(char *key_v, t_key key, t_info *info)
 		old_nb = nb;
 		tmp = get_color_value(&key_v[index]);
 		if (tmp == -1)
-			return (ft_printf("NUH HUUUUH!!!!!!!"), E_WRONG_COLOR);
+			return (E_WRONG_COLOR);
 		if (key == KEY_C)
 			info->ceiling[nb] = tmp;
 		else
 			info->floor[nb] = tmp;
 		nb += (!key_v[index] || key_v[index] != '\n');
-		index += skip_numbers(&key_v[index]) + skip_space(&key_v[index + skip_numbers(&key_v[index])]);
+		index += skip_numbers(&key_v[index]);
+		index += skip_space(&key_v[index]);
 		index += (key_v[index] == ',');
 		index += skip_space(&key_v[index]);
 		if (old_nb == nb)
-			return (ft_printf("NUH HUUUUH"), E_WRONG_COLOR);
+			return (E_WRONG_COLOR);
 	}
+	if (key_v[index] != '\n')
+		return (E_WRONG_COLOR);
 	return (1);
 }

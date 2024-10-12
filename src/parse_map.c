@@ -3,10 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:35:14 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/07 15:27:53 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/11 18:49:36 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../headers/cube3d.h"
+#include "../headers/parsing.h"
 
