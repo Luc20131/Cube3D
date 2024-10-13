@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/12 14:35:20 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/13 16:54:50 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSING_H
 # include <linux/limits.h>
 # include <fcntl.h>
+# include "cube3d.h"
 
 typedef enum e_key
 {
@@ -41,7 +42,9 @@ typedef struct s_info
 	int		ceiling[3];
 	int		floor[3];
 	int		texture_valid[4];
+	t_pos	player;
 	char	**map;
+
 }	t_info;
 
 int	get_map(t_info *info);

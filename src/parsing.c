@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/12 18:39:20 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/13 16:55:43 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,21 @@ t_info *init_info(void)
 	return (info);
 }
 
+void	freetab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		free(tab[i++]);
+	free(tab);
+}
+
 int	parsing_cube(char *arg)
 {
 	t_info	*info;
 	int		result;
+	int		i;
 
 	info = init_info();
 	if (!info)
@@ -105,10 +116,15 @@ int	parsing_cube(char *arg)
 	}
 	else if (result == E_WRONG_COLOR)
 		return (error_msg(E_WRONG_COLOR), free(info), 0);
-	ft_printf("NO %s\nSO %s\nWE %s\nEA %s\nF %d %d %d \nC %d %d %d \n",
+	ft_printf("NO %s\nSO %s\nWE %s\nEA %s\nF %d %d %d\nC %d %d %d\n",
 	info->texture_path[0], info->texture_path[1], info->texture_path[2],
 	info->texture_path[3], info->floor[0], info->floor[1], info->floor[2],
 	info->ceiling[0], info->ceiling[1], info->ceiling[2]);
+	i = -1;
+	while (info->map[++i])
+		ft_printf("%s\n", info->map[i]);
+	ft_printf("Player x:%d y:%d\n", info->player.x, info->player.y);
+	freetab(info->map);
 	free(info);
 	return (1);
 }
