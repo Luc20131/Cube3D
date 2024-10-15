@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/15 13:33:44 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/15 17:51:41 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ typedef enum e_statut
 	E_NO_MORE_KEY,
 	E_INVALID_MAP,
 	E_NO_PLAYER,
-	SUCCESS
+	E_HOLE,
+	SUCCESS,
+	FINISH
 }			t_statut;
 
 typedef struct s_info
@@ -54,7 +56,7 @@ typedef struct s_stats
 {
 	struct s_stats	*prev;
 	int 			dir;
-	int				case_;
+	t_pos			pos;
 	struct s_stats	*next;
  }				t_stats;
 

@@ -52,7 +52,7 @@ endef
 .PHONY: all clean fclean re
 
 all :
-	$(call normitest)
+#	$(call normitest)
 	$(call prompt,$(BLUE),"Creating $(NAME)")
 	$(MAKE) $(NAME)
 
