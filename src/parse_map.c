@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:35:14 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/13 18:56:25 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/14 20:15:43 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ int find_player(t_info *info)
 		x = -1;
 		while (info->map[y][++x])
 		{
-			if (info->map[y][x] == 'N' || info->map[y][x] == 'E' || \
-				info->map[y][x] == 'S' || info->map[y][x] == 'W')		
+			if (cmp_n_elt(info->map[y][x], "NESW"))		
 			{
 				info->player.x = x;
 				info->player.y = y;
@@ -67,7 +66,7 @@ int init_map(t_info *info, t_list *list)
 		return (E_MALLOC);
 	while (list)
 	{
-		info->map[++i] = ft_calloc(size_line, sizeof(char));
+		info->map[++i] = ft_calloc(size_line + 1, sizeof(char));
 		ft_memset(info->map[i], ' ', size_line);
 		j = -1;
 		while (((char *)list->content)[++j] && ((char *)list->content)[j] != '\n')
@@ -78,7 +77,7 @@ int init_map(t_info *info, t_list *list)
 	return (1);
 }
 
-int cmp_n_elt(char c, char **cmp)
+int cmp_n_elt(char c, char *cmp)
 {
 	int	elt;
 
@@ -89,10 +88,38 @@ int cmp_n_elt(char c, char **cmp)
 	return (0);
 }
 
+int check_valid_chr_map(char **map)
+{
+	int x;
+	int y;
+	int	player;
+	
+	y = -1;
+	player = 0;
+	while (map[++y])
+	{
+		x = -1;
+		while (map[y][++x])
+		{
+			if (!cmp_n_elt(map[y][x], "NESW01 "))
+				return (0);
+			if (cmp_n_elt(map[y][x], "NESW"))
+				player++;
+		}
+	}
+	if (player != 1)
+		return (0);
+	return (1);
+}
+
 int	parse_map(char **map, t_pos player)
 {
 	int x;
 	int y;
+
+	x = player.x;
+	y = player.y;
+	
 	if (map[y][x] == ' ' || map[y][x] == '\0')
 		return (0);
 	else if (cmp_n_elt(map[y][x], "NESW01"))
@@ -122,7 +149,9 @@ int get_map(t_info *info)
 		line = get_next_line(info->map_fd);
 	}
 	init_map(info, head);
-	parse_map(info->map, info->player);
 	ft_lstclear(&head, free);
-	return (0);
+	if (!check_valid_chr_map(info->map))
+		return (E_INVALID_MAP);
+	parse_map(info->map, info->player);
+	return (SUCCESS);
 }

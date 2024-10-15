@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/13 16:54:50 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/15 13:33:44 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,17 @@ typedef enum e_key
 	KEY_C
 }			t_key;
 
-typedef enum e_error
+typedef enum e_statut
 {
 	E_MALLOC,
 	E_NO_KEY,
 	E_WRONG_KEY,
 	E_WRONG_COLOR,
-	E_NO_MORE_KEY
-}			t_error;
+	E_NO_MORE_KEY,
+	E_INVALID_MAP,
+	E_NO_PLAYER,
+	SUCCESS
+}			t_statut;
 
 typedef struct s_info
 {
@@ -47,7 +50,17 @@ typedef struct s_info
 
 }	t_info;
 
+typedef struct s_stats
+{
+	struct s_stats	*prev;
+	int 			dir;
+	int				case_;
+	struct s_stats	*next;
+ }				t_stats;
+
+
 int	get_map(t_info *info);
+int	cmp_n_elt(char c, char *cmp);
 
 int	get_arg(char *argv, t_info *info);
 int valid_key(t_info *info);

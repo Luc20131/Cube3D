@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/13 16:55:43 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/14 18:19:17 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void error_msg(int error)
 		ft_printf("Error\nWrong color\n");
 	if (error == E_WRONG_KEY)
 		ft_printf("Error\nTexture invalid\n");
+	if (error == E_INVALID_MAP)
+		ft_printf("Error\nInvalid map\n");
 }
 
 t_info *init_info(void)
@@ -112,7 +114,8 @@ int	parsing_cube(char *arg)
 		if (!valid_key(info))
 			return (error_msg(E_WRONG_KEY), free(info), 0);
 		else
-			get_map(info);
+			if (get_map(info) == E_INVALID_MAP)
+				return (error_msg(E_INVALID_MAP), freetab(info->map), free(info), 0);
 	}
 	else if (result == E_WRONG_COLOR)
 		return (error_msg(E_WRONG_COLOR), free(info), 0);
