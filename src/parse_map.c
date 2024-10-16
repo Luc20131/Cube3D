@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:35:14 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/15 19:13:56 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/15 20:23:42 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,11 @@ int check_valid_chr_map(char **map)
 
 int get_dir(t_stats **stats, char **map, t_pos pos)
 {
-	if (map[pos.y - 1][pos.x] && map[pos.y - 1][pos.x] == '0')
+	if (map[pos.y - 1] && map[pos.y - 1][pos.x] && map[pos.y - 1][pos.x] == '0')
 		(*stats)->dir++;
 	if (map[pos.y][pos.x + 1] && map[pos.y][pos.x + 1] == '0')
 		(*stats)->dir++;
-	if (map[pos.y + 1][pos.x] && map[pos.y + 1][pos.x] == '0')
+	if (map[pos.y + 1] && map[pos.y + 1][pos.x] && map[pos.y + 1][pos.x] == '0')
 		(*stats)->dir++;
 	if (map[pos.y][pos.x - 1] && map[pos.y][pos.x - 1] == '0')
 		(*stats)->dir++;
@@ -128,9 +128,9 @@ int get_dir(t_stats **stats, char **map, t_pos pos)
 int check_holes(t_stats **stats, char **map, t_pos pos)
 {
 	(void)stats;
-	if (!map[pos.y - 1][pos.x] || map[pos.y - 1][pos.x] == ' ' || \
+	if (!map[pos.y - 1] || map[pos.y - 1][pos.x] == ' ' || \
 		!map[pos.y][pos.x + 1] || map[pos.y][pos.x + 1] == ' ' || \
-		!map[pos.y + 1][pos.x] || map[pos.y + 1][pos.x] == ' ' || \
+		!map[pos.y + 1] || map[pos.y + 1][pos.x] == ' ' || \
 		!map[pos.y][pos.x - 1] || map[pos.y][pos.x - 1] == ' ')
 		{
 			map[pos.y][pos.x] = 'X';
@@ -187,7 +187,6 @@ int get_back(t_stats **stats, char **map)
 {
 	while ((*stats)->prev && (*stats)->dir == 0)
 	{
-		ft_printf("return\n");
 		*stats = (*stats)->prev;
 		if ((*stats)->dir != 0)
 		{
@@ -224,15 +223,15 @@ void show_map(char **map)
 		{
 			if (map[i][j] == 'V')
 			{
-				printf("\001\033[1;34m\002");
-				printf("%c", map[i][j]);
-				printf("\001\033[0m\002");
+				ft_putstr_fd("\001\033[1;34m\002", 0);
+				ft_putstr_fd("%c", map[i][j]);
+				ft_putstr_fd("\001\033[0m\002", 0);
 			}
 			else if (map[i][j] == 'X')
 			{
-				printf("\001\033[32m\002");
-				printf("%c", map[i][j]);
-				printf("\001\033[0m\002");
+				ft_putstr_fd("\001\033[32m\002", 0);
+				ft_putstr_fd("%c", map[i][j]);
+				ft_putstr_fd("\001\033[0m\002", 0);
 			}
 			else
 			{
@@ -257,7 +256,7 @@ int	parse_map(char **map, t_pos pos)
 		return (E_MALLOC);
 	while (42)
 	{
-		show_map(map);
+		// show_map(map);
 		get_dir(&stats, map, stats->pos);
 		if (check_holes(&stats, map, stats->pos) == E_HOLE)
 			return (E_HOLE);
@@ -268,7 +267,7 @@ int	parse_map(char **map, t_pos pos)
 		if (choose_dir(&stats, map, stats->pos) == E_MALLOC)
 			return (E_MALLOC);
 		if (cmp_n_elt(map[stats->pos.y][stats->pos.x], "NESW"))
-			return (ft_printf("FIN"), SUCCESS);
+			return (ft_printf("FIN\n"), SUCCESS);
 		stats = stats->next;
 	}
 	return (SUCCESS);
@@ -299,6 +298,7 @@ int get_map(t_info *info)
 	ft_lstclear(&head, free);
 	if (!check_valid_chr_map(info->map))
 		return (E_INVALID_MAP);
-	parse_map(info->map, info->player);
+	if (parse_map(info->map, info->player) == E_HOLE)
+		return (E_HOLE);
 	return (SUCCESS);
 }
