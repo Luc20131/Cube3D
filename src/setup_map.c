@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:37:41 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/16 18:12:36 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/16 19:13:48 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,9 @@ int	get_map(t_info *info)
 		line = get_next_line(info->map_fd);
 	}
 	init_map(info, head);
-	ft_lstclear(&head, free);
 	if (!check_valid_chr_map(info->map))
-		return (E_INVALID_MAP);
+		return (ft_lstclear(&head, free), E_INVALID_MAP);
 	if (parse_map(info->map, info->player) == E_HOLE)
-		return (E_HOLE);
-	return (SUCCESS);
+		return (ft_lstclear(&head, free), E_HOLE);
+	return (ft_lstclear(&head, free), SUCCESS);
 }

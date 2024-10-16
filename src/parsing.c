@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/16 18:08:36 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/16 19:19:39 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	parsing_cube(char *arg)
 		if (!valid_key(info))
 			return (error_msg(E_WRONG_KEY), free(info), 0);
 		else
-			if (get_map(info) == E_INVALID_MAP)
+			if (get_map(info) != SUCCESS)
 				return (error_msg(E_INVALID_MAP), \
 				freetab(info->map), free(info), 0);
 	}
@@ -95,7 +95,7 @@ int	parsing_cube(char *arg)
 		return (error_msg(E_CANT_OPEN), free(info), 0);
 	freetab(info->map);
 	free(info);
-	return (1);
+	return (SUCCESS);
 }
 	// int		i;
 	// ft_printf("NO %s\nSO %s\nWE %s\nEA %s\nF %d %d %d\nC %d %d %d\n",
