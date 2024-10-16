@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_color.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 18:00:39 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/14 16:39:19 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/16 18:00:55 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	get_color_value(char *key_v)
 
 int	skip_numbers(char *key_v)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (ft_isdigit(key_v[++i]))

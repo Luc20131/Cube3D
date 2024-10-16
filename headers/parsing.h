@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/15 17:51:41 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/16 17:56:29 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ typedef enum e_key
 typedef enum e_statut
 {
 	E_MALLOC,
+	E_FORMAT,
+	E_CANT_OPEN,
 	E_NO_KEY,
 	E_WRONG_KEY,
 	E_WRONG_COLOR,
@@ -61,17 +63,27 @@ typedef struct s_stats
  }				t_stats;
 
 
-int	get_map(t_info *info);
-int	cmp_n_elt(char c, char *cmp);
+int		get_map(t_info *info);
+int		cmp_n_elt(char c, char *cmp);
+void	clean_map(char **map, t_stats **stats);
+int		parse_map(char **map, t_pos pos);
+int		stats_add_back(t_stats **stats, t_pos pos);
+int		init_first(t_stats **stats, char **map, t_pos pos);
+int		get_dir(t_stats **stats, char **map, t_pos pos);
+int		check_holes(t_stats **stats, char **map, t_pos pos);
+int		choose_dir(t_stats **stats, char **map, t_pos pos);
 
-int	get_arg(char *argv, t_info *info);
-int valid_key(t_info *info);
-int	skip_space(char *line);
-int	skip_key_word(char *key_v);
-int	not_a_word(char c);
-int	get_key_value(char *key_v, t_key key, t_info *info);
-int	key_finder(char *line);
-int	skip_key_word(char *key_v);
-int	get_color(char *key_v, t_key key, t_info *info);
-int	parsing_cube(char *arg);
+void 	error_msg(int error);
+int 	valid_key(t_info *info);
+void	freetab(char **tab);
+int		get_arg(char *argv, t_info *info);
+int 	valid_key(t_info *info);
+int		skip_space(char *line);
+int		skip_key_word(char *key_v);
+int		not_a_word(char c);
+int		get_key_value(char *key_v, t_key key, t_info *info);
+int		key_finder(char *line);
+int		skip_key_word(char *key_v);
+int		get_color(char *key_v, t_key key, t_info *info);
+int		parsing_cube(char *arg);
 #endif
