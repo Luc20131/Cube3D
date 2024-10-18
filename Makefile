@@ -6,7 +6,7 @@ NAME = cube3d
 
 HEADER = ./headers/$(NAME).h ./headers/parsing.h
 SRC_DIR=src/
-SRC_LIST= main.c map_gen.c parse_keys.c parse_map.c length.c testo.c
+SRC_LIST= main.c map_gen.c parse_keys.c parse_map.c length.c testo.c sprite.c
 SRC=$(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJ_DIR=obj/
 OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
@@ -16,6 +16,8 @@ LIBFT_DIR=libft/
 LIBFT_SRC = ft_free_splited.c ft_realloc.c ft_striteri.c ft_strmapi.c ft_strtrim.c ft_split.c ft_itoa.c ft_strjoin.c ft_substr.c ft_strnstr.c ft_memcmp.c ft_strlcpy.c ft_strlcat.c ft_putnbr_fd.c ft_putendl_fd.c ft_putstr_fd.c ft_putchar_fd.c ft_calloc.c ft_strdup.c ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c ft_memchr.c ft_memcpy.c ft_memmove.c ft_memset.c ft_strchr.c ft_strlen.c ft_strncmp.c ft_strrchr.c ft_tolower.c ft_toupper.c ft_printf/ft_printf.c ft_printf/ft_put.c get_next_line/get_next_line.c
 LIBFT_SRC_FULL = $(addprefix $(LIBFT_DIR),$(LIBFT_SRC))
 LIBFT = $(LIBFT_DIR)libft.a
+
+MINILIBX = minilibx-linux/libmlx_Linux.a
 
 NB_FILES=$(words $(SRC_LIST))
 
@@ -59,7 +61,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile $(HEADER)
 	$(CC) $(FLAG) -c $< -o $@
 	@echo -n $(END_COLOUR)
 
-$(NAME) : $(LIBFT) $(OBJ_DIR) $(OBJ)
+$(NAME) : $(LIBFT) $(MINILIBX) $(OBJ_DIR) $(OBJ)
 	$(call percent)
 	$(CC) $(FLAG) -o $@ $(OBJ) $(INCLUDE)
 	@echo -n $(END_COLOUR)
@@ -67,6 +69,9 @@ $(NAME) : $(LIBFT) $(OBJ_DIR) $(OBJ)
 
 $(LIBFT) : $(LIBFT_SRC_FULL) libft/libft.h
 	$(MAKE) libft.a -C libft
+
+$(MINILIBX) :
+	$(MAKE) -C minilibx-linux
 
 $(OBJ_DIR):
 	@mkdir $@

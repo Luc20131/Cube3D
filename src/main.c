@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/01 13:07:56 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/18 14:14:15 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <X11/X.h>
 #include <X11/keysym.h>
 #include <math.h>
+#include <unistd.h>
 #include "../headers/parsing.h"
 
 #define SIZE_IMG 1024
@@ -25,9 +26,14 @@
 #define GROUND_COLOR 0xFF5E3B10
 #define FOV 90
 
+// void	map_refresh(char **map)
+// {
+// 	return;
+// }
+
 int	key_hook(int keycode, t_mlx *vars)
 {
-	int		size;
+	// int		size;
 	// char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
 
 	if (keycode == 65307)
@@ -37,32 +43,14 @@ int	key_hook(int keycode, t_mlx *vars)
 		free(vars->mlx);
 		exit(1);
 	}
-	else if (keycode == 'o')
-	{
-		if (vars->distance < SIZE_IMG - 10)
-			vars->distance += 10;
-		printf("Distance = %d\n", vars->distance);
-		wall(vars, vars->distance);
-		return (0);
-	}
-	else if (keycode == 'l')
-	{
-		if (vars->distance > 11)
-			vars->distance -= 10;
-		printf("Distance = %d\n", vars->distance);
-		wall(vars, vars->distance);
-		return (0);
-	}
-	else if (keycode == 'c')
-	{
-		size = vars->distance;
-		printf("size : %d", size);
-
-	}
+	// else if (keycode == 'd')
+	// {
+	// 	map_refresh();
+	// }
 	return (0);
 }
 
-void	wall(t_mlx *vars, float	distance)
+void	wall(t_data *img, float distance)
 {
 	t_pos	pos;
 
@@ -74,10 +62,9 @@ void	wall(t_mlx *vars, float	distance)
 			distance--;
 		else
 			distance++;
-		draw_line_from_mid(&vars->img, pos, distance);
+		draw_line_from_mid(img, pos, distance);
 		pos.x++;
 	}
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
 }
 
 int	main(int argc, char **argv)
@@ -86,23 +73,22 @@ int	main(int argc, char **argv)
 		return (0);
 	else
 		parse_key(argv[1]);
-	// char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
+	char	*map[] = {  "11111111",
+						"11000011",
+						"11110011",
+						"1100N001",
+						"11000001",
+						"11011011",
+						"11111111",
+						"\0"};
 	t_mlx	vars;
-	t_pos	pos;
 
-	pos.x = 100;
-	pos.y = 100;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Cube3D");
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
-	// draw_horizon(&vars.img);
-	vars.distance = 100 * 3;
-
-	draw_square(&vars.img, pos, 100, 0xFFFFFFFF);
-	mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
-	// ray_dist(&vars);
-	// raycast_one_vector(map);
-	// wall(&vars, 10);
+	map_gen(&vars, map);
+	set_carac_pos(&vars, map);
+	mlx_put_image_to_window(vars.mlx, vars.win, vars.map_img.img, 100, 100);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_loop(vars.mlx);
 }

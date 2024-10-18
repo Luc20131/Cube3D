@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 14:17:34 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/28 16:05:28 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/02 21:42:04 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,6 @@
 
 double	delta_dir(double ray_dir);
 int	mlx(void);
-
-t_data	new_img(t_mlx *vars, int width, int height)
-{
-	t_data	frame;
-
-	frame.img = mlx_new_image(vars->mlx, width, height);
-	if (!frame.img)
-	{
-		frame.addr = NULL;
-		return (frame);
-	}
-	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, \
-		&frame.line_length, &frame.endian);
-	return (frame);
-}
 
 int	ray_dist(t_mlx *vars)
 {
