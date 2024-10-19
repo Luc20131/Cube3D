@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:19:00 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/16 18:09:11 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/18 13:56:37 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,56 @@ int	valid_key(t_info *info)
 
 void	error_msg(int error)
 {
+	ft_printf("Error\n");
+	if (error == E_MALLOC)
+		ft_printf("Malloc failed\n");
 	if (error == E_WRONG_COLOR)
-		ft_printf("Error\nWrong color\n");
+		ft_printf("Wrong color\n");
 	if (error == E_WRONG_KEY)
-		ft_printf("Error\nTexture invalid\n");
+		ft_printf("Texture invalid\n");
 	if (error == E_INVALID_MAP)
-		ft_printf("Error\nInvalid map\n");
+		ft_printf("Invalid map\n");
 	if (error == E_FORMAT)
-		ft_printf("Error\nInvalid extension\n");
+		ft_printf("Invalid extension\n");
 	if (error == E_CANT_OPEN)
-		ft_printf("Error\nCan't open file\n");
+		ft_printf("Can't open file\n");
+}
+
+int	check_map(t_info *info, t_list **head)
+{
+	int	result;
+
+	if (init_map(info, *head) == E_MALLOC)
+		return (ft_lstclear(head, free), E_MALLOC);
+	if (!check_valid_chr_map(info->map))
+		return (ft_lstclear(head, free), E_INVALID_MAP);
+	result = parse_map(info->map, info->player);
+	if (result == E_HOLE)
+		return (ft_lstclear(head, free), E_HOLE);
+	if (result == E_MALLOC)
+		return (ft_lstclear(head, free), E_MALLOC);
+	return (ft_lstclear(head, free), SUCCESS);
+}
+
+void	show_map(char **map)
+{
+	int	y;
+	int	x;
+
+	y = -1;
+	while (map[++y])
+	{
+		x = -1;
+		while (map[y][++x])
+		{
+			if (map[y][x] == 'V')
+				ft_printf("\033[32m");
+			if (map[y][x] == 'X')
+				ft_printf("\033[31m");
+			ft_putchar_fd(map[y][x], 0);
+			ft_printf("\033[0m");
+		}
+		ft_printf("\n");
+	}
+	usleep(10000);
 }

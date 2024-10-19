@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:35:14 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/16 18:02:24 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/17 18:09:17 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,18 +98,18 @@ int	parse_map(char **map, t_pos pos)
 	{
 		get_dir(&stats, map, stats->pos);
 		if (check_holes(&stats, map, stats->pos) == E_HOLE)
-			return (E_HOLE);
+			return (show_map(map), free_stats(&stats), E_HOLE);
 		if (!cmp_n_elt(map[stats->pos.y][stats->pos.x], "NESW"))
 			map[stats->pos.y][stats->pos.x] = 'V';
 		if (stats->dir == 0)
 			get_back(&stats, map);
 		if (choose_dir(&stats, map, stats->pos) == E_MALLOC)
-			return (E_MALLOC);
+			return (free_stats(&stats), E_MALLOC);
 		if (cmp_n_elt(map[stats->pos.y][stats->pos.x], "NESW") && !stats->next)
-			return (clean_map(map, &stats), SUCCESS);
+			return (show_map(map), clean_map(map, &stats), SUCCESS);
 		stats = stats->next;
 	}
-	return (clean_map(map, &stats), SUCCESS);
+	return (show_map(map), clean_map(map, &stats), SUCCESS);
 }
 
 		// int i;

@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/16 17:56:29 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/17 17:59:01 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,10 @@ typedef struct s_info
 typedef struct s_stats
 {
 	struct s_stats	*prev;
-	int 			dir;
+	int				dir;
 	t_pos			pos;
 	struct s_stats	*next;
- }				t_stats;
-
+}				t_stats;
 
 int		get_map(t_info *info);
 int		cmp_n_elt(char c, char *cmp);
@@ -72,12 +71,17 @@ int		init_first(t_stats **stats, char **map, t_pos pos);
 int		get_dir(t_stats **stats, char **map, t_pos pos);
 int		check_holes(t_stats **stats, char **map, t_pos pos);
 int		choose_dir(t_stats **stats, char **map, t_pos pos);
+int		init_map(t_info *info, t_list *list);
+void	free_stats(t_stats **stats);
+void	show_map(char **map);
 
-void 	error_msg(int error);
-int 	valid_key(t_info *info);
+int		check_valid_chr_map(char **map);
+int		check_map(t_info *info, t_list **head);
+void	error_msg(int error);
+int		valid_key(t_info *info);
 void	freetab(char **tab);
 int		get_arg(char *argv, t_info *info);
-int 	valid_key(t_info *info);
+int		valid_key(t_info *info);
 int		skip_space(char *line);
 int		skip_key_word(char *key_v);
 int		not_a_word(char c);

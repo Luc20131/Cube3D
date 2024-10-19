@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:55:06 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/16 18:03:42 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/18 15:04:18 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,12 @@ void	clean_map(char **map, t_stats **stats)
 	{
 		x = -1;
 		while (map[y][++x])
+		{
 			if (map[y][x] == 'V')
 				map[y][x] = '0';
+			if (map[y][x] == ' ')
+				map[y][x] = '1';
+		}
 	}
 	free_stats(stats);
 }
@@ -59,12 +63,14 @@ int	stats_add_back(t_stats **stats, t_pos pos)
 int	init_first(t_stats **stats, char **map, t_pos pos)
 {
 	*stats = ft_calloc(1, sizeof(t_stats));
+	if (!*stats)
+		return (E_MALLOC);
 	(*stats)->pos = pos;
 	get_dir(stats, map, (*stats)->pos);
 	if (check_holes(&(*stats), map, (*stats)->pos) == E_HOLE)
-		return (E_HOLE);
+		return (show_map(map), free_stats(stats), E_HOLE);
 	if (choose_dir(stats, map, (*stats)->pos) == E_MALLOC)
-		return (E_MALLOC);
+		return (free_stats(stats), E_MALLOC);
 	if ((*stats)->next)
 		(*stats) = (*stats)->next;
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:37:41 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/16 19:13:48 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/18 15:17:26 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int	init_map(t_info *info, t_list *list)
 	while (list)
 	{
 		info->map[++i] = ft_calloc(size_line + 1, sizeof(char));
+		if (!info->map[i])
+			return (E_MALLOC);
 		ft_memset(info->map[i], ' ', size_line);
 		j = -1;
 		while (((char *)list->content)[++j] && \
@@ -106,13 +108,16 @@ int	get_map(t_info *info)
 	char	*line;
 	t_list	*tab;
 	t_list	*head;
+	int		first;
 
 	line = get_next_line(info->map_fd);
 	head = NULL;
+	first = 0;
 	while (line)
 	{
-		if (line[0] != '\n')
+		if (line[0] != '\n' || first == 1)
 		{
+			first = 1;
 			tab = ft_lstnew(line);
 			if (head)
 				ft_lstadd_back(&head, tab);
@@ -120,12 +125,9 @@ int	get_map(t_info *info)
 				head = tab;
 			tab = tab->next;
 		}
+		else
+			free (line);
 		line = get_next_line(info->map_fd);
 	}
-	init_map(info, head);
-	if (!check_valid_chr_map(info->map))
-		return (ft_lstclear(&head, free), E_INVALID_MAP);
-	if (parse_map(info->map, info->player) == E_HOLE)
-		return (ft_lstclear(&head, free), E_HOLE);
-	return (ft_lstclear(&head, free), SUCCESS);
+	return (check_map(info, &head));
 }
