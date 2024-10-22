@@ -6,7 +6,13 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 18:15:11 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/22 18:15:26 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/22 19:55:34 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../headers/parsing.h"
+
+int	init_img_texture(t_info *info)
+{
+	
+}

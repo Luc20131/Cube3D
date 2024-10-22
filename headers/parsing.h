@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/22 14:47:17 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/22 19:48:52 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_info
 	int		floor[3];
 	int		texture_valid[4];
 	t_pos	player;
+	t_data	*img_texture[4];
 	char	**map;
 
 }	t_info;
