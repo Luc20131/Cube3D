@@ -6,16 +6,13 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/15 19:14:33 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/21 08:04:38 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/cube3d.h"
 #include <math.h>
 #include <stdio.h>
-
-#define WIDTH 1920
-#define HEIGHT 1080
 
 int	get_t(int trgb)
 {

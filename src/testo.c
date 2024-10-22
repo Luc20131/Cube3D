@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 14:17:34 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/02 21:42:04 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/21 08:04:25 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@
 #include "../headers/cube3d.h"
 // #include "../libft/libft.h"
 
-
-#define WIDTH 1920
-#define HEIGHT 1080
 
 double	delta_dir(double ray_dir);
 int	mlx(void);

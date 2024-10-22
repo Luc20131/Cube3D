@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/18 13:54:32 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/22 09:18:44 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 #include "../minilibx-linux/mlx.h"
 #include "../libft/libft.h"
 
+#define HEIGHT 1024
+#define WIDTH 1024
+#define TILE_SIZE 64
+#define PLAYER_SPEED 6
+#define PLAYER_SIZE 8
+#define MINIMAP_SIZE 5
 
 typedef struct s_pos
 {
@@ -61,6 +67,9 @@ typedef struct s_mlx
 	t_data	img;
 	int		distance;
 	t_data	map_img;
+	t_data	mini_map;
+	t_pos	offset;
+	char	**map;
 }	t_mlx;
 
 typedef struct s_tab_size
@@ -69,6 +78,8 @@ typedef struct s_tab_size
 	size_t	column;
 }	t_tab_size;
 
+
+void	carac_pos_update(t_pos *offset, t_pos *carac_pos, char **map);
 int		map_gen(t_mlx *vars, char **map_tab);
 void	draw_square(t_data *img, t_pos origin, int size, int color);
 void	my_draw_line(t_pos origin, t_pos end, t_data *img);
@@ -84,4 +95,6 @@ int	create_trgb(int t, int r, int g, int b);
 int	raycast_one_vector(char **map);
 int	ray_dist(t_mlx *vars);
 t_data	resize_img(t_mlx *vars, t_data *img, unsigned int width, unsigned int height);
+int	init_mini_map(t_mlx *vars,t_pos	carac_pos);
+
 #endif
