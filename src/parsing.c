@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/18 14:01:25 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/22 17:53:13 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,13 @@ t_info	*init_info(void)
 	return (info);
 }
 
-int	check_format(char *map)
+int	check_format(char *map, char *find)
 {
 	char	*var;
 
-	var = ft_strnstr(map, ".cub", ft_strlen(map));
-	if (ft_strlen(map) > 4 && var && ft_strlen(var) == 4)
+	var = ft_strnstr(map, find, ft_strlen(map));
+	if (ft_strlen(map) > ft_strlen(find) && var && \
+	ft_strlen(var) == ft_strlen(find))
 		return (SUCCESS);
 	else
 		return (E_FORMAT);
@@ -77,7 +78,7 @@ int	parsing_cube(char *arg)
 	info = init_info();
 	if (!info)
 		return (error_msg(E_MALLOC), 0);
-	if (check_format(arg) == E_FORMAT)
+	if (check_format(arg, ".cub") == E_FORMAT)
 		return (error_msg(E_FORMAT), 0);
 	result = get_arg(arg, info);
 	if (result == E_NO_MORE_KEY)
@@ -93,7 +94,6 @@ int	parsing_cube(char *arg)
 		return (error_msg(E_WRONG_COLOR), free(info), 0);
 	else if (result == E_CANT_OPEN)
 		return (error_msg(E_CANT_OPEN), free(info), 0);
-	close(info->map_fd);
 	return (SUCCESS);
 }
 	// int		i;

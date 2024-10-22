@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:37:41 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/18 15:17:26 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/22 17:58:47 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,5 @@ int	get_map(t_info *info)
 			free (line);
 		line = get_next_line(info->map_fd);
 	}
-	return (check_map(info, &head));
+	return (close(info->map_fd), check_map(info, &head));
 }

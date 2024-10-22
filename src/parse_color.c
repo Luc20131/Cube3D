@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 18:00:39 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/19 19:56:39 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/22 14:20:15 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,16 @@ int	skip_numbers(char *key_v)
 	return (i);
 }
 
-int	increase_index(int *index, char *key_v)
+int	increase_index(int *index, char *key_v, int key)
 {
-	static int comma = 0;
+	static int	comma = 0;
+	static int	enum_key = -1;
 
+	if (enum_key != key)
+	{
+		comma = 0;
+		enum_key = key;
+	}
 	*index += skip_numbers(&key_v[*index]);
 	*index += skip_space(&key_v[*index]);
 	if (key_v[*index] == ',')
@@ -78,7 +84,7 @@ int	get_color(char *key_v, t_key key, t_info *info)
 		else
 			info->floor[nb] = tmp;
 		nb += (!key_v[index] || key_v[index] != '\n');
-		increase_index(&index, key_v);
+		increase_index(&index, key_v, key);
 		if (old_nb == nb || index == -1)
 			return (E_WRONG_COLOR);
 	}

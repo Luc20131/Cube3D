@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:19:00 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/18 13:56:37 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/22 17:56:43 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,19 @@ void	freetab(char **tab)
 int	valid_key(t_info *info)
 {
 	int	i;
+	int fd;
 
 	i = -1;
 	while (++i < 4)
 	{
 		if (!info->texture_path[i][0])
 			return (0);
+		if (check_format(info->texture_path[i], ".xpm") == E_FORMAT)
+			return (0);
+		fd = open(info->texture_path[i], O_RDONLY);
+		if (fd == -1)
+			return (0);
+		close (fd);
 	}
 	i = -1;
 	while (++i < 3)

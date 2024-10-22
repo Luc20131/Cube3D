@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/17 17:59:01 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/22 14:47:17 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int		init_map(t_info *info, t_list *list);
 void	free_stats(t_stats **stats);
 void	show_map(char **map);
 
+int		check_format(char *map, char *find);
 int		check_valid_chr_map(char **map);
 int		check_map(t_info *info, t_list **head);
 void	error_msg(int error);
