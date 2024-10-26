@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/22 09:07:39 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/25 14:51:35 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 	index.y = 0;
 	size.x = MINIMAP_SIZE * TILE_SIZE;
 	size.y = MINIMAP_SIZE * TILE_SIZE;
-	origin.x = carac_pos.x - ((size.x + PLAYER_SIZE) / 2);
-	origin.y = carac_pos.y - ((size.y + PLAYER_SIZE) / 2);
+	origin.x = carac_pos.x - ((size.x + PLAYER_SIZE) >> 1);
+	origin.y = carac_pos.y - ((size.y + PLAYER_SIZE) >> 1);
 	printf("%d %d\n", carac_pos.x, carac_pos.y);
 	mini_map_img = new_img(vars, size.x, size.y);
 	while (index.y < size.y)

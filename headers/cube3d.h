@@ -6,13 +6,14 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/22 09:18:44 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/25 16:33:17 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE3D_H
 # define CUBE3D_H
 
+#include <X11/X.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -39,6 +40,12 @@ typedef struct s_posf
 	double	y;
 }	t_posf;
 
+typedef struct s_direction
+{
+	int	vertical;
+	int	horizontal;
+} t_direction;
+
 typedef struct s_vector
 {
 	t_posf		origin;
@@ -62,14 +69,15 @@ typedef struct s_data
 
 typedef struct s_mlx
 {
-	void	*mlx;
-	void	*win;
-	t_data	img;
-	int		distance;
-	t_data	map_img;
-	t_data	mini_map;
-	t_pos	offset;
-	char	**map;
+	void		*mlx;
+	void		*win;
+	t_data		img;
+	int			distance;
+	t_data		map_img;
+	t_data		mini_map;
+	t_pos		offset;
+	char		**map;
+	t_direction	movement;
 }	t_mlx;
 
 typedef struct s_tab_size

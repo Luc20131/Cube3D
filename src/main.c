@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/22 12:39:17 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/26 17:12:23 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,27 @@ void	map(t_mlx *vars);
 t_pos	get_carac_index(char **map);
 int	check_colision(t_pos index, t_mlx *vars, char direction);
 
+int	key_released(int keycode, t_mlx *vars)
+{
+	(void) keycode;
+	if (vars->movement.horizontal == 1)
+		vars->offset.x += PLAYER_SPEED;
+	else if (vars->movement.horizontal == -1)
+		vars->offset.x -= PLAYER_SPEED;
+	if (vars->movement.vertical == 1)
+		vars->offset.y += PLAYER_SPEED;
+	else if (vars->movement.vertical == -1)
+		vars->offset.y -= PLAYER_SPEED;
+	else
+	{
+		vars->movement.horizontal = 0;
+		vars->movement.vertical = 0;
+	}
+	usleep(1000000);
+	map(vars);
+	return (1);
+}
+
 int	key_hook( int keycode, t_mlx *vars)
 {
 	if (keycode == 65307)
@@ -41,36 +62,23 @@ int	key_hook( int keycode, t_mlx *vars)
 	}
 	else if (keycode == 'd')
 	{
-		if (!check_colision(get_carac_index(vars->map), vars, 'E'))
-			vars->offset.x += PLAYER_SPEED;
-		else
-			vars->offset.x = TILE_SIZE - PLAYER_SIZE;
-		map(vars);
+		vars->movement.vertical = 1;
 	}
 	else if (keycode == 'a')
 	{
-		if (!check_colision(get_carac_index(vars->map), vars, 'W'))
-			vars->offset.x -= PLAYER_SPEED;
-		else
-			vars->offset.x = 0;
-		map(vars);
+		vars->movement.vertical = -1;
+
 	}
 	else if (keycode == 'w')
 	{
-		if (!check_colision(get_carac_index(vars->map), vars, 'N'))
-			vars->offset.y -= PLAYER_SPEED;
-		else
-			vars->offset.y = 0;
-		map(vars);
+		vars->movement.vertical = 1;
 	}
 	else if (keycode == 's')
 	{
-		if (!check_colision(get_carac_index(vars->map), vars, 'S'))
-			vars->offset.y += PLAYER_SPEED;
-		else
-			vars->offset.y = TILE_SIZE - PLAYER_SIZE;
-		map(vars);
+		vars->movement.vertical = -1;
 	}
+	else
+		printf("press %d\n", keycode);
 	return (0);
 }
 
@@ -78,7 +86,7 @@ void	wall(t_data *img, float distance)
 {
 	t_pos	pos;
 
-	pos.y = SIZE_IMG / 2;
+	pos.y = SIZE_IMG >> 1;
 	pos.x = 0;
 	while (pos.x < SIZE_IMG)
 	{
@@ -158,7 +166,6 @@ void	map(t_mlx *vars)
 	map_gen(vars, vars->map);
 	init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
-
 }
 
 int	main(int argc, char **argv)
@@ -178,11 +185,14 @@ int	main(int argc, char **argv)
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Cube3D");
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
 	vars.map = ft_split(map_line, '\n');
+	vars.movement.horizontal = 0;
+	vars.movement.vertical = 0;
 	map(&vars);
 	// mlx_key_hook(vars.win, &key_hook, &vars);
-
-	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_hook, &vars);
+	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
+	mlx_do_key_autorepeatoff(vars.mlx);
+	mlx_loop_hook(vars.mlx, key_released, &vars);
 	mlx_loop(vars.mlx);
 }
 
