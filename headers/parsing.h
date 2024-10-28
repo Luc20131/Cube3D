@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/22 19:48:52 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/26 12:03:10 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ typedef struct s_info
 	int		floor[3];
 	int		texture_valid[4];
 	t_pos	player;
-	t_data	*img_texture[4];
+	t_data	img_texture[4];
+	t_mlx	win;
 	char	**map;
 
 }	t_info;
@@ -75,6 +76,7 @@ int		choose_dir(t_stats **stats, char **map, t_pos pos);
 int		init_map(t_info *info, t_list *list);
 void	free_stats(t_stats **stats);
 void	show_map(char **map);
+int		init_img_texture(t_info *info);
 
 int		check_format(char *map, char *find);
 int		check_valid_chr_map(char **map);

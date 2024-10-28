@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/16 19:20:44 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/26 12:01:33 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@
 #include <math.h>
 #include "../headers/parsing.h"
 
-#define SIZE_IMG 1024
-#define SKY_COLOR 0xFF5EACFF
-#define GROUND_COLOR 0xFF5E3B10
-#define FOV 60
+
 
 int	key_hook(int keycode, t_mlx *vars)
 {

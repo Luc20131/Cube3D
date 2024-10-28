@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/24 16:48:05 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/26 12:01:49 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 #include "../minilibx-linux/mlx.h"
 #include "../libft/libft.h"
 
+#define SIZE_IMG 1024
+#define SKY_COLOR 0xFF5EACFF
+#define GROUND_COLOR 0xFF5E3B10
+#define FOV 60
 
 typedef struct s_pos
 {

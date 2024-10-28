@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/22 17:53:13 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/26 11:51:24 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	parsing_cube(char *arg)
 		return (error_msg(E_WRONG_COLOR), free(info), 0);
 	else if (result == E_CANT_OPEN)
 		return (error_msg(E_CANT_OPEN), free(info), 0);
+	if (init_img_texture(info) == E_MALLOC)
+		return (free(info), 0);
 	return (SUCCESS);
 }
 	// int		i;
