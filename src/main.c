@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
 /*   Updated: 2024/10/22 12:39:17 by lrichaud         ###   ########lyon.fr   */
@@ -21,10 +21,6 @@
 #include "../headers/parsing.h"
 #include "../minilibx-linux/mlx_int.h"
 #include "../minilibx-linux/mlx.h"
-#define SIZE_IMG 1024
-#define SKY_COLOR 0xFF5EACFF
-#define GROUND_COLOR 0xFF5E3B10
-#define FOV 90
 
 void	map(t_mlx *vars);
 t_pos	get_carac_index(char **map);
@@ -167,9 +163,16 @@ int	main(int argc, char **argv)
 
 
 	if (argc != 2)
-		return (0);
+		return (1);
 	else
-		parse_key(argv[1]);
+	{
+		if (parsing_cube(argv[1]) == 0)
+			return (1);
+		else
+			ft_printf("PARSING ✅\n");
+	}
+	exit(EXIT_SUCCESS);
+	char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
 	t_mlx	vars;
 
 	vars.offset.x = 0;
