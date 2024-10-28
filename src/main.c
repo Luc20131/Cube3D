@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/26 12:01:33 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/22 12:39:17 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,18 @@
 #include <X11/X.h>
 #include <X11/keysym.h>
 #include <math.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "../headers/parsing.h"
+#include "../minilibx-linux/mlx_int.h"
+#include "../minilibx-linux/mlx.h"
 
+void	map(t_mlx *vars);
+t_pos	get_carac_index(char **map);
+int	check_colision(t_pos index, t_mlx *vars, char direction);
 
-
-int	key_hook(int keycode, t_mlx *vars)
+int	key_hook( int keycode, t_mlx *vars)
 {
-	int		size;
-	char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
-
 	if (keycode == 65307)
 	{
 		mlx_destroy_window(vars->mlx, vars->win);
@@ -32,38 +35,45 @@ int	key_hook(int keycode, t_mlx *vars)
 		free(vars->mlx);
 		exit(1);
 	}
-	else if (keycode == 'o')
+	else if (keycode == 'd')
 	{
-		if (vars->distance < SIZE_IMG - 10)
-			vars->distance += 10;
-		printf("Distance = %d\n", vars->distance);
-		wall(vars);
-		return (0);
+		if (!check_colision(get_carac_index(vars->map), vars, 'E'))
+			vars->offset.x += PLAYER_SPEED;
+		else
+			vars->offset.x = TILE_SIZE - PLAYER_SIZE;
+		map(vars);
 	}
-	else if (keycode == 'l')
+	else if (keycode == 'a')
 	{
-		if (vars->distance > 11)
-			vars->distance -= 10;
-		printf("Distance = %d\n", vars->distance);
-		wall(vars);
-		return (0);
+		if (!check_colision(get_carac_index(vars->map), vars, 'W'))
+			vars->offset.x -= PLAYER_SPEED;
+		else
+			vars->offset.x = 0;
+		map(vars);
 	}
-	else if (keycode == 'c')
+	else if (keycode == 'w')
 	{
-		size = vars->distance;
-		printf("size : %d", size);
-		map_gen(vars, map);
-		mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+		if (!check_colision(get_carac_index(vars->map), vars, 'N'))
+			vars->offset.y -= PLAYER_SPEED;
+		else
+			vars->offset.y = 0;
+		map(vars);
+	}
+	else if (keycode == 's')
+	{
+		if (!check_colision(get_carac_index(vars->map), vars, 'S'))
+			vars->offset.y += PLAYER_SPEED;
+		else
+			vars->offset.y = TILE_SIZE - PLAYER_SIZE;
+		map(vars);
 	}
 	return (0);
 }
 
-void	wall(t_mlx *vars)
+void	wall(t_data *img, float distance)
 {
 	t_pos	pos;
-	int		distance;
 
-	distance = vars->distance;
 	pos.y = SIZE_IMG / 2;
 	pos.x = 0;
 	while (pos.x < SIZE_IMG)
@@ -72,14 +82,86 @@ void	wall(t_mlx *vars)
 			distance--;
 		else
 			distance++;
-		draw_line_from_mid(&vars->img, pos, distance);
+		draw_line_from_mid(img, pos, distance);
 		pos.x++;
 	}
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+}
+
+t_pos	get_carac_index(char **map)
+{
+	t_pos	index;
+
+	index.x = 0;
+	index.y = 0;
+	while (map[index.y])
+	{
+		index.x = 0;
+		while (map[index.y][index.x])
+		{
+			if (map[index.y][index.x] == 'N')
+			{
+				index.x = index.x;
+				index.y = index.y;
+				return (index);
+			}
+			index.x++;
+		}
+		index.y++;
+	}
+	return (index);
+}
+
+t_pos	get_carac_pos(char **map, t_pos *offset)
+{
+	t_pos	index;
+
+	index.x = 0;
+	index.y = 0;
+	while (map[index.y])
+	{
+		index.x = 0;
+		while (map[index.y][index.x])
+		{
+			if (map[index.y][index.x] == 'N')
+			{
+				carac_pos_update(offset, &index, map);
+				index.x = index.x * TILE_SIZE + offset->x;
+				index.y = index.y * TILE_SIZE + offset->y;
+				return (index);
+			}
+			index.x++;
+		}
+		index.y++;
+	}
+	return (index);
+}
+
+int	check_colision(t_pos index, t_mlx *vars, char direction)
+{
+	if (direction == 'N')
+		return (vars->map[index.y - 1][index.x] == '1' && vars->offset.y - PLAYER_SPEED < 0);
+	if (direction == 'S')
+		return (vars->map[index.y + 1][index.x] == '1' && vars->offset.y + PLAYER_SPEED > TILE_SIZE - (PLAYER_SIZE));
+	if (direction == 'E')
+		return (vars->map[index.y][index.x + 1] == '1' && vars->offset.x + PLAYER_SPEED > TILE_SIZE - (PLAYER_SIZE));
+	if (direction == 'W')
+		return (vars->map[index.y][index.x - 1] == '1' && vars->offset.x - PLAYER_SPEED < 0);
+	return (0);
+}
+
+void	map(t_mlx *vars)
+{
+	map_gen(vars, vars->map);
+	init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
+
 }
 
 int	main(int argc, char **argv)
 {
+	char	*map_line = "1111111111111111111111111\n1111111111111111111111111\n1111111111111111111111111\n1111111111111111111111111\n1100001111000011110000111\n1111001111110011111100111\n110000011100N001110000011\n1100000111000001110000011\n1101101111011011110110111\n1111111111111111111111111\n\0";
+
+
 	if (argc != 2)
 		return (1);
 	else
@@ -93,15 +175,18 @@ int	main(int argc, char **argv)
 	char	*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
 	t_mlx	vars;
 
+	vars.offset.x = 0;
+	vars.offset.y = 0;
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, SIZE_IMG, SIZE_IMG, "Cube3D");
-	vars.img = new_img(&vars, SIZE_IMG);
-	// draw_horizon(&vars.img);
-	vars.distance = 300;
-	wall(&vars);
+	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Cube3D");
+	vars.img = new_img(&vars, WIDTH, HEIGHT);
+	vars.map = ft_split(map_line, '\n');
+	map(&vars);
+	// mlx_key_hook(vars.win, &key_hook, &vars);
+
+	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_loop(vars.mlx);
-	print_map(map);
 }
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
@@ -110,21 +195,6 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *) dst = color;
-}
-
-t_data	new_img(t_mlx *vars, int size)
-{
-	t_data	frame;
-
-	frame.img = mlx_new_image(vars->mlx, size, size);
-	if (!frame.img)
-	{
-		frame.addr = NULL;
-		return (frame);
-	}
-	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, \
-		&frame.line_length, &frame.endian);
-	return (frame);
 }
 
 t_tab_size	char_tab_len(char **tab)
@@ -153,7 +223,6 @@ void	print_map(char **map)
 	i = 0;
 	while (map[i][y])
 	{
-
 		while (map[i][y])
 		{
 			write(1, &map[i][y], 1);
@@ -221,7 +290,7 @@ void	draw_line_from_mid(t_data *img, t_pos origin, int distance)
 	t_pos	current;
 	int		size;
 
-	size = distance / 4;
+	size = sqrt(distance);
 	current.x = origin.x;
 	current.y = origin.y;
 	while (current.y < origin.y + size)
@@ -230,7 +299,7 @@ void	draw_line_from_mid(t_data *img, t_pos origin, int distance)
 		my_mlx_pixel_put(img, current.x, current.y, create_trgb(255, 255, 255, 255));
 		current.y++;
 	}
-	while (current.y < SIZE_IMG)
+	while (current.y < HEIGHT)
 	{
 		my_mlx_pixel_put(img, current.x, origin.y + (origin.y - current.y), SKY_COLOR);
 		my_mlx_pixel_put(img, current.x, current.y, GROUND_COLOR);
