@@ -2,7 +2,7 @@ NO ./1bd.xpm
 WE ./1bd.xpm
 F 220,100,0 
 SO ./1bd.xpm
-EA                         ./path_to_the_east_texture.xpm                         
+EA                         ./1bd.xpm                         
 C 0  ,10,  0                                                        
 
 

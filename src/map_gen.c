@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_gen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/22 09:07:39 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/29 18:33:45 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,19 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 		{
 			if (index.y == 0 || index.y == size.y - 1)
 				pixel = 0xFF3F3F3F;
-			else
+			else if (origin.x + index.x < 0 || origin.y + index.y < 0)
+				pixel = 0x00000000;
+			else 
 				pixel = get_pixel_img(&vars->map_img, origin.x + index.x, origin.y + index.y);
 			my_mlx_pixel_put(&mini_map_img, index.x, index.y, pixel);
+			
 			index.x++;
 		}
 		my_mlx_pixel_put(&mini_map_img, 0, index.y, 0xFF3F3F3F);
 		my_mlx_pixel_put(&mini_map_img, index.x - 1, index.y, 0xFF3F3F3F);
 		index.y++;
 	}
+	draw_square(&mini_map_img, (t_pos){(size.x + PLAYER_SIZE) / 2, (size.y + PLAYER_SIZE) / 2}, PLAYER_SIZE, 0xFF0FFF0F);
 	vars->mini_map = mini_map_img;
 	return (1);
 }
@@ -158,7 +162,7 @@ int	map_gen(t_mlx *vars, char **map_tab)
 	t_pos	index;
 	t_pos	tiles_coords;
 	t_pos	map_size;
-	t_pos	pos_carac;
+	// t_pos	pos_carac;
 
 	index.x = 0;
 	index.y = 0;
@@ -176,9 +180,9 @@ int	map_gen(t_mlx *vars, char **map_tab)
 			else if (map_tab[index.y][index.x] == 'N')
 			{
 				draw_square(&vars->map_img, tiles_coords, TILE_SIZE, 25);
-				pos_carac.x = tiles_coords.x + vars->offset.x;
-				pos_carac.y = tiles_coords.y + vars->offset.y;
-				draw_square(&vars->map_img, pos_carac, PLAYER_SIZE, 0xFF0FFF0F);
+				// pos_carac.x = tiles_coords.x + vars->offset.x;
+				// pos_carac.y = tiles_coords.y + vars->offset.y;
+				// draw_square(&vars->map_img, pos_carac, PLAYER_SIZE, 0xFF0FFF0F);
 			}
 			else
 				draw_square(&vars->map_img, tiles_coords, TILE_SIZE, 25);
@@ -186,6 +190,6 @@ int	map_gen(t_mlx *vars, char **map_tab)
 		}
 		index.y++;
 	}
-	draw_square(&vars->map_img, pos_carac, PLAYER_SIZE, 0xFF0FFF0F);
+	// draw_square(&vars->map_img, pos_carac, PLAYER_SIZE, 0xFF0FFF0F);
 	return (0);
 }

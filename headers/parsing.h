@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/26 12:03:10 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/29 14:47:26 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int		init_map(t_info *info, t_list *list);
 void	free_stats(t_stats **stats);
 void	show_map(char **map);
 int		init_img_texture(t_info *info);
+t_info	*init_info(void);
 
 int		check_format(char *map, char *find);
 int		check_valid_chr_map(char **map);
@@ -93,5 +94,5 @@ int		get_key_value(char *key_v, t_key key, t_info *info);
 int		key_finder(char *line);
 int		skip_key_word(char *key_v);
 int		get_color(char *key_v, t_key key, t_info *info);
-int		parsing_cube(char *arg);
+int		parsing_cube(char *arg, t_info **info);
 #endif

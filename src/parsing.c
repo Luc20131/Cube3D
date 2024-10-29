@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/26 11:51:24 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/29 14:51:11 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,32 +70,32 @@ int	check_format(char *map, char *find)
 		return (E_FORMAT);
 }
 
-int	parsing_cube(char *arg)
+int	parsing_cube(char *arg, t_info **info)
 {
-	t_info	*info;
+	// t_info	*info;
 	int		result;
 
-	info = init_info();
-	if (!info)
-		return (error_msg(E_MALLOC), 0);
+	// info = init_info();
+	// if (!info)
+	// 	return (error_msg(E_MALLOC), 0);
 	if (check_format(arg, ".cub") == E_FORMAT)
 		return (error_msg(E_FORMAT), 0);
-	result = get_arg(arg, info);
+	result = get_arg(arg, *info);
 	if (result == E_NO_MORE_KEY)
 	{
-		if (!valid_key(info))
-			return (error_msg(E_WRONG_KEY), free(info), 0);
+		if (!valid_key(*info))
+			return (error_msg(E_WRONG_KEY), free(*info), 0);
 		else
-			if (get_map(info) != SUCCESS)
+			if (get_map(*info) != SUCCESS)
 				return (error_msg(E_INVALID_MAP), \
-				freetab(info->map), free(info), 0);
+				freetab((*info)->map), free(*info), 0);
 	}
 	else if (result == E_WRONG_COLOR)
-		return (error_msg(E_WRONG_COLOR), free(info), 0);
+		return (error_msg(E_WRONG_COLOR), free(*info), 0);
 	else if (result == E_CANT_OPEN)
-		return (error_msg(E_CANT_OPEN), free(info), 0);
-	if (init_img_texture(info) == E_MALLOC)
-		return (free(info), 0);
+		return (error_msg(E_CANT_OPEN), free(*info), 0);
+	if (init_img_texture(*info) == E_MALLOC)
+		return (free(*info), 0);
 	return (SUCCESS);
 }
 	// int		i;
