@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/25 16:33:17 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/30 16:11:02 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define CUBE3D_H
 
 #include <X11/X.h>
+#include <bits/types/struct_timeval.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -24,7 +26,7 @@
 #define HEIGHT 1024
 #define WIDTH 1024
 #define TILE_SIZE 64
-#define PLAYER_SPEED 6
+#define PLAYER_SPEED 4
 #define PLAYER_SIZE 8
 #define MINIMAP_SIZE 5
 
@@ -42,8 +44,10 @@ typedef struct s_posf
 
 typedef struct s_direction
 {
-	int	vertical;
-	int	horizontal;
+	int	up;
+	int	down;
+	int	right;
+	int	left;
 } t_direction;
 
 typedef struct s_vector
@@ -78,6 +82,8 @@ typedef struct s_mlx
 	t_pos		offset;
 	char		**map;
 	t_direction	movement;
+	size_t		fps;
+	struct timeval time;
 }	t_mlx;
 
 typedef struct s_tab_size

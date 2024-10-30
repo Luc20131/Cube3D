@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/25 14:51:35 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/28 19:52:17 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 	size.y = MINIMAP_SIZE * TILE_SIZE;
 	origin.x = carac_pos.x - ((size.x + PLAYER_SIZE) >> 1);
 	origin.y = carac_pos.y - ((size.y + PLAYER_SIZE) >> 1);
-	printf("%d %d\n", carac_pos.x, carac_pos.y);
 	mini_map_img = new_img(vars, size.x, size.y);
 	while (index.y < size.y)
 	{
@@ -64,6 +63,7 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 		my_mlx_pixel_put(&mini_map_img, index.x - 1, index.y, 0xFF3F3F3F);
 		index.y++;
 	}
+	mlx_destroy_image(vars->mlx, 	vars->map_img.img);
 	vars->mini_map = mini_map_img;
 	return (1);
 }
