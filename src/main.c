@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/29 17:37:45 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/30 16:57:40 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 #define SIZE_IMG 1024
 #define SKY_COLOR 0xFF5EACFF
 #define GROUND_COLOR 0xFF5E3B10
-#define FOV 90
 
 void	map(t_mlx *vars);
 t_pos	get_carac_index(char **map);
@@ -194,7 +193,7 @@ void	map(t_mlx *vars)
 	static int map_is_create = 0;
 	static t_pos old_pos;
 
-	
+
 	if (map_is_create == 0)
 	{
 		map_is_create = 1;
@@ -210,7 +209,7 @@ void	map(t_mlx *vars)
 		old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
-		mlx_destroy_image(vars->mlx, vars->mini_map.img);	
+		mlx_destroy_image(vars->mlx, vars->mini_map.img);
 	}
   vars->fps++;
 }

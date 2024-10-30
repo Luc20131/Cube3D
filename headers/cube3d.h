@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/30 16:11:02 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/30 16:57:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #define SIZE_IMG 1024
 #define SKY_COLOR 0xFF5EACFF
 #define GROUND_COLOR 0xFF5E3B10
-#define FOV 60
+#define FOV 90
 #define HEIGHT 1024
 #define WIDTH 1024
 #define TILE_SIZE 64

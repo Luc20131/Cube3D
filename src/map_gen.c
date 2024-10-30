@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_gen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/28 19:52:17 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/30 17:03:05 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,16 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 				pixel = 0xFF3F3F3F;
 			else if (origin.x + index.x < 0 || origin.y + index.y < 0)
 				pixel = 0x00000000;
-			else 
+			else
 				pixel = get_pixel_img(&vars->map_img, origin.x + index.x, origin.y + index.y);
 			my_mlx_pixel_put(&mini_map_img, index.x, index.y, pixel);
-			
+
 			index.x++;
 		}
 		my_mlx_pixel_put(&mini_map_img, 0, index.y, 0xFF3F3F3F);
 		my_mlx_pixel_put(&mini_map_img, index.x - 1, index.y, 0xFF3F3F3F);
 		index.y++;
 	}
-	mlx_destroy_image(vars->mlx, 	vars->map_img.img);
 	draw_square(&mini_map_img, (t_pos){(size.x + PLAYER_SIZE) / 2, (size.y + PLAYER_SIZE) / 2}, PLAYER_SIZE, 0xFF0FFF0F);
 	vars->mini_map = mini_map_img;
 	return (1);
