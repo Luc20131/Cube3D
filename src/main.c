@@ -10,26 +10,78 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <bits/types/struct_timeval.h>
 #include <stdio.h>
 
 #include "../headers/cube3d.h"
 #include <X11/X.h>
 #include <X11/keysym.h>
 #include <math.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include "../headers/parsing.h"
 #include "../minilibx-linux/mlx_int.h"
 #include "../minilibx-linux/mlx.h"
+#include <sys/time.h>
+#define SIZE_IMG 1024
+#define SKY_COLOR 0xFF5EACFF
+#define GROUND_COLOR 0xFF5E3B10
+#define FOV 90
 
 void	map(t_mlx *vars);
 t_pos	get_carac_index(char **map);
-int	check_colision(t_pos index, t_mlx *vars, char direction);
+int		check_colision(t_pos index, t_mlx *vars, char direction);
+
+// int	fps_counter()
+// {
+// 	static int	frame_count;
+// 	struct timeval time;
+
+// 	gettimeofday(&time, NULL);
+// }
+
+int	key_released(int keycode, t_mlx *vars)
+{
+	if (keycode == 'a')
+		vars->movement.left = 0;
+	else if (keycode == 'd')
+		vars->movement.right = 0;
+	else if (keycode == 'w')
+		vars->movement.up = 0;
+	else if (keycode == 's')
+		vars->movement.down = 0;
+	return (0);
+}
+
+int	tick(t_mlx *vars)
+{
+	if (vars->movement.right && !check_colision(get_carac_index(vars->map), vars, 'E'))
+		vars->offset.x += PLAYER_SPEED * (vars->movement.right + vars->movement.left);
+	else if (vars->movement.left && !check_colision(get_carac_index(vars->map), vars, 'W'))
+		vars->offset.x += PLAYER_SPEED * (vars->movement.right + vars->movement.left);
+	if ( vars->movement.up && !check_colision(get_carac_index(vars->map), vars, 'N'))
+		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
+	else if (vars->movement.down && !check_colision(get_carac_index(vars->map), vars, 'S'))
+		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
+	map(vars);
+	return (1);
+}
 
 int	key_hook( int keycode, t_mlx *vars)
 {
+	int	i;
+	struct timeval timer;
+
+	i = 0;
 	if (keycode == 65307)
 	{
+		gettimeofday(&timer, NULL);
+		while (vars->map[i])
+			free(vars->map[i++]);
+		free(vars->map);
+		printf("fps : %lu", vars->fps / (timer.tv_sec - vars->time.tv_sec));
+		mlx_destroy_image(vars->mlx, vars->img.img);
 		mlx_destroy_window(vars->mlx, vars->win);
 		mlx_destroy_display(vars->mlx);
 		free(vars->mlx);
@@ -37,35 +89,23 @@ int	key_hook( int keycode, t_mlx *vars)
 	}
 	else if (keycode == 'd')
 	{
-		if (!check_colision(get_carac_index(vars->map), vars, 'E'))
-			vars->offset.x += PLAYER_SPEED;
-		else
-			vars->offset.x = TILE_SIZE - PLAYER_SIZE;
-		map(vars);
+		vars->movement.right = 1;
 	}
 	else if (keycode == 'a')
 	{
-		if (!check_colision(get_carac_index(vars->map), vars, 'W'))
-			vars->offset.x -= PLAYER_SPEED;
-		else
-			vars->offset.x = 0;
-		map(vars);
-	}
-	else if (keycode == 'w')
-	{
-		if (!check_colision(get_carac_index(vars->map), vars, 'N'))
-			vars->offset.y -= PLAYER_SPEED;
-		else
-			vars->offset.y = 0;
-		map(vars);
+		vars->movement.left = -1;
 	}
 	else if (keycode == 's')
 	{
-		if (!check_colision(get_carac_index(vars->map), vars, 'S'))
-			vars->offset.y += PLAYER_SPEED;
-		else
-			vars->offset.y = TILE_SIZE - PLAYER_SIZE;
-		map(vars);
+		vars->movement.down = 1;
+	}
+	else if (keycode == 'w')
+	{
+		vars->movement.up = -1;
+	}
+	else if (keycode == 37)
+	{
+		printf("%d\n",keycode);
 	}
 	return (0);
 }
@@ -74,7 +114,7 @@ void	wall(t_data *img, float distance)
 {
 	t_pos	pos;
 
-	pos.y = SIZE_IMG / 2;
+	pos.y = SIZE_IMG >> 1;
 	pos.x = 0;
 	while (pos.x < SIZE_IMG)
 	{
@@ -172,7 +212,7 @@ void	map(t_mlx *vars)
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
 		mlx_destroy_image(vars->mlx, vars->mini_map.img);	
 	}
-
+  vars->fps++;
 }
 
 int	main(int argc, char **argv)
@@ -196,17 +236,24 @@ int	main(int argc, char **argv)
 	//*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
 	t_mlx	vars;
 
+	vars.fps = 0;
 	vars.offset.x = 0;
 	vars.offset.y = 0;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Cube3D");
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
+	vars.movement.up = 0;
+	vars.movement.down = 0;
+	vars.movement.left = 0;
+	vars.movement.right = 0;
+	gettimeofday(&vars.time, NULL);
 	vars.map = info->map; //ft_split(map_line, '\n');
 	map(&vars);
 	// mlx_key_hook(vars.win, &key_hook, &vars);
-
-	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
+	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
+	mlx_do_key_autorepeatoff(vars.mlx);
+	mlx_loop_hook(vars.mlx, tick, &vars);
 	mlx_loop(vars.mlx);
 }
 
