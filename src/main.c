@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/30 16:57:40 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/31 16:47:20 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 
 void	map(t_mlx *vars);
 t_pos	get_carac_index(char **map);
+t_pos	get_carac_pos(char **map, t_pos *offset);
 int		check_colision(t_pos index, t_mlx *vars, char direction);
 
 // int	fps_counter()
@@ -39,6 +40,11 @@ int		check_colision(t_pos index, t_mlx *vars, char direction);
 
 // 	gettimeofday(&time, NULL);
 // }
+
+int	is_carac(char c)
+{
+	return (c == 'N' || c == 'E' || c == 'S' || c == 'W');
+}
 
 int	key_released(int keycode, t_mlx *vars)
 {
@@ -55,15 +61,18 @@ int	key_released(int keycode, t_mlx *vars)
 
 int	tick(t_mlx *vars)
 {
-	if (vars->movement.right && !check_colision(get_carac_index(vars->map), vars, 'E'))
+	vars->carac_index = get_carac_index(vars->map);
+	vars->carac_pos = get_carac_pos(vars->map, &vars->offset);
+	if (vars->movement.right && !check_colision(vars->carac_index, vars, 'E'))
 		vars->offset.x += PLAYER_SPEED * (vars->movement.right + vars->movement.left);
-	else if (vars->movement.left && !check_colision(get_carac_index(vars->map), vars, 'W'))
+	else if (vars->movement.left && !check_colision(vars->carac_index, vars, 'W'))
 		vars->offset.x += PLAYER_SPEED * (vars->movement.right + vars->movement.left);
-	if ( vars->movement.up && !check_colision(get_carac_index(vars->map), vars, 'N'))
+	if ( vars->movement.up && !check_colision(vars->carac_index, vars, 'N'))
 		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
-	else if (vars->movement.down && !check_colision(get_carac_index(vars->map), vars, 'S'))
+	else if (vars->movement.down && !check_colision(vars->carac_index, vars, 'S'))
 		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
 	map(vars);
+	usleep(1000000/120);
 	return (1);
 }
 
@@ -102,10 +111,6 @@ int	key_hook( int keycode, t_mlx *vars)
 	{
 		vars->movement.up = -1;
 	}
-	else if (keycode == 37)
-	{
-		printf("%d\n",keycode);
-	}
 	return (0);
 }
 
@@ -137,7 +142,7 @@ t_pos	get_carac_index(char **map)
 		index.x = 0;
 		while (map[index.y][index.x])
 		{
-			if (map[index.y][index.x] == 'N')
+			if (is_carac(map[index.y][index.x]))
 			{
 				index.x = index.x;
 				index.y = index.y;
@@ -161,7 +166,7 @@ t_pos	get_carac_pos(char **map, t_pos *offset)
 		index.x = 0;
 		while (map[index.y][index.x])
 		{
-			if (map[index.y][index.x] == 'N')
+			if (is_carac(map[index.y][index.x]))
 			{
 				carac_pos_update(offset, &index, map);
 				index.x = index.x * TILE_SIZE + offset->x;
@@ -197,9 +202,9 @@ void	map(t_mlx *vars)
 	if (map_is_create == 0)
 	{
 		map_is_create = 1;
-		old_pos = get_carac_pos(vars->map, &vars->offset);
+		old_pos = vars->carac_pos;
 		map_gen(vars, vars->map);
-		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
+		init_mini_map(vars, vars->carac_pos);
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
 		mlx_destroy_image(vars->mlx, vars->mini_map.img);
 	}
@@ -207,7 +212,7 @@ void	map(t_mlx *vars)
 	{
 		old_pos.x = vars->offset.x;
 		old_pos.y = vars->offset.y;
-		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
+		init_mini_map(vars, vars->carac_pos);
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
 		mlx_destroy_image(vars->mlx, vars->mini_map.img);
 	}
@@ -216,8 +221,8 @@ void	map(t_mlx *vars)
 
 int	main(int argc, char **argv)
 {
-	// char	*map_line = "1111111111111111111111111\n1111111111111111111111111\n1111111111111111111111111\n1111111111111111111111111\n1100001111000011110000111\n1111001111110011111100111\n110000011100N001110000011\n1100000111000001110000011\n1101101111011011110110111\n1111111111111111111111111\n\0";
 	t_info	*info;
+	t_mlx	vars;
 
 	info = init_info();
 	if (!info)
@@ -231,13 +236,9 @@ int	main(int argc, char **argv)
 		else
 			ft_printf("PARSING ✅\n");
 	}
-	// exit(EXIT_SUCCESS);
-	//*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
-	t_mlx	vars;
-
 	vars.fps = 0;
-	vars.offset.x = 0;
-	vars.offset.y = 0;
+	vars.offset.x = (TILE_SIZE >> 1) - (PLAYER_SIZE >> 1);
+	vars.offset.y = TILE_SIZE >> 1;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Cube3D");
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
@@ -246,9 +247,10 @@ int	main(int argc, char **argv)
 	vars.movement.left = 0;
 	vars.movement.right = 0;
 	gettimeofday(&vars.time, NULL);
-	vars.map = info->map; //ft_split(map_line, '\n');
+	vars.map = info->map;
+	vars.carac_index = get_carac_index(vars.map);
+	vars.carac_pos = get_carac_pos(vars.map, &vars.offset);
 	map(&vars);
-	// mlx_key_hook(vars.win, &key_hook, &vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
 	mlx_do_key_autorepeatoff(vars.mlx);
@@ -326,7 +328,6 @@ void	my_draw_line(t_pos origin, t_pos end, t_data *img)
 		my_mlx_pixel_put(img, current.x, current.y, create_trgb(255, 255, 255, 255));
 		current.x++;
 	}
-
 }
 
 void	draw_horizon(t_data *img)

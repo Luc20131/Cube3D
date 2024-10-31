@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/30 16:57:48 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/31 15:49:59 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,19 @@ typedef struct s_data
 
 typedef struct s_mlx
 {
-	void		*mlx;
-	void		*win;
-	t_data		img;
-	int			distance;
-	t_data		map_img;
-	t_data		mini_map;
-	t_pos		offset;
-	char		**map;
-	t_direction	movement;
-	size_t		fps;
-	struct timeval time;
+	void			*mlx;
+	void			*win;
+	t_data			img;
+	int				distance;
+	t_data			map_img;
+	t_data			mini_map;
+	t_pos			offset;
+	char			**map;
+	t_direction		movement;
+	size_t			fps;
+	struct timeval	time;
+	t_pos			carac_index;
+	t_pos			carac_pos;
 }	t_mlx;
 
 typedef struct s_tab_size
@@ -114,5 +116,5 @@ int	raycast_one_vector(char **map);
 int	ray_dist(t_mlx *vars);
 t_data	resize_img(t_mlx *vars, t_data *img, unsigned int width, unsigned int height);
 int	init_mini_map(t_mlx *vars,t_pos	carac_pos);
-
+int	is_carac(char c);
 #endif

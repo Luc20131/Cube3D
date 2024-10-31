@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/30 17:03:05 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/31 15:43:55 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,6 @@ int	map_gen(t_mlx *vars, char **map_tab)
 	t_pos	index;
 	t_pos	tiles_coords;
 	t_pos	map_size;
-	// t_pos	pos_carac;
 
 	index.x = 0;
 	index.y = 0;
@@ -177,18 +176,12 @@ int	map_gen(t_mlx *vars, char **map_tab)
 			if (map_tab[index.y][index.x] == '1')
 				draw_square(&vars->map_img, tiles_coords, TILE_SIZE, 255);
 			else if (map_tab[index.y][index.x] == 'N')
-			{
 				draw_square(&vars->map_img, tiles_coords, TILE_SIZE, 25);
-				// pos_carac.x = tiles_coords.x + vars->offset.x;
-				// pos_carac.y = tiles_coords.y + vars->offset.y;
-				// draw_square(&vars->map_img, pos_carac, PLAYER_SIZE, 0xFF0FFF0F);
-			}
 			else
 				draw_square(&vars->map_img, tiles_coords, TILE_SIZE, 25);
 			index.x++;
 		}
 		index.y++;
 	}
-	// draw_square(&vars->map_img, pos_carac, PLAYER_SIZE, 0xFF0FFF0F);
 	return (0);
 }
