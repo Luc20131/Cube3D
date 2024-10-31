@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/30 16:57:48 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/31 01:26:15 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@
 #define FOV 90
 #define HEIGHT 1024
 #define WIDTH 1024
-#define TILE_SIZE 64
-#define PLAYER_SPEED 4
+#define TILE_SIZE 32
+#define PLAYER_SPEED 1
 #define PLAYER_SIZE 8
-#define MINIMAP_SIZE 5
+#define MINIMAP_SIZE 10
 
 typedef struct s_pos
 {
@@ -64,6 +64,20 @@ typedef struct s_vector
 	double		angle;
 }	t_vector;
 
+typedef struct s_tile
+{
+	int		dir;
+	t_pos	pos;
+}				t_tile;
+
+typedef struct s_sprite_slice
+{
+	int	x;
+	int	y;
+	int	width;
+	int	height;
+}			t_sprite_slice;
+
 typedef struct s_data
 {
 	void	*img;
@@ -83,6 +97,9 @@ typedef struct s_mlx
 	int			distance;
 	t_data		map_img;
 	t_data		mini_map;
+	t_data		tilemap;
+	t_tile		tile[49];
+	int			*stats_tile;
 	t_pos		offset;
 	char		**map;
 	t_direction	movement;
@@ -114,5 +131,16 @@ int	raycast_one_vector(char **map);
 int	ray_dist(t_mlx *vars);
 t_data	resize_img(t_mlx *vars, t_data *img, unsigned int width, unsigned int height);
 int	init_mini_map(t_mlx *vars,t_pos	carac_pos);
+t_pos	size_map(char **map);
+
+void	autotile_generator(char **map, t_mlx *g);
+void	start_tiles_init(t_mlx *g);
+t_data	new_file_img(char *path, t_mlx *window);
+void	draw_map(t_mlx *game);
+int	*fill_dir_v(int *c, char **map, t_pos pos, t_pos fill);
+int	*fill_dir_h(int *c, char **map, t_pos pos, t_pos fill);
+int	*l_corner_dir(int *c, t_pos pos, t_mlx g, char **map);
+int	*face_corner_v(int *c, t_pos pos, t_mlx g, char **map);
+int	*face_corner_h(int *c, t_pos pos, t_mlx g, char **map);
 
 #endif

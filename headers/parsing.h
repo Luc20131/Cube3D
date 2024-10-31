@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/29 14:47:26 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/30 22:49:42 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int		choose_dir(t_stats **stats, char **map, t_pos pos);
 int		init_map(t_info *info, t_list *list);
 void	free_stats(t_stats **stats);
 void	show_map(char **map);
-int		init_img_texture(t_info *info);
+int		init_data_texture(t_info *info);
 t_info	*init_info(void);
 
 int		check_format(char *map, char *find);

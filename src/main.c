@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/30 16:57:40 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/30 23:02:03 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ void	map(t_mlx *vars)
 	{
 		map_is_create = 1;
 		old_pos = get_carac_pos(vars->map, &vars->offset);
-		map_gen(vars, vars->map);
+		draw_map(vars);
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
 		mlx_destroy_image(vars->mlx, vars->mini_map.img);

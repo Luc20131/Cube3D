@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_gen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/30 17:03:05 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/10/31 02:13:03 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,39 +156,125 @@ void	carac_pos_update(t_pos *offset, t_pos *carac_pos, char **map)
 	}
 }
 
-int	map_gen(t_mlx *vars, char **map_tab)
+t_data	new_file_img(char *path, t_mlx *window)
 {
-	t_pos	index;
-	t_pos	tiles_coords;
-	t_pos	map_size;
-	// t_pos	pos_carac;
+	t_data	image;
 
-	index.x = 0;
-	index.y = 0;
-	map_size = size_map(map_tab);
-	vars->map_img = new_img(vars, map_size.x * TILE_SIZE, map_size.y * TILE_SIZE);
-	while (index.y < map_size.y)
+	image.img = mlx_xpm_file_to_image(window->mlx, path, &image.w, &image.h);
+	if (!image.img)
+		write(2, "Error\nFile could not be read\n", 29);
+	else
+		image.addr = mlx_get_data_addr(image.img, &(image.bits_per_pixel), \
+			&(image.line_length), &(image.endian));
+	return (image);
+}
+
+void	pixel_img(t_data img, int x, int y, int color)
+{
+	char	*dst;
+
+	if (x >= 0 && y >= 0 && x < img.w && y < img.h)
 	{
-		index.x = 0;
-		tiles_coords.y = index.y * TILE_SIZE;
-		while (index.x < map_size.x)
-		{
-			tiles_coords.x = index.x * TILE_SIZE;
-			if (map_tab[index.y][index.x] == '1')
-				draw_square(&vars->map_img, tiles_coords, TILE_SIZE, 255);
-			else if (map_tab[index.y][index.x] == 'N')
-			{
-				draw_square(&vars->map_img, tiles_coords, TILE_SIZE, 25);
-				// pos_carac.x = tiles_coords.x + vars->offset.x;
-				// pos_carac.y = tiles_coords.y + vars->offset.y;
-				// draw_square(&vars->map_img, pos_carac, PLAYER_SIZE, 0xFF0FFF0F);
-			}
-			else
-				draw_square(&vars->map_img, tiles_coords, TILE_SIZE, 25);
-			index.x++;
-		}
-		index.y++;
+		dst = img.addr + (y * img.line_length + x * (img.bits_per_pixel / 8));
+		*(unsigned int *) dst = color;
 	}
-	// draw_square(&vars->map_img, pos_carac, PLAYER_SIZE, 0xFF0FFF0F);
+}
+
+t_data	img_cut(char *path, t_pos pos, t_mlx *g)
+{
+	t_sprite_slice	slice;
+	t_data			img;
+	t_data			source;
+	int				j;
+	int				i;
+
+	slice = (t_sprite_slice){pos.y * 32, pos.x * 32, 32, 32};
+	img = new_img(g, slice.width, slice.height);
+	source = new_file_img(path, g);
+	i = -1;
+	while (++i < slice.width)
+	{
+		j = -1;
+		while (++j < slice.height)
+		{
+			pixel_img(img, j, i, \
+				get_pixel_img(&source, slice.x + j, slice.y + i));
+		}
+	}
+	mlx_destroy_image(g->mlx, source.img);
+	return (img);
+}
+
+static int	put_pixel_valid(t_data img, int x, int y)
+{
+	if (x >= 0 && y >= 0 && x < img.w && y < img.h)
+	{
+		return (*(unsigned int *)(img.addr + \
+		(y * img.line_length + x * (img.bits_per_pixel / 8))) != 0xFF000000 && \
+		*(unsigned int *)(img.addr + \
+		(y * img.line_length + x * (img.bits_per_pixel / 8))) != 0x00000000);
+	}
 	return (0);
+}
+
+void	put_data_to_img(t_data dst, t_data src, int x, int y)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < src.w)
+	{
+		j = 0;
+		while (j < src.h)
+		{
+			if (put_pixel_valid(src, i, j))
+				pixel_img(dst, x + i, y + j, get_pixel_img(&src, i, j));
+			j++;
+		}
+		i++;
+	}
+}
+
+t_pos	tile_selector(t_tile tile[49], int *stats)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 49)
+	{
+		if (*stats == tile[i].dir)
+		{
+			return (tile[i].pos);
+		}
+	}
+	return (tile[47].pos);
+}
+
+void	draw_map(t_mlx *game)
+{
+	int		i;
+	int		j;
+	int		k;
+	t_data	img;
+	t_pos	pos;
+	t_pos	map_size;
+
+	j = -1;
+	k = -1;
+	start_tiles_init(game);
+	autotile_generator(game->map, game);
+	map_size = size_map(game->map);
+ 	game->map_img = new_img(game, map_size.x * TILE_SIZE, map_size.y * TILE_SIZE);
+	while (++j < map_size.y)
+	{
+		i = -1;
+		while (++i < map_size.x)
+		{
+			pos = tile_selector(game->tile, &game->stats_tile[++k]);
+			img = img_cut("./SusMap.xpm", pos, game);
+			put_data_to_img(game->map_img, img, i * 32, j * 32);
+			mlx_destroy_image(game->mlx, img.img);
+		}
+	}
 }

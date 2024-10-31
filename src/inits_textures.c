@@ -6,13 +6,13 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 18:15:11 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/27 12:59:33 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/30 23:10:40 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/parsing.h"
 
-t_data	new_file_img(char *path, t_mlx window)
+t_data	new_file_img_info(char *path, t_mlx window)
 {
 	t_data	image;
 
@@ -25,7 +25,7 @@ t_data	new_file_img(char *path, t_mlx window)
 	return (image);
 }
 
-int	init_img_texture(t_info *info)
+int	init_data_texture(t_info *info)
 {
 	int	i;
 
@@ -33,7 +33,8 @@ int	init_img_texture(t_info *info)
 	info->win.mlx = mlx_init();
 	while (++i < 4)
 	{
-		info->img_texture[i] = new_file_img(info->texture_path[i], info->win);
+		info->img_texture[i] = \
+		new_file_img_info(info->texture_path[i], info->win);
 		if (info->img_texture[i].img == NULL)
 			return (E_MALLOC);
 	}
