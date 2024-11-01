@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/01 00:53:52 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/01 13:00:25 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	tick(t_mlx *vars)
 	else if (vars->movement.down && !check_colision(vars->carac_index, vars, 'S'))
 		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
 	map(vars);
-	usleep(1000000/120);
 	return (1);
 }
 

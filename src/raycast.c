@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/01 02:32:16 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/01 12:27:38 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,12 @@ int	raycast(t_mlx *vars)
 		t_pos	current;
 
 		current.x = origin.x;
-		current.y = origin.y;
+		current.y = 0;
+		while (current.y < origin.y)
+		{
+			my_mlx_pixel_put(&img, current.x, current.y, 0x00000000);
+			current.y++;
+		}
 		while (current.y < end.y)
 		{
 			my_mlx_pixel_put(&img, current.x, current.y, create_trgb(255, 255, 255, 255));
