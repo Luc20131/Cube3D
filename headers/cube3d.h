@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/31 15:49:59 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/01 01:09:00 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,7 @@ int	ray_dist(t_mlx *vars);
 t_data	resize_img(t_mlx *vars, t_data *img, unsigned int width, unsigned int height);
 int	init_mini_map(t_mlx *vars,t_pos	carac_pos);
 int	is_carac(char c);
+int	raycast(t_mlx *vars);
+t_pos	get_carac_pos(char **map, t_pos *offset);
+t_pos	get_carac_index(char **map);
 #endif

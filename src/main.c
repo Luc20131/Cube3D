@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/31 16:47:20 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/01 00:53:52 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,10 +213,11 @@ void	map(t_mlx *vars)
 		old_pos.x = vars->offset.x;
 		old_pos.y = vars->offset.y;
 		init_mini_map(vars, vars->carac_pos);
+		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
 		mlx_destroy_image(vars->mlx, vars->mini_map.img);
 	}
-  vars->fps++;
+	vars->fps++;
 }
 
 int	main(int argc, char **argv)
