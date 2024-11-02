@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/01 12:27:38 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/01 17:14:34 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	raycast(t_mlx *vars)
 	img = vars->img;
 	t_pos	origin;
 	origin = get_carac_pos(vars->map, &vars->offset);
-	printf("x : %d y :%d\n",origin.x, origin.y);
 	double posX = origin.x, posY = origin.y;
+	printf("x : %lf y :%lf\n",posX, posY);
 	double dirX = -1, dirY = 0;
 	double planeX = 0, planeY = 0.66;
 	double perpWallDist;
@@ -33,20 +33,21 @@ int	raycast(t_mlx *vars)
 	double sideDistX;
 	double sideDistY;
 	int	side;
-	int hit = 0;
+	int	hit;
 
 	while (origin.x < WIDTH)
 	{
-		double cameraX = 2 * 5 / (double)WIDTH - 1;
-		double rayDirX = dirX + planeX*cameraX;
-		double rayDirY = dirY + planeY*cameraX;
+		hit = 0;
+		double cameraX = (2 * origin.x) / (double)vars->map_img.w - 1;
+		double rayDirX = dirX + planeX * cameraX;
+		double rayDirY = dirY + planeY * cameraX;
 		double deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
 		double deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
 
-		int mapX = 2;
-		int mapY = 2 ;
-		printf("x : %d y :%d\n",mapX, mapY);
+		int mapX = vars->carac_index.x;
+		int mapY = vars->carac_index.y;
 
+		printf("x : %d y :%d\n",mapX, mapY);
 		if (rayDirX < 0)
 		{
 			stepX = -1;
@@ -81,7 +82,7 @@ int	raycast(t_mlx *vars)
 				mapY += stepY;
 				side = 1;
 			}
-			if (vars->map[mapX][mapY] == '1')
+			if (vars->map[mapY][mapX] == '1')
 				hit = 1;
 		}
 		if(side == 0)
@@ -89,14 +90,14 @@ int	raycast(t_mlx *vars)
 		else
 			perpWallDist = (sideDistY - deltaDistY);
 		printf("distance : %lf\n", perpWallDist);
-		int lineHeight = (int)(HEIGHT / perpWallDist) * 5;
+		int lineHeight = (int)(vars->map_img.h / perpWallDist) * 5;
 		t_pos	end;
 
 		origin.y = -lineHeight  + HEIGHT / 2;
 		if (origin.y < 0)
 			origin.y = 0;
 		end = origin;
-		end.y = lineHeight  + HEIGHT / 2;
+		end.y = lineHeight + HEIGHT / 2;
 		if(end.y >= HEIGHT)
 			end.y = HEIGHT - 1;
 
@@ -119,7 +120,6 @@ int	raycast(t_mlx *vars)
 			my_mlx_pixel_put(&img, current.x, current.y, 0x00000000);
 			current.y++;
 		}
-		dirX+= 0.001;
 		origin.x++;
 	}
 	mlx_put_image_to_window(vars->mlx, vars->win, img.img, 0, 0);

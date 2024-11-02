@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/31 17:44:01 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/01 16:34:45 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 			else
 				pixel = get_pixel_img(&vars->map_img, origin.x + index.x, origin.y + index.y) + 0x0F002200;
 			my_mlx_pixel_put(&mini_map_img, index.x, index.y, pixel);
-
 			index.x++;
 		}
 		my_mlx_pixel_put(&mini_map_img, 0, index.y, 0xFF3F3F3F);
