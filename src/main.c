@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/30 23:02:03 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/31 17:16:27 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #define SIZE_IMG 1024
 #define SKY_COLOR 0xFF5EACFF
 #define GROUND_COLOR 0xFF5E3B10
+#define FPS_LIMIT 120
 
 void	map(t_mlx *vars);
 t_pos	get_carac_index(char **map);
@@ -64,6 +65,7 @@ int	tick(t_mlx *vars)
 	else if (vars->movement.down && !check_colision(get_carac_index(vars->map), vars, 'S'))
 		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
 	map(vars);
+	// usleep(1000000/FPS_LIMIT);
 	return (1);
 }
 
@@ -201,7 +203,6 @@ void	map(t_mlx *vars)
 		draw_map(vars);
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
-		mlx_destroy_image(vars->mlx, vars->mini_map.img);
 	}
 	if (old_pos.x != vars->offset.x || old_pos.y != vars->offset.y)
 	{
@@ -209,7 +210,6 @@ void	map(t_mlx *vars)
 		old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
-		mlx_destroy_image(vars->mlx, vars->mini_map.img);
 	}
   vars->fps++;
 }
@@ -234,7 +234,8 @@ int	main(int argc, char **argv)
 	// exit(EXIT_SUCCESS);
 	//*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
 	t_mlx	vars;
-
+	
+	ft_memset(&vars, 0, sizeof(t_mlx));
 	vars.fps = 0;
 	vars.offset.x = 0;
 	vars.offset.y = 0;

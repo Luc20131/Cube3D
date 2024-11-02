@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/31 01:26:15 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/31 15:59:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@
 #define FOV 90
 #define HEIGHT 1024
 #define WIDTH 1024
-#define TILE_SIZE 32
-#define PLAYER_SPEED 1
+#define TILE_SIZE 64
+#define PLAYER_SPEED 4
 #define PLAYER_SIZE 8
-#define MINIMAP_SIZE 10
+#define MINIMAP_SIZE 5
 
 typedef struct s_pos
 {
@@ -100,6 +100,7 @@ typedef struct s_mlx
 	t_data		tilemap;
 	t_tile		tile[49];
 	int			*stats_tile;
+	t_pos		size_map;
 	t_pos		offset;
 	char		**map;
 	t_direction	movement;

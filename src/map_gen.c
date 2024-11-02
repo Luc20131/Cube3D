@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_gen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/31 02:13:03 by sjean            ###   ########.fr       */
+/*   Updated: 2024/10/31 17:05:38 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <math.h>
 #include <stdio.h>
 
+void	put_data_to_img(t_data dst, t_data src, int x, int y);
 
 t_data	new_img(t_mlx *vars, unsigned int width, unsigned int height)
 {
@@ -34,11 +35,13 @@ t_data	new_img(t_mlx *vars, unsigned int width, unsigned int height)
 
 int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 {
-	t_data	mini_map_img;
+	// t_data	mini_map_img;
 	t_pos	index;
 	t_pos	size;
 	t_pos	origin;
+	t_pos	map_size;
 	unsigned int	pixel;
+	t_data	monitoring;
 
 	index.x = 0;
 	index.y = 0;
@@ -46,7 +49,9 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 	size.y = MINIMAP_SIZE * TILE_SIZE;
 	origin.x = carac_pos.x - ((size.x + PLAYER_SIZE) >> 1);
 	origin.y = carac_pos.y - ((size.y + PLAYER_SIZE) >> 1);
-	mini_map_img = new_img(vars, size.x, size.y);
+	if (vars->mini_map.img == NULL)
+	vars->mini_map = new_img(vars, size.x, size.y);
+	map_size = size_map(vars->map);
 	while (index.y < size.y)
 	{
 		index.x = 0;
@@ -54,20 +59,23 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 		{
 			if (index.y == 0 || index.y == size.y - 1)
 				pixel = 0xFF3F3F3F;
-			else if (origin.x + index.x < 0 || origin.y + index.y < 0)
+			else if (origin.x + index.x < 0 || origin.y + index.y < 0 ||
+			origin.x + index.x > map_size.x * TILE_SIZE || origin.y + index.y > map_size.y * TILE_SIZE)
 				pixel = 0x00000000;
 			else
 				pixel = get_pixel_img(&vars->map_img, origin.x + index.x, origin.y + index.y);
-			my_mlx_pixel_put(&mini_map_img, index.x, index.y, pixel);
+			my_mlx_pixel_put(&vars->mini_map, index.x, index.y, pixel);
 
 			index.x++;
 		}
-		my_mlx_pixel_put(&mini_map_img, 0, index.y, 0xFF3F3F3F);
-		my_mlx_pixel_put(&mini_map_img, index.x - 1, index.y, 0xFF3F3F3F);
+		my_mlx_pixel_put(&vars->mini_map, 0, index.y, 0xFF3F3F3F);
+		my_mlx_pixel_put(&vars->mini_map, index.x - 1, index.y, 0xFF3F3F3F);
 		index.y++;
 	}
-	draw_square(&mini_map_img, (t_pos){(size.x + PLAYER_SIZE) / 2, (size.y + PLAYER_SIZE) / 2}, PLAYER_SIZE, 0xFF0FFF0F);
-	vars->mini_map = mini_map_img;
+	monitoring = new_file_img("monitoring.xpm", vars);
+	put_data_to_img(vars->mini_map, monitoring, 0 * TILE_SIZE, 0 * TILE_SIZE);
+	draw_square(&vars->mini_map, (t_pos){(size.x + PLAYER_SIZE) / 2, (size.y + PLAYER_SIZE) / 2}, PLAYER_SIZE, 0xFF0FFF0F);
+	vars->mini_map = vars->mini_map;
 	return (1);
 }
 
@@ -188,7 +196,8 @@ t_data	img_cut(char *path, t_pos pos, t_mlx *g)
 	int				j;
 	int				i;
 
-	slice = (t_sprite_slice){pos.y * 32, pos.x * 32, 32, 32};
+	slice = (t_sprite_slice){pos.y * TILE_SIZE, pos.x * TILE_SIZE,\
+	 TILE_SIZE, TILE_SIZE};
 	img = new_img(g, slice.width, slice.height);
 	source = new_file_img(path, g);
 	i = -1;
@@ -273,7 +282,7 @@ void	draw_map(t_mlx *game)
 		{
 			pos = tile_selector(game->tile, &game->stats_tile[++k]);
 			img = img_cut("./SusMap.xpm", pos, game);
-			put_data_to_img(game->map_img, img, i * 32, j * 32);
+			put_data_to_img(game->map_img, img, i * TILE_SIZE, j * TILE_SIZE);
 			mlx_destroy_image(game->mlx, img.img);
 		}
 	}
