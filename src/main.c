@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/03 14:59:16 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/03 16:04:54 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ int	key_released(int keycode, t_mlx *vars)
 
 int	tick(t_mlx *vars)
 {
-	struct timeval	timer;
-	int				fps;
 	if (vars->movement.right && !check_colision(get_carac_index(vars->map), vars, 'E'))
 		vars->offset.x += PLAYER_SPEED * (vars->movement.right + vars->movement.left);
 	else if (vars->movement.left && !check_colision(get_carac_index(vars->map), vars, 'W'))
@@ -67,10 +65,6 @@ int	tick(t_mlx *vars)
 	else if (vars->movement.down && !check_colision(get_carac_index(vars->map), vars, 'S'))
 		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
 	map(vars);
-	gettimeofday(&timer, NULL);
-	fps = vars->fps / (timer.tv_sec - vars->time.tv_sec);
-	mlx_string_put(vars->mlx, vars->win, 1, 10, 16777215, ft_itoa(fps));
-	draw_square(&vars->img,(t_pos){1, 0}, 100, 0x0);
 	usleep(1000000/FPS_LIMIT);
 	return (1);
 }
