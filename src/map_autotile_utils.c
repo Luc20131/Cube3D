@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:22:29 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/31 00:14:18 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/03 19:02:33 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,32 @@ int	*fill_dir_v(int *c, char **map, t_pos pos, t_pos fill)
 	return (c);
 }
 
+// int	*ud_dir(int *c, t_pos pos, t_mlx g)
+// {
+// 	t_pos	map_size;
+
+// 	map_size = size_map(g.map);
+// 	if (pos.x + 1 >= map_size.y)
+// 	{
+// 		if (c[6] == 0)
+// 			c[6] = 1;
+// 		if (c[7] == 0)
+// 			c[7] = 1;
+// 		if (c[8] == 0)
+// 			c[8] = 1;
+// 	}
+// 	if (pos.x - 1 <= 0)
+// 	{
+// 		if (c[0] == 0)
+// 			c[0] = 1;
+// 		if (c[1] == 0)
+// 			c[1] = 1;
+// 		if (c[2] == 0)
+// 			c[2] = 1;
+// 	}
+// 	return (c);
+// }
+
 int	*l_corner_dir(int *c, t_pos pos, t_mlx g, char **map)
 {
 	t_pos	map_size;
@@ -50,6 +76,7 @@ int	*l_corner_dir(int *c, t_pos pos, t_mlx g, char **map)
 		&& c[1] == 1 && c[3] == 1 && map[pos.x - 1][pos.y - 1] == '0')
 			c[0] = 0;
 	}
+	// c = ud_dir(c, pos, g);
 	return (c);
 }
 

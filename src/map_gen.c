@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/02 17:38:53 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/03 18:56:35 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 			if (index.y == 0 || index.y == size.y - 1)
 				pixel = 0xFF3F3F3F;
 			else if (origin.x + index.x < 0 || origin.y + index.y < 0 ||
-			origin.x + index.x > map_size.x * TILE_SIZE || origin.y + index.y > map_size.y * TILE_SIZE)
+			origin.x + index.x >= map_size.x * TILE_SIZE || origin.y + index.y >= map_size.y * TILE_SIZE)
 				pixel = 0x00000000;
 			else
 				pixel = get_pixel_img(&vars->map_img, origin.x + index.x, origin.y + index.y);
@@ -249,7 +249,7 @@ t_pos	tile_selector(t_tile tile[49], int *stats)
 	int		i;
 
 	i = -1;
-	while (++i < 49)
+	while (++i < 50)
 	{
 		if (*stats == tile[i].dir)
 		{

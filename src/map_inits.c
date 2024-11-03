@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:10:14 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/03 14:59:50 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/03 18:55:40 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	end_tiles_init(t_tile *t, t_mlx *g)
 	tile_assembler(&t[46], 7, (t_pos){2, 0});
 	tile_assembler(&t[47], 0, (t_pos){2, 1});
 	tile_assembler(&t[48], 186, (t_pos){5, 1});
+	tile_assembler(&t[49], 499, (t_pos){4, 4});
 	mlx_destroy_image(g->mlx, g->tilemap.img);
 }
 

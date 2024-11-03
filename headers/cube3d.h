@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/03 14:58:50 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/03 18:55:48 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ typedef struct s_mlx
 	t_data		map_img;
 	t_data		mini_map;
 	t_data		tilemap;
-	t_tile		tile[49];
+	t_tile		tile[50];
 	int			*stats_tile;
 	t_pos		size_map;
 	t_pos		offset;
@@ -160,5 +160,6 @@ int	*fill_dir_h(int *c, char **map, t_pos pos, t_pos fill);
 int	*l_corner_dir(int *c, t_pos pos, t_mlx g, char **map);
 int	*face_corner_v(int *c, t_pos pos, t_mlx g, char **map);
 int	*face_corner_h(int *c, t_pos pos, t_mlx g, char **map);
+int	*x_dir(int *c, t_pos pos, t_mlx g, t_pos map_size);
 
 #endif
