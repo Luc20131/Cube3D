@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:28:03 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/31 00:29:37 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/03 15:11:13 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	*x_dir(int *c, t_pos pos, t_mlx g, t_pos map_size)
 	if (pos.x + 1 < map_size.y && pos.y -1 >= 0 && \
 	g.map[pos.x + 1][pos.y -1] == '0')
 		c[6] = '0' - 48;
-	else if (pos.x + 1 < map_size.y && pos.y -1 >= 0 && \
-	g.map[pos.x + 1][pos.y -1] == '1')
+	else if ((pos.x + 1 < map_size.y && pos.y -1 >= 0 && \
+	g.map[pos.x + 1][pos.y -1] == '1') || (pos.x + 1 >= map_size.y))
 		c[6] = '1' - 48;
 	return (c);
 }

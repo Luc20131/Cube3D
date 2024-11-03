@@ -1,8 +1,8 @@
-NO ./1bd.xpm                   
-WE ./1bd.xpm
+NO texture/1bd.xpm                   
+WE texture/1bd.xpm
 F 220,100,0 
-SO ./1bd.xpm
-EA                         ./1bd.xpm                         
+SO texture/1bd.xpm
+EA                         texture/1bd.xpm                         
 C 0  ,10,  0                                                        
 
 

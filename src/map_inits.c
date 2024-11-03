@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:10:14 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/31 01:24:41 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/03 14:59:50 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	middle_tiles_init(t_tile *t, t_mlx *g)
 
 void	start_tiles_init(t_mlx *g)
 {
-	g->tilemap = new_file_img("./SusMap.xpm", g);
+	g->tilemap = new_file_img("texture/SusMap.xpm", g);
 	tile_assembler(&g->tile[0], 48, (t_pos){0, 0});
 	tile_assembler(&g->tile[1], 18, (t_pos){0, 1});
 	tile_assembler(&g->tile[2], 144, (t_pos){1, 0});

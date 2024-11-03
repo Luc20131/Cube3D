@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/30 21:46:32 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/02 12:04:31 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,3 @@ int	parsing_cube(char *arg, t_info **info)
 		return (free(*info), 0);
 	return (SUCCESS);
 }
-	// int		i;
-	// ft_printf("NO %s\nSO %s\nWE %s\nEA %s\nF %d %d %d\nC %d %d %d\n",
-	// info->texture_path[0], info->texture_path[1], info->texture_path[2],
-	// info->texture_path[3], info->floor[0], info->floor[1], info->floor[2],
-	// info->ceiling[0], info->ceiling[1], info->ceiling[2]);
-	// i = -1;
-	// while (info->map[++i])
-	// 	ft_printf("%s\n", info->map[i]);
-	// ft_printf("Player x:%d y:%d\n", info->player.x, info->player.y);

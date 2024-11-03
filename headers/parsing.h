@@ -6,13 +6,12 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/30 22:49:42 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/03 14:49:04 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
-# include <linux/limits.h>
 # include <fcntl.h>
 # include "cube3d.h"
 
@@ -41,20 +40,6 @@ typedef enum e_statut
 	SUCCESS,
 	FINISH
 }			t_statut;
-
-typedef struct s_info
-{
-	int		map_fd;
-	char	texture_path[4][PATH_MAX];
-	int		ceiling[3];
-	int		floor[3];
-	int		texture_valid[4];
-	t_pos	player;
-	t_data	img_texture[4];
-	t_mlx	win;
-	char	**map;
-
-}	t_info;
 
 typedef struct s_stats
 {

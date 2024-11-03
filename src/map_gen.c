@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_gen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/31 17:05:38 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/02 17:38:53 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ t_data	new_img(t_mlx *vars, unsigned int width, unsigned int height)
 
 int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 {
-	// t_data	mini_map_img;
 	t_pos	index;
 	t_pos	size;
 	t_pos	origin;
@@ -50,7 +49,7 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 	origin.x = carac_pos.x - ((size.x + PLAYER_SIZE) >> 1);
 	origin.y = carac_pos.y - ((size.y + PLAYER_SIZE) >> 1);
 	if (vars->mini_map.img == NULL)
-	vars->mini_map = new_img(vars, size.x, size.y);
+		vars->mini_map = new_img(vars, size.x, size.y);
 	map_size = size_map(vars->map);
 	while (index.y < size.y)
 	{
@@ -72,7 +71,7 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 		my_mlx_pixel_put(&vars->mini_map, index.x - 1, index.y, 0xFF3F3F3F);
 		index.y++;
 	}
-	monitoring = new_file_img("monitoring.xpm", vars);
+	monitoring = new_file_img("texture/monitoring.xpm", vars);
 	put_data_to_img(vars->mini_map, monitoring, 0 * TILE_SIZE, 0 * TILE_SIZE);
 	draw_square(&vars->mini_map, (t_pos){(size.x + PLAYER_SIZE) / 2, (size.y + PLAYER_SIZE) / 2}, PLAYER_SIZE, 0xFF0FFF0F);
 	vars->mini_map = vars->mini_map;
@@ -281,7 +280,7 @@ void	draw_map(t_mlx *game)
 		while (++i < map_size.x)
 		{
 			pos = tile_selector(game->tile, &game->stats_tile[++k]);
-			img = img_cut("./SusMap.xpm", pos, game);
+			img = img_cut("texture/SusMap.xpm", pos, game);
 			put_data_to_img(game->map_img, img, i * TILE_SIZE, j * TILE_SIZE);
 			mlx_destroy_image(game->mlx, img.img);
 		}

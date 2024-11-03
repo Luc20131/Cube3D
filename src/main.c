@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/31 17:16:27 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/03 14:59:16 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	key_released(int keycode, t_mlx *vars)
 
 int	tick(t_mlx *vars)
 {
+	struct timeval	timer;
+	int				fps;
 	if (vars->movement.right && !check_colision(get_carac_index(vars->map), vars, 'E'))
 		vars->offset.x += PLAYER_SPEED * (vars->movement.right + vars->movement.left);
 	else if (vars->movement.left && !check_colision(get_carac_index(vars->map), vars, 'W'))
@@ -65,7 +67,11 @@ int	tick(t_mlx *vars)
 	else if (vars->movement.down && !check_colision(get_carac_index(vars->map), vars, 'S'))
 		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
 	map(vars);
-	// usleep(1000000/FPS_LIMIT);
+	gettimeofday(&timer, NULL);
+	fps = vars->fps / (timer.tv_sec - vars->time.tv_sec);
+	mlx_string_put(vars->mlx, vars->win, 1, 10, 16777215, ft_itoa(fps));
+	draw_square(&vars->img,(t_pos){1, 0}, 100, 0x0);
+	usleep(1000000/FPS_LIMIT);
 	return (1);
 }
 
@@ -78,6 +84,7 @@ int	key_hook( int keycode, t_mlx *vars)
 	if (keycode == 65307)
 	{
 		gettimeofday(&timer, NULL);
+		mlx_do_key_autorepeaton(vars->mlx);
 		while (vars->map[i])
 			free(vars->map[i++]);
 		free(vars->map);
@@ -192,22 +199,19 @@ int	check_colision(t_pos index, t_mlx *vars, char direction)
 
 void	map(t_mlx *vars)
 {
-	static int map_is_create = 0;
-	static t_pos old_pos;
-
-
-	if (map_is_create == 0)
+	if (vars->stats->map_is_create == 0)
 	{
-		map_is_create = 1;
-		old_pos = get_carac_pos(vars->map, &vars->offset);
+		vars->stats->map_is_create = 1;
+		vars->stats->old_pos = get_carac_pos(vars->map, &vars->offset);
 		draw_map(vars);
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
 	}
-	if (old_pos.x != vars->offset.x || old_pos.y != vars->offset.y)
+	if (vars->stats->old_pos.x != vars->offset.x \
+	|| vars->stats->old_pos.y != vars->offset.y)
 	{
-		old_pos.x = vars->offset.x;
-		old_pos.y = vars->offset.y;
+		vars->stats->old_pos.x = vars->offset.x;
+		vars->stats->old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
 	}
@@ -216,10 +220,14 @@ void	map(t_mlx *vars)
 
 int	main(int argc, char **argv)
 {
-	// char	*map_line = "1111111111111111111111111\n1111111111111111111111111\n1111111111111111111111111\n1111111111111111111111111\n1100001111000011110000111\n1111001111110011111100111\n110000011100N001110000011\n1100000111000001110000011\n1101101111011011110110111\n1111111111111111111111111\n\0";
 	t_info	*info;
+	t_mlx	vars;
 
+	ft_memset(&vars, 0, sizeof(t_mlx));
 	info = init_info();
+	vars.mlx = mlx_init();
+	vars.stats = info;
+	info->win.mlx = vars.mlx;
 	if (!info)
 		return (error_msg(E_MALLOC), 0);
 	if (argc != 2)
@@ -231,25 +239,11 @@ int	main(int argc, char **argv)
 		else
 			ft_printf("PARSING ✅\n");
 	}
-	// exit(EXIT_SUCCESS);
-	//*map[] = { "11111111", "10000001", "10110001", "10000001", "10101001", "11111111", "\0"};
-	t_mlx	vars;
-	
-	ft_memset(&vars, 0, sizeof(t_mlx));
-	vars.fps = 0;
-	vars.offset.x = 0;
-	vars.offset.y = 0;
-	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Cube3D");
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
-	vars.movement.up = 0;
-	vars.movement.down = 0;
-	vars.movement.left = 0;
-	vars.movement.right = 0;
 	gettimeofday(&vars.time, NULL);
-	vars.map = info->map; //ft_split(map_line, '\n');
+	vars.map = info->map;
 	map(&vars);
-	// mlx_key_hook(vars.win, &key_hook, &vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
 	mlx_do_key_autorepeatoff(vars.mlx);

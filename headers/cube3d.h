@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/31 15:59:19 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/03 14:58:50 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <X11/X.h>
 #include <bits/types/struct_timeval.h>
+# include <linux/limits.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -105,7 +106,8 @@ typedef struct s_mlx
 	char		**map;
 	t_direction	movement;
 	size_t		fps;
-	struct timeval time;
+	struct timeval	time;
+	struct s_info	*stats;
 }	t_mlx;
 
 typedef struct s_tab_size
@@ -114,6 +116,21 @@ typedef struct s_tab_size
 	size_t	column;
 }	t_tab_size;
 
+typedef struct s_info
+{
+	int		map_fd;
+	char	texture_path[4][PATH_MAX];
+	int		ceiling[3];
+	int		floor[3];
+	int		texture_valid[4];
+	t_data	img_texture[4];
+	t_mlx	win;
+	t_pos	player;
+	t_pos	old_pos;
+	int		map_is_create;
+	char	**map;
+
+}	t_info;
 
 void	carac_pos_update(t_pos *offset, t_pos *carac_pos, char **map);
 int		map_gen(t_mlx *vars, char **map_tab);
