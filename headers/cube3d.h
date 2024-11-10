@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/01 01:09:00 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/09 12:10:11 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,14 @@
 #include "../minilibx-linux/mlx.h"
 #include "../libft/libft.h"
 
-#define SIZE_IMG 1024
 #define SKY_COLOR 0xFF5EACFF
 #define GROUND_COLOR 0xFF5E3B10
-#define FOV 90
-#define HEIGHT 1024
-#define WIDTH 1024
-#define TILE_SIZE 64
+// #define FOV 90
+#define HEIGHT 1000
+#define WIDTH 2000
+#define TILE_SIZE 50
 #define PLAYER_SPEED 4
-#define PLAYER_SIZE 8
+#define PLAYER_SIZE 2
 #define MINIMAP_SIZE 5
 
 typedef struct s_pos
@@ -54,15 +53,15 @@ typedef struct s_direction
 	int	left;
 } t_direction;
 
-typedef struct s_vector
-{
-	t_posf		origin;
-	int			direction;
-	float		length;
-	double		delta_x;
-	double		delta_y;
-	double		angle;
-}	t_vector;
+// typedef struct s_vector
+// {
+// 	t_posf		origin;
+// 	int			direction;
+// 	float		length;
+// 	double		delta_x;
+// 	double		delta_y;
+// 	double		angle;
+// }	t_vector;
 
 typedef struct s_data
 {

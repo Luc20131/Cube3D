@@ -1,12 +1,12 @@
 MAKE = @make --no-print-directory
 
 CC = cc
-FLAG = -Werror -Wall -Wextra -g3
+FLAG = -Werror -Wall -Wextra
 NAME = cube3d
 
 HEADER = ./headers/$(NAME).h ./headers/parsing.h
 SRC_DIR=src/
-SRC_LIST= main.c map_gen.c parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c length.c testo.c sprite.c raycast.c
+SRC_LIST= main.c map_gen.c parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c testo.c sprite.c raycast.c
 SRC=$(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJ_DIR=obj/
 OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
@@ -93,3 +93,8 @@ re :
 run :
 	$(MAKE) all
 	@./cube3d 42
+
+debug :
+	$(MAKE) libft.a -C libft FLAG="$(FLAG) -g3"
+	$(MAKE) re FLAG="$(FLAG) -g3"
+	@gdb -tui $(NAME)

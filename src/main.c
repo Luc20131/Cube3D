@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/01 13:00:25 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/09 12:08:43 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 #include "../minilibx-linux/mlx_int.h"
 #include "../minilibx-linux/mlx.h"
 #include <sys/time.h>
-#define SIZE_IMG 1024
 #define SKY_COLOR 0xFF5EACFF
 #define GROUND_COLOR 0xFF5E3B10
 
@@ -32,14 +31,6 @@ void	map(t_mlx *vars);
 t_pos	get_carac_index(char **map);
 t_pos	get_carac_pos(char **map, t_pos *offset);
 int		check_colision(t_pos index, t_mlx *vars, char direction);
-
-// int	fps_counter()
-// {
-// 	static int	frame_count;
-// 	struct timeval time;
-
-// 	gettimeofday(&time, NULL);
-// }
 
 int	is_carac(char c)
 {
@@ -72,6 +63,7 @@ int	tick(t_mlx *vars)
 	else if (vars->movement.down && !check_colision(vars->carac_index, vars, 'S'))
 		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
 	map(vars);
+	// usleep(1000000/120);
 	return (1);
 }
 
@@ -93,6 +85,7 @@ int	key_hook( int keycode, t_mlx *vars)
 		mlx_destroy_display(vars->mlx);
 		free(vars->mlx);
 		exit(1);
+		mlx_do_key_autorepeaton(vars->mlx);
 	}
 	else if (keycode == 'd')
 	{
@@ -113,22 +106,22 @@ int	key_hook( int keycode, t_mlx *vars)
 	return (0);
 }
 
-void	wall(t_data *img, float distance)
-{
-	t_pos	pos;
+// void	wall(t_data *img, float distance)
+// {
+// 	t_pos	pos;
 
-	pos.y = SIZE_IMG >> 1;
-	pos.x = 0;
-	while (pos.x < SIZE_IMG)
-	{
-		if (pos.x > 650 && pos.x < 900)
-			distance--;
-		else
-			distance++;
-		draw_line_from_mid(img, pos, distance);
-		pos.x++;
-	}
-}
+// 	pos.y = SIZE_IMG >> 1;
+// 	pos.x = 0;
+// 	while (pos.x < SIZE_IMG)
+// 	{
+// 		if (pos.x > 650 && pos.x < 900)
+// 			distance--;
+// 		else
+// 			distance++;
+// 		draw_line_from_mid(img, pos, distance);
+// 		pos.x++;
+// 	}
+// }
 
 t_pos	get_carac_index(char **map)
 {
@@ -143,8 +136,6 @@ t_pos	get_carac_index(char **map)
 		{
 			if (is_carac(map[index.y][index.x]))
 			{
-				index.x = index.x;
-				index.y = index.y;
 				return (index);
 			}
 			index.x++;
@@ -216,6 +207,7 @@ void	map(t_mlx *vars)
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
 		mlx_destroy_image(vars->mlx, vars->mini_map.img);
 	}
+	usleep(1000000/120);
 	vars->fps++;
 }
 
@@ -314,14 +306,14 @@ int	create_trgb(int t, int r, int g, int b)
 void	my_draw_line(t_pos origin, t_pos end, t_data *img)
 {
 	t_pos	delta_pos;
-	int		mid;
+	float		mid;
 	t_pos	current;
 
 	current.x = origin.x;
 	current.y = origin.y;
 	delta_pos.x = end.x - origin.x;
 	delta_pos.y = end.y - origin.y;
-	mid = delta_pos.y / delta_pos.x;
+	mid = (float) delta_pos.y / delta_pos.x;
 	while (current.x < end.x)
 	{
 		current.y = mid * (current.x - origin.x) + origin.y;
@@ -330,28 +322,28 @@ void	my_draw_line(t_pos origin, t_pos end, t_data *img)
 	}
 }
 
-void	draw_horizon(t_data *img)
-{
-	int x;
-	int y;
-	int	color;
+// void	draw_horizon(t_data *img)
+// {
+// 	int x;
+// 	int y;
+// 	int	color;
 
-	x = 0;
-	y = 0;
-	color = create_trgb(255, 0, 170, 235);
-	while (y < SIZE_IMG)
-	{
-		x = 0;
-		while (x < SIZE_IMG)
-		{
-			if (y > SIZE_IMG / 2)
-				color = create_trgb(255, 100, 20, 225);
-			my_mlx_pixel_put(img, x, y, color);
-			x++;
-		}
-		y++;
-	}
-}
+// 	x = 0;
+// 	y = 0;
+// 	color = create_trgb(255, 0, 170, 235);
+// 	while (y < SIZE_IMG)
+// 	{
+// 		x = 0;
+// 		while (x < SIZE_IMG)
+// 		{
+// 			if (y > SIZE_IMG / 2)
+// 				color = create_trgb(255, 100, 20, 225);
+// 			my_mlx_pixel_put(img, x, y, color);
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// }
 
 void	draw_line_from_mid(t_data *img, t_pos origin, int distance)
 {
