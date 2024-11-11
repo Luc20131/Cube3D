@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:35:14 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/17 18:09:17 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/11 11:59:50 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	get_dir(t_stats **stats, char **map, t_pos pos)
 {
-	if (map[pos.y - 1] && map[pos.y - 1][pos.x] == '0')
+	if (pos.y - 1 >= 0 && map[pos.y - 1] && map[pos.y - 1][pos.x] == '0')
 		(*stats)->dir++;
 	if (map[pos.y][pos.x + 1] && map[pos.y][pos.x + 1] == '0')
 		(*stats)->dir++;
 	if (map[pos.y + 1] && map[pos.y + 1][pos.x] == '0')
 		(*stats)->dir++;
-	if (map[pos.y][pos.x - 1] && map[pos.y][pos.x - 1] == '0')
+	if (pos.x - 1 >= 0 && map[pos.y][pos.x - 1] && map[pos.y][pos.x - 1] == '0')
 		(*stats)->dir++;
 	return (SUCCESS);
 }
@@ -28,8 +28,9 @@ int	get_dir(t_stats **stats, char **map, t_pos pos)
 int	check_holes(t_stats **stats, char **map, t_pos pos)
 {
 	(void)stats;
-	if (!map[pos.y - 1] || map[pos.y - 1][pos.x] == ' ' || \
-		!map[pos.y][pos.x + 1] || map[pos.y][pos.x + 1] == ' ' || \
+	if (pos.y - 1 < 0 || !map[pos.y - 1] || map[pos.y - 1][pos.x] == ' ' || \
+		pos.x - 1 < 0 || !map[pos.y][pos.x + 1] || \
+		map[pos.y][pos.x + 1] == ' ' || \
 		!map[pos.y + 1] || map[pos.y + 1][pos.x] == ' ' || \
 		!map[pos.y][pos.x - 1] || map[pos.y][pos.x - 1] == ' ')
 	{

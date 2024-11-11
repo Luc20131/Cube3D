@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/03 16:04:54 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/11 15:49:51 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,11 +228,28 @@ int	main(int argc, char **argv)
 		return (1);
 	else
 	{
-		if (parsing_cube(argv[1], &info) == 0)
-			return (1);
+		if (parsing_cube(argv[1], &vars.stats) == 0)
+			;//return (1);
 		else
 			ft_printf("PARSING ✅\n");
 	}
+	////////////////////////////////////////////////////////////////////////////
+	int i = -1;
+	while (++i < 4)
+	{
+		if (info->img_texture[i].img)
+			mlx_destroy_image(vars.mlx,info->img_texture[i].img);
+	}
+	if (vars.mlx)
+	{
+		mlx_destroy_display(vars.mlx);
+		free(vars.mlx);
+	}
+	if (info->map)
+		freetab(info->map);
+	free(info);
+	exit(EXIT_SUCCESS);
+	////////////////////////////////////////////////////////////////////////////
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Cube3D");
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
 	gettimeofday(&vars.time, NULL);

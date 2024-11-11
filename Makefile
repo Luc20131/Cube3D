@@ -2,7 +2,7 @@ MAKE = @make --no-print-directory
 
 CC = cc
 FLAG = -Werror -Wall -Wextra -g3
-NAME = cube3d
+NAME = cub3D
 
 HEADER = ./headers/$(NAME).h ./headers/parsing.h
 SRC_DIR=src/

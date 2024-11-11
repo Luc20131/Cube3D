@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 18:15:11 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/30 23:10:40 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/11 15:13:54 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,9 @@ int	init_data_texture(t_info *info)
 	int	i;
 
 	i = -1;
-	info->win.mlx = mlx_init();
 	while (++i < 4)
 	{
-		info->img_texture[i] = \
-		new_file_img_info(info->texture_path[i], info->win);
+		info->img_texture[i] = new_file_img_info(info->texture_path[i], info->win);
 		if (info->img_texture[i].img == NULL)
 			return (E_MALLOC);
 	}

@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/02 12:04:31 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/11 14:16:37 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ int	get_arg(char *argv, t_info *info)
 	while (line_key)
 	{
 		key = key_finder(line_key);
-		if (key == -1)
+		if (key == -1 && valid_key(info))
 			return (free(line_key), E_NO_MORE_KEY);
 		else if (key != KEY_C && key != KEY_F)
 		{
 			if (get_key_value(line_key, key, info) == E_NO_MORE_KEY)
-				return (free(line_key), E_NO_MORE_KEY);
+				return (close(info->map_fd), free(line_key), E_NO_MORE_KEY);
 		}
 		else if (get_color(line_key, key, info) == E_WRONG_COLOR)
-			return (E_WRONG_COLOR);
+			return (close(info->map_fd), free(line_key), E_WRONG_COLOR);
 		free (line_key);
 		line_key = get_next_line(info->map_fd);
 	}
@@ -72,12 +72,8 @@ int	check_format(char *map, char *find)
 
 int	parsing_cube(char *arg, t_info **info)
 {
-	// t_info	*info;
 	int		result;
 
-	// info = init_info();
-	// if (!info)
-	// 	return (error_msg(E_MALLOC), 0);
 	if (check_format(arg, ".cub") == E_FORMAT)
 		return (error_msg(E_FORMAT), 0);
 	result = get_arg(arg, *info);
