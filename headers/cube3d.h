@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/13 20:36:11 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/13 21:13:15 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # define SKY_COLOR 0xFF5EACFF
 # define GROUND_COLOR 0xFF5E3B10
 # define FOV 90
-# define HEIGHT 1024
-# define WIDTH 1024
+# define HEIGHT 1080
+# define WIDTH 1920
 # define TILE_SIZE 64
 # define PLAYER_SPEED 4
 # define PLAYER_SIZE 8
