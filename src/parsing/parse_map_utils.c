@@ -6,11 +6,11 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:55:06 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/18 15:04:18 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/parsing.h"
+#include "parsing.h"
 
 void	free_stats(t_stats **stats)
 {
@@ -22,7 +22,7 @@ void	free_stats(t_stats **stats)
 	{
 		tmp = *stats;
 		(*stats) = (*stats)->next;
-		free (tmp);
+		nfree (tmp);
 	}
 }
 

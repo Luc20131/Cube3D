@@ -6,12 +6,12 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:00:05 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/12 14:21:43 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/parsing.h"
-#include "../headers/cube3d.h"
+#include "parsing.h"
+#include "cube3d.h"
 
 char	*get_key_word(char *line)
 {
@@ -41,20 +41,20 @@ int	key_finder(char *line)
 	if (!key)
 		return (-1);
 	if (ft_strncmp(key, "NO", 2) == 0 && ft_strlen(key) == 2)
-		return (free(key), KEY_NO);
+		return (nfree(key), KEY_NO);
 	else if (ft_strncmp(key, "SO", 2) == 0 && ft_strlen(key) == 2)
-		return (free(key), KEY_SO);
+		return (nfree(key), KEY_SO);
 	else if (ft_strncmp(key, "WE", 2) == 0 && ft_strlen(key) == 2)
-		return (free(key), KEY_WE);
+		return (nfree(key), KEY_WE);
 	else if (ft_strncmp(key, "EA", 2) == 0 && ft_strlen(key) == 2)
-		return (free(key), KEY_EA);
+		return (nfree(key), KEY_EA);
 	else if (ft_strncmp(key, "F", 1) == 0 && ft_strlen(key) == 1)
-		return (free(key), KEY_F);
+		return (nfree(key), KEY_F);
 	else if (ft_strncmp(key, "C", 1) == 0 && ft_strlen(key) == 1)
-		return (free(key), KEY_C);
+		return (nfree(key), KEY_C);
 	else
-		return (free(key), -1);
-	return (free(key), -1);
+		return (nfree(key), -1);
+	return (nfree(key), -1);
 }
 
 int	assing_key_value(char *key_value, t_key key, t_info *info)

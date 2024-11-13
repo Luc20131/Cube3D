@@ -6,12 +6,12 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/01 16:36:14 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/13 20:33:46 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/parsing.h"
-#include "../headers/cube3d.h"
+#include "parsing.h"
+#include "cube3d.h"
 
 int	get_arg(char *argv, t_info *info)
 {
@@ -25,16 +25,16 @@ int	get_arg(char *argv, t_info *info)
 	while (line_key)
 	{
 		key = key_finder(line_key);
-		if (key == -1)
-			return (free(line_key), E_NO_MORE_KEY);
+		if (key == -1 && valid_key(info))
+			return (nfree(line_key), E_NO_MORE_KEY);
 		else if (key != KEY_C && key != KEY_F)
 		{
 			if (get_key_value(line_key, key, info) == E_NO_MORE_KEY)
-				return (free(line_key), E_NO_MORE_KEY);
+				return (close(info->map_fd), nfree(line_key), E_NO_MORE_KEY);
 		}
 		else if (get_color(line_key, key, info) == E_WRONG_COLOR)
-			return (E_WRONG_COLOR);
-		free (line_key);
+			return (close(info->map_fd), nfree(line_key), E_WRONG_COLOR);
+		nfree (line_key);
 		line_key = get_next_line(info->map_fd);
 	}
 	return (SUCCESS);
@@ -72,38 +72,25 @@ int	check_format(char *map, char *find)
 
 int	parsing_cube(char *arg, t_info **info)
 {
-	// t_info	*info;
 	int		result;
 
-	// info = init_info();
-	// if (!info)
-	// 	return (error_msg(E_MALLOC), 0);
 	if (check_format(arg, ".cub") == E_FORMAT)
 		return (error_msg(E_FORMAT), 0);
 	result = get_arg(arg, *info);
 	if (result == E_NO_MORE_KEY)
 	{
 		if (!valid_key(*info))
-			return (error_msg(E_WRONG_KEY), free(*info), 0);
+			return (error_msg(E_WRONG_KEY), nfree(*info), 0);
 		else
 			if (get_map(*info) != SUCCESS)
 				return (error_msg(E_INVALID_MAP), \
-				freetab((*info)->map), free(*info), 0);
+				freetab((*info)->map), nfree(*info), 0);
 	}
 	else if (result == E_WRONG_COLOR)
-		return (error_msg(E_WRONG_COLOR), free(*info), 0);
+		return (error_msg(E_WRONG_COLOR), nfree(*info), 0);
 	else if (result == E_CANT_OPEN)
-		return (error_msg(E_CANT_OPEN), free(*info), 0);
-	if (init_img_texture(*info) == E_MALLOC)
-		return (free(*info), 0);
+		return (error_msg(E_CANT_OPEN), nfree(*info), 0);
+	if (init_data_texture(*info) == E_MALLOC)
+		return (nfree(*info), 0);
 	return (SUCCESS);
 }
-	// int		i;
-	// ft_printf("NO %s\nSO %s\nWE %s\nEA %s\nF %d %d %d\nC %d %d %d\n",
-	// info->texture_path[0], info->texture_path[1], info->texture_path[2],
-	// info->texture_path[3], info->floor[0], info->floor[1], info->floor[2],
-	// info->ceiling[0], info->ceiling[1], info->ceiling[2]);
-	// i = -1;
-	// while (info->map[++i])
-	// 	ft_printf("%s\n", info->map[i]);
-	// ft_printf("Player x:%d y:%d\n", info->player.x, info->player.y);

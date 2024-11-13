@@ -6,26 +6,27 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/11 15:17:50 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/13 20:45:10 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bits/types/struct_timeval.h>
 #include <stdio.h>
 
-#include "../headers/cube3d.h"
+#include "cube3d.h"
 #include <X11/X.h>
 #include <X11/keysym.h>
 #include <math.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "../headers/parsing.h"
+#include "parsing.h"
 #include "../minilibx-linux/mlx_int.h"
 #include "../minilibx-linux/mlx.h"
 #include <sys/time.h>
 #define SKY_COLOR 0xFF5EACFF
 #define GROUND_COLOR 0xFF5E3B10
+#define FPS_LIMIT 120
 
 void	map(t_mlx *vars);
 t_pos	get_carac_index(char **map);
@@ -63,7 +64,7 @@ int	tick(t_mlx *vars)
 	else if (vars->movement.down && !check_colision(vars->carac_index, vars, 'S'))
 		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
 	map(vars);
-	// usleep(1000000/120);
+	usleep(1000000/FPS_LIMIT);
 	return (1);
 }
 
@@ -76,14 +77,15 @@ int	key_hook( int keycode, t_mlx *vars)
 	if (keycode == 65307)
 	{
 		gettimeofday(&timer, NULL);
+		mlx_do_key_autorepeaton(vars->mlx);
 		while (vars->map[i])
-			free(vars->map[i++]);
-		free(vars->map);
+			nfree(vars->map[i++]);
+		nfree(vars->map);
 		printf("fps : %lu", vars->fps / (timer.tv_sec - vars->time.tv_sec));
 		mlx_destroy_image(vars->mlx, vars->img.img);
 		mlx_destroy_window(vars->mlx, vars->win);
 		mlx_destroy_display(vars->mlx);
-		free(vars->mlx);
+		nfree(vars->mlx);
 		exit(1);
 		mlx_do_key_autorepeaton(vars->mlx);
 	}
@@ -185,30 +187,30 @@ int	check_colision(t_pos index, t_mlx *vars, char direction)
 
 void	map(t_mlx *vars)
 {
-	static int map_is_create = 0;
-	static t_pos old_pos;
-
-
-	if (map_is_create == 0)
+	if (vars->stats->map_is_create == 0)
 	{
-		map_is_create = 1;
-		old_pos = vars->carac_pos;
-		map_gen(vars, vars->map);
-		init_mini_map(vars, vars->carac_pos);
+		vars->stats->map_is_create = 1;
+		vars->stats->old_pos = get_carac_pos(vars->map, &vars->offset);
+		draw_map(vars);
+		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
-		mlx_destroy_image(vars->mlx, vars->mini_map.img);
 	}
-	if (old_pos.x != vars->offset.x || old_pos.y != vars->offset.y)
+	if (vars->stats->old_pos.x != vars->offset.x \
+	|| vars->stats->old_pos.y != vars->offset.y)
 	{
-		old_pos.x = vars->offset.x;
-		old_pos.y = vars->offset.y;
-		init_mini_map(vars, vars->carac_pos);
-		raycast(vars);
+		vars->stats->old_pos.x = vars->offset.x;
+		vars->stats->old_pos.y = vars->offset.y;
+		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
-		mlx_destroy_image(vars->mlx, vars->mini_map.img);
 	}
 	// usleep(1000000/120);
 	vars->fps++;
+}
+
+void	nfree(void *pointer)
+{
+	free(pointer);
+	pointer = NULL;
 }
 
 int	main(int argc, char **argv)
@@ -216,14 +218,18 @@ int	main(int argc, char **argv)
 	t_info	*info;
 	t_mlx	vars;
 
+	ft_memset(&vars, 0, sizeof(t_mlx));
 	info = init_info();
+	vars.mlx = mlx_init();
+	vars.stats = info;
+	info->display = &vars;
 	if (!info)
 		return (error_msg(E_MALLOC), 0);
 	if (argc != 2)
 		return (1);
 	else
 	{
-		if (parsing_cube(argv[1], &info) == 0)
+		if (parsing_cube(argv[1], &vars.stats) == 0)
 			return (1);
 		else
 			ft_printf("PARSING ✅\n");
@@ -234,10 +240,6 @@ int	main(int argc, char **argv)
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Cube3D");
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
-	vars.movement.up = 0;
-	vars.movement.down = 0;
-	vars.movement.left = 0;
-	vars.movement.right = 0;
 	gettimeofday(&vars.time, NULL);
 	vars.map = info->map;
 	vars.carac_index = get_carac_index(vars.map);

@@ -6,11 +6,11 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:37:41 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/22 17:58:47 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/parsing.h"
+#include "parsing.h"
 
 int	check_valid_chr_map(char **map)
 {
@@ -126,7 +126,7 @@ int	get_map(t_info *info)
 			tab = tab->next;
 		}
 		else
-			free (line);
+			nfree (line);
 		line = get_next_line(info->map_fd);
 	}
 	return (close(info->map_fd), check_map(info, &head));

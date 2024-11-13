@@ -6,11 +6,11 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/09 11:13:25 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/13 20:45:46 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
+#include "cube3d.h"
 #include <math.h>
 #include <stdio.h>
 
