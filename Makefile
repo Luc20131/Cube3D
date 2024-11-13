@@ -1,15 +1,18 @@
 MAKE = @make --no-print-directory
 
 CC = cc
-FLAG = -Werror -Wall -Wextra -g3
-NAME = cube3d
+FLAG = -Werror -Wall -Wextra -g3 
+NAME = cub3D
 
-HEADER = ./headers/$(NAME).h ./headers/parsing.h
+HEADER = ./headers/cube3d.h ./headers/parsing.h
 SRC_DIR=src/
-SRC_LIST= main.c map_gen.c parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c length.c testo.c sprite.c
+SRC_DIR_P=src/parsing/
+SRC_LIST= main.c map_gen.c length.c testo.c sprite.c #map_autotile.c map_autotile_utils.c map_inits.c parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c 
+SRC_LIST_P = parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c map_autotile.c map_autotile_utils.c map_inits.c
 SRC=$(addprefix $(SRC_DIR),$(SRC_LIST))
+SRC_P=$(addprefix $(SRC_DIR_P),$(SRC_LIST_P))
 OBJ_DIR=obj/
-OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
+OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC)$(SRC_P))
 
 INCLUDE = -L libft -l ft -Lminilibx-linux -lmlx_Linux -lX11 -lXext -lm
 LIBFT_DIR=libft/
@@ -27,11 +30,11 @@ BLUE="\033[0;34m"
 END_COLOUR="\033[0m"
 
 define percent
-	@echo -n $(BLUE)"[$$(echo "scale=2; $$(find $(OBJ_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(GREEN)
+	@echo -ne $(BLUE)"[$$(echo "scale=2; $$(find $(OBJ_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(GREEN)
 endef
 
 define prompt
-	@echo $1"\n================ $2 ================\n"$(END_COLOUR)
+	@echo -e $1"\n================ $2 ================\n"$(END_COLOUR)
 endef
 
 define normitest
@@ -59,12 +62,12 @@ all :
 $(OBJ_DIR)%.o:  $(SRC_DIR)%.c Makefile $(HEADER)
 	$(call percent)
 	$(CC) $(FLAG) -c $< -o $@
-	@echo -n $(END_COLOUR)
+	@echo -ne $(END_COLOUR)
 
 $(NAME) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ)
 	$(call percent)
 	$(CC) $(FLAG) -o $@ $(OBJ) $(INCLUDE)
-	@echo -n $(END_COLOUR)
+	@echo -ne $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
 
 $(LIBFT) : $(LIBFT_SRC_FULL) libft/libft.h
