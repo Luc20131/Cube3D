@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/09 15:39:46 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/13 02:02:54 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,61 +18,61 @@
 
 typedef struct s_ray
 {
-	double	dirX;
-	double	dirY;
-	double	cameraX;
-	double	deltaDistX;
-	double	deltaDistY;
-	double	stepX;
-	double	stepY;
-	double	sideDistX;
-	double	sideDistY;
-	double	posX;
-	double	posY;
-	double	planeX;
-	double	planeY;
-	double	rayDirX;
-	double	rayDirY;
+	double	dir_x;
+	double	dir_y;
+	double	camera_x;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	step_x;
+	double	step_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	pos_x;
+	double	pos_y;
+	double	plane_x;
+	double	plane_y;
+	double	ray_dir_x;
+	double	ray_dir_y;
 	int		hit;
 	t_pos	map_pos;
-	double	perpWallDist;
+	double	perp_wall_dist;
 	int		side;
 	t_pos	end_ray;
 } t_ray;
 
 void	print_ray_param(t_ray *ray)
 {
-	printf("\x1B[H\x1B[JdirX : %lf\ndirY : %lf\ndeltaDirX : %lf\ndeltaDirY : %lf\n"
-		"stepX : %lf\nstepY : %lf\nsideDistX : %lf\nsizeDistY : %lf\nposX : %lf\nposY : %lf\n" \
-		"planeX : %lf\nplaneY : %lf\nrayDirX : %lf\nrayDirY : %lf\nhit : %d\nside : %d\n" \
-		"map_pos:\n\t-x : %d\n\t-y : %d\ncameraX : %lf\nperpWallDist : %lf\nend_ray.x : %d\nend_ray.y : %d\n"
-		,ray->dirX, ray->dirY, ray->deltaDistX, ray->deltaDistY, ray->stepX \
-		, ray->stepY, ray->sideDistX, ray->sideDistY, ray->posX, ray->posY \
-		, ray->planeX, ray->planeY, ray->rayDirX, ray->rayDirY, ray->hit
-		, ray->side, ray->map_pos.x, ray->map_pos.y, ray->cameraX, ray->perpWallDist, ray->end_ray.x, ray->end_ray.y);
+	printf("\x1B[H\x1B[Jdir_x : %lf\ndir_y : %lf\ndeltadir_x : %lf\ndeltadir_y : %lf\n"
+		"step_x : %lf\nstep_y : %lf\nside_dist_x : %lf\nsizeDistY : %lf\npos_x : %lf\npos_y : %lf\n" \
+		"plane_x : %lf\nplane_y : %lf\nray_dir_x : %lf\nray_dir_y : %lf\nhit : %d\nside : %d\n" \
+		"map_pos:\n\t-x : %d\n\t-y : %d\ncamera_x : %lf\nperp_wall_dist : %lf\nend_ray.x : %d\nend_ray.y : %d\n"
+		,ray->dir_x, ray->dir_y, ray->delta_dist_x, ray->delta_dist_y, ray->step_x \
+		, ray->step_y, ray->side_dist_x, ray->side_dist_y, ray->pos_x, ray->pos_y \
+		, ray->plane_x, ray->plane_y, ray->ray_dir_x, ray->ray_dir_y, ray->hit
+		, ray->side, ray->map_pos.x, ray->map_pos.y, ray->camera_x, ray->perp_wall_dist, ray->end_ray.x, ray->end_ray.y);
 }
 
 void	side_dist_and_stepper(t_ray	*ray)
 {
-	if (ray->rayDirX < 0)
+	if (ray->ray_dir_x < 0)
 	{
-		ray->stepX = -1;
-		ray->sideDistX = (ray->posX - ray->map_pos.x) * ray->deltaDistX;
+		ray->step_x = -1;
+		ray->side_dist_x = (ray->pos_x - ray->map_pos.x) * ray->delta_dist_x;
 	}
 	else
 	{
-		ray->stepX = 1;
-		ray->sideDistX = (ray->map_pos.x + 1.0 - ray->posX) * ray->deltaDistX;
+		ray->step_x = 1;
+		ray->side_dist_x = (ray->map_pos.x + 1.0 - ray->pos_x) * ray->delta_dist_x;
 	}
-	if (ray->rayDirY < 0)
+	if (ray->ray_dir_y < 0)
 	{
-		ray->stepY = -1;
-		ray->sideDistY = (ray->posY - ray->map_pos.y) * ray->deltaDistY;
+		ray->step_y = -1;
+		ray->side_dist_y = (ray->pos_y - ray->map_pos.y) * ray->delta_dist_y;
 	}
 	else
 	{
-		ray->stepY = 1;
-		ray->sideDistY = (ray->map_pos.y + 1.0 - ray->posY) * ray->deltaDistY;
+		ray->step_y = 1;
+		ray->side_dist_y = (ray->map_pos.y + 1.0 - ray->pos_y) * ray->delta_dist_y;
 	}
 }
 
@@ -102,34 +102,34 @@ int	print_wall_from_ray(t_pos *origin, t_pos *end, t_data *img, int	color)
 
 int	one_cast(t_ray *ray, t_mlx *vars)
 {
-	// ray->deltaDistX = sqrt(1 + (ray->rayDirY * ray->rayDirY) / (ray->rayDirX * ray->rayDirX));
-	// ray->deltaDistY = sqrt(1 + (ray->rayDirX * ray->rayDirX) / (ray->rayDirY * ray->rayDirY));
+	// ray->delta_dist_x = sqrt(1 + (ray->ray_dir_y * ray->ray_dir_y) / (ray->ray_dir_x * ray->ray_dir_x));
+	// ray->delta_dist_y = sqrt(1 + (ray->ray_dir_x * ray->ray_dir_x) / (ray->ray_dir_y * ray->ray_dir_y));
 	while (ray->hit == 0)
 	{
-		if (ray->sideDistX < ray->sideDistY)
+		if (ray->side_dist_x < ray->side_dist_y)
 		{
-			ray->sideDistX += ray->deltaDistX;
-			ray->map_pos.x += ray->stepX;
+			ray->side_dist_x += ray->delta_dist_x;
+			ray->map_pos.x += ray->step_x;
 			ray->side = 0;
 		}
 		else
 		{
-			ray->sideDistY += ray->deltaDistY;
-			ray->map_pos.y += ray->stepY;
+			ray->side_dist_y += ray->delta_dist_y;
+			ray->map_pos.y += ray->step_y;
 			ray->side = 1;
 		}
 		if (vars->map[ray->map_pos.y][ray->map_pos.x] > '0')
 			ray->hit = 1;
 	}
-	ray->end_ray.x = ray->sideDistX;
-	ray->end_ray.y = ray->sideDistY;
+	ray->end_ray.x = ray->side_dist_x;
+	ray->end_ray.y = ray->side_dist_y;
 	if(ray->side == 0)
-		ray->perpWallDist = (ray->map_pos.x * TILE_SIZE - ray->posX + (1 - ray->stepX) / 2) / ray->rayDirX;
+		ray->perp_wall_dist = (ray->map_pos.x * TILE_SIZE - ray->pos_x + (1 - ray->step_x) / 2) / ray->ray_dir_x;
 	else
-		ray->perpWallDist =  (ray->map_pos.y * TILE_SIZE- ray->posY + (1 - ray->stepY) / 2) / ray->rayDirY;
-	// ray->perpWallDist *= cos(ray->cameraX * 0.66);
+		ray->perp_wall_dist =  (ray->map_pos.y * TILE_SIZE- ray->pos_y + (1 - ray->step_y) / 2) / ray->ray_dir_y;
+	// ray->perp_wall_dist *= cos(ray->camera_x * 0.66);
 	// print_ray_param(ray);
-	my_draw_line(get_carac_pos(vars->map, &vars->offset), (t_pos) {ray->posX + (ray->end_ray.x ), ray->posY + (ray->end_ray.y )}, &vars->mini_map);
+	// my_draw_line(get_carac_pos(vars->map, &vars->offset), (t_pos) {ray->pos_x + (ray->end_ray.x ), ray->pos_y + (ray->end_ray.y )}, &vars->mini_map);
 	return (0);
 }
 
@@ -144,37 +144,37 @@ int	raycast(t_mlx *vars)
 	img = vars->img;
 	origin = get_carac_pos(vars->map, &vars->offset);
 	ray.map_pos = get_carac_index(vars->map);
-	ray.posX = ray.map_pos.x + ((double)vars->offset.x / TILE_SIZE);
-	ray.posY = ray.map_pos.y + ((double)vars->offset.y / TILE_SIZE);
+	ray.pos_x = ray.map_pos.x + ((double)vars->offset.x / TILE_SIZE);
+	ray.pos_y = ray.map_pos.y + ((double)vars->offset.y / TILE_SIZE);
 	initial_pos = ray.map_pos;
 	origin.x = 0;
 	while (origin.x < vars->img.w)
 	{
-		ray.planeX = 0;
-		ray.planeY = 0.66;
-		ray.dirX = -1;
-		ray.dirY = 0;
-		ray.sideDistX = 0;
-		ray.sideDistY = 0;
-		ray.stepX = 0;
-		ray.stepY = 0;
+		ray.plane_x = 0;
+		ray.plane_y = 0.66;
+		ray.dir_x = -0.2;
+		ray.dir_y = -0.2;
+		ray.side_dist_x = 0;
+		ray.side_dist_y = 0;
+		ray.step_x = 0;
+		ray.step_y = 0;
 		color = 0xFFFF00FF;
 		ray.map_pos = initial_pos;
 		ray.hit = 0;
-		ray.cameraX = (2 * origin.x) / (double)vars->img.w - 1;
-		ray.rayDirX = ray.dirX + ray.planeX * ray.cameraX;
-		ray.rayDirY = ray.dirY + ray.planeY * ray.cameraX;
-		if (ray.rayDirX == 0)
-			ray.deltaDistX = 1e30;
+		ray.camera_x = (2 * origin.x) / (double)vars->img.w - 1;
+		ray.ray_dir_x = ray.dir_x + ray.plane_x * ray.camera_x;
+		ray.ray_dir_y = ray.dir_y + ray.plane_y * ray.camera_x;
+		if (ray.ray_dir_x == 0)
+			ray.delta_dist_x = 1e30;
 		else
-			ray.deltaDistX = fabs(1/ray.rayDirX);
-		if (ray.rayDirY == 0)
-			ray.deltaDistY = 1e30;
+			ray.delta_dist_x = fabs(1/ray.ray_dir_x);
+		if (ray.ray_dir_y == 0)
+			ray.delta_dist_y = 1e30;
 		else
-			ray.deltaDistY = fabs(1/ray.rayDirY);
+			ray.delta_dist_y = fabs(1/ray.ray_dir_y);
 		side_dist_and_stepper(&ray);
 		one_cast(&ray, vars);
-		int lineHeight = (int)(vars->map_img.h / ray.perpWallDist);
+		int lineHeight = (int)(vars->map_img.h / ray.perp_wall_dist);
 		// print_ray_param(&ray);
 		t_pos	end;
 
@@ -185,13 +185,13 @@ int	raycast(t_mlx *vars)
 		end.y = lineHeight + (img.h / 2);
 		if(end.y >= img.h)
 			end.y = img.h - 1;
-		// print_ray_param(&ray);
 		if (ray.side == 1)
 			color /= 2;
 		print_wall_from_ray(&origin, &end, &img, color);
 		origin.x++;
 		// usleep(500000);
 	}
+	print_ray_param(&ray);
 	// img = resize_img(vars, &vars->img, WIDTH,  HEIGHT);
 	mlx_put_image_to_window(vars->mlx, vars->win, img.img, 0, 0);
 	return (0);

@@ -6,32 +6,32 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/09 12:10:11 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/10 09:14:05 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE3D_H
 # define CUBE3D_H
 
-#include <X11/X.h>
-#include <bits/types/struct_timeval.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <unistd.h>
+# include <bits/types/struct_timeval.h>
+# include <X11/X.h>
+# include <stddef.h>
+# include <stdint.h>
+# include <stdlib.h>
+# include <unistd.h>
 
-#include "../minilibx-linux/mlx.h"
-#include "../libft/libft.h"
+# include "../minilibx-linux/mlx.h"
+# include "../libft/libft.h"
 
-#define SKY_COLOR 0xFF5EACFF
-#define GROUND_COLOR 0xFF5E3B10
+# define SKY_COLOR 0xFF5EACFF
+# define GROUND_COLOR 0xFF5E3B10
 // #define FOV 90
-#define HEIGHT 1000
-#define WIDTH 2000
-#define TILE_SIZE 50
-#define PLAYER_SPEED 4
-#define PLAYER_SIZE 2
-#define MINIMAP_SIZE 5
+# define HEIGHT 1000
+# define WIDTH 2000
+# define TILE_SIZE 50
+# define PLAYER_SPEED 4
+# define PLAYER_SIZE 2
+# define MINIMAP_SIZE 5
 
 typedef struct s_pos
 {
@@ -51,17 +51,7 @@ typedef struct s_direction
 	int	down;
 	int	right;
 	int	left;
-} t_direction;
-
-// typedef struct s_vector
-// {
-// 	t_posf		origin;
-// 	int			direction;
-// 	float		length;
-// 	double		delta_x;
-// 	double		delta_y;
-// 	double		angle;
-// }	t_vector;
+}	t_direction;
 
 typedef struct s_data
 {
@@ -73,6 +63,14 @@ typedef struct s_data
 	int		h;
 	int		w;
 }	t_data;
+
+typedef struct s_player_data
+{
+	t_pos	index_pos;
+	t_pos	pixel_pos;
+	t_posf	float_pos;
+
+}	t_player_data;
 
 typedef struct s_mlx
 {
@@ -97,26 +95,26 @@ typedef struct s_tab_size
 	size_t	column;
 }	t_tab_size;
 
-
-void	carac_pos_update(t_pos *offset, t_pos *carac_pos, char **map);
-int		map_gen(t_mlx *vars, char **map_tab);
-void	draw_square(t_data *img, t_pos origin, int size, int color);
-void	my_draw_line(t_pos origin, t_pos end, t_data *img);
-t_tab_size	char_tab_len(char **tab);
-void		print_map(char *map[]);
-t_data	new_img(t_mlx *vars, unsigned int width, unsigned int height);
+void			carac_pos_update(t_pos *offset, t_pos *carac_pos, char **map);
+int				map_gen(t_mlx *vars, char **map_tab);
+void			draw_square(t_data *img, t_pos origin, int size, int color);
+void			my_draw_line(t_pos origin, t_pos end, t_data *img);
+t_tab_size		char_tab_len(char **tab);
+void			print_map(char *map[]);
+t_data			new_img(t_mlx *vars, unsigned int width, unsigned int height);
 unsigned int	get_pixel_img(t_data *img, int x, int y);
-void	draw_horizon(t_data *img);
-void	draw_line_from_mid(t_data *img, t_pos origin, int distance);
-void	wall(t_data *img, float distance);
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int	create_trgb(int t, int r, int g, int b);
-int	raycast_one_vector(char **map);
-int	ray_dist(t_mlx *vars);
-t_data	resize_img(t_mlx *vars, t_data *img, unsigned int width, unsigned int height);
-int	init_mini_map(t_mlx *vars,t_pos	carac_pos);
-int	is_carac(char c);
-int	raycast(t_mlx *vars);
-t_pos	get_carac_pos(char **map, t_pos *offset);
-t_pos	get_carac_index(char **map);
+void			draw_horizon(t_data *img);
+void			draw_line_from_mid(t_data *img, t_pos origin, int distance);
+void			wall(t_data *img, float distance);
+void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int				create_trgb(int t, int r, int g, int b);
+int				raycast_one_vector(char **map);
+int				ray_dist(t_mlx *vars);
+t_data			resize_img(t_mlx *vars, t_data *img, unsigned int width, \
+	unsigned int height);
+int				init_mini_map(t_mlx *vars, t_pos	carac_pos);
+int				is_carac(char c);
+int				raycast(t_mlx *vars);
+t_pos			get_carac_pos(char **map, t_pos *offset);
+t_pos			get_carac_index(char **map);
 #endif
