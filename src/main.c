@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/13 00:14:17 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bits/types/struct_timeval.h>
 #include <stdio.h>
 
-#include "../headers/cube3d.h"
+#include "cube3d.h"
 #include <X11/X.h>
 #include <X11/keysym.h>
 #include <math.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "../headers/parsing.h"
+#include "parsing.h"
 #include "../minilibx-linux/mlx_int.h"
 #include "../minilibx-linux/mlx.h"
 #include <sys/time.h>
@@ -227,7 +227,7 @@ int	main(int argc, char **argv)
 	info = init_info();
 	vars.mlx = mlx_init();
 	vars.stats = info;
-	info->display->mlx = vars.mlx;
+	info->display = &vars;
 	if (!info)
 		return (error_msg(E_MALLOC), 0);
 	if (argc != 2)

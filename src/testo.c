@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   testo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 14:17:34 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/21 08:04:25 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <X11/keysym.h>
 #include <unistd.h>
 #include "../minilibx-linux/mlx.h"
-#include "../headers/cube3d.h"
+#include "cube3d.h"
 // #include "../libft/libft.h"
 
 

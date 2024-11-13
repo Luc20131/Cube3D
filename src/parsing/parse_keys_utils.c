@@ -6,12 +6,12 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 15:17:18 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/07 15:26:03 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
-#include "../headers/parsing.h"
+#include "cube3d.h"
+#include "parsing.h"
 
 int	skip_space(char *line)
 {
