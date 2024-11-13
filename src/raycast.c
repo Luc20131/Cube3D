@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/13 02:02:54 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/13 18:02:59 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,14 @@ int	one_cast(t_ray *ray, t_mlx *vars)
 	}
 	ray->end_ray.x = ray->side_dist_x;
 	ray->end_ray.y = ray->side_dist_y;
+	// if(ray->side == 0)
+	// 	ray->perp_wall_dist = (ray->map_pos.x * TILE_SIZE - ray->pos_x + (1 - ray->step_x) / 2) / ray->ray_dir_x;
+	// else
+	// 	ray->perp_wall_dist =  (ray->map_pos.y * TILE_SIZE- ray->pos_y + (1 - ray->step_y) / 2) / ray->ray_dir_y;
 	if(ray->side == 0)
-		ray->perp_wall_dist = (ray->map_pos.x * TILE_SIZE - ray->pos_x + (1 - ray->step_x) / 2) / ray->ray_dir_x;
+		ray->perp_wall_dist = ray->side_dist_x - ray->delta_dist_x;
 	else
-		ray->perp_wall_dist =  (ray->map_pos.y * TILE_SIZE- ray->pos_y + (1 - ray->step_y) / 2) / ray->ray_dir_y;
+		ray->perp_wall_dist = ray->side_dist_y - ray->delta_dist_y;
 	// ray->perp_wall_dist *= cos(ray->camera_x * 0.66);
 	// print_ray_param(ray);
 	// my_draw_line(get_carac_pos(vars->map, &vars->offset), (t_pos) {ray->pos_x + (ray->end_ray.x ), ray->pos_y + (ray->end_ray.y )}, &vars->mini_map);
@@ -158,20 +162,20 @@ int	raycast(t_mlx *vars)
 		ray.side_dist_y = 0;
 		ray.step_x = 0;
 		ray.step_y = 0;
-		color = 0xFFFF00FF;
+		color = 0xFF223F34;
 		ray.map_pos = initial_pos;
 		ray.hit = 0;
-		ray.camera_x = (2 * origin.x) / (double)vars->img.w - 1;
+		ray.camera_x = ((2 * origin.x) / (double)vars->img.w )- 1;
 		ray.ray_dir_x = ray.dir_x + ray.plane_x * ray.camera_x;
 		ray.ray_dir_y = ray.dir_y + ray.plane_y * ray.camera_x;
 		if (ray.ray_dir_x == 0)
 			ray.delta_dist_x = 1e30;
 		else
-			ray.delta_dist_x = fabs(1/ray.ray_dir_x);
+			ray.delta_dist_x = fabs(1.f/ray.ray_dir_x);
 		if (ray.ray_dir_y == 0)
 			ray.delta_dist_y = 1e30;
 		else
-			ray.delta_dist_y = fabs(1/ray.ray_dir_y);
+			ray.delta_dist_y = fabs(1.f/ray.ray_dir_y);
 		side_dist_and_stepper(&ray);
 		one_cast(&ray, vars);
 		int lineHeight = (int)(vars->map_img.h / ray.perp_wall_dist);
