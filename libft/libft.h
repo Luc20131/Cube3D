@@ -6,10 +6,9 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:44:41 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/24 16:21:18 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/10 08:53:30 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef LIBFT_H
 # define LIBFT_H
