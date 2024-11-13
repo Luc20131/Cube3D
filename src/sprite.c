@@ -6,11 +6,11 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/10/31 00:03:23 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
+#include "cube3d.h"
 #include <math.h>
 #include <stdio.h>
 

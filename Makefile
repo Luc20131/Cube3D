@@ -1,18 +1,19 @@
 MAKE = @make --no-print-directory
 
 CC = cc
-FLAG = -Werror -Wall -Wextra -g3 
+IFLAGS = -Iheaders/
+CFLAGS = -Werror -Wall -Wextra -g3 ${IFLAGS}
 NAME = cub3D
 
 HEADER = ./headers/cube3d.h ./headers/parsing.h
 SRC_DIR=src/
-SRC_DIR_P=src/parsing/
+
 SRC_LIST= main.c map_gen.c length.c testo.c sprite.c #map_autotile.c map_autotile_utils.c map_inits.c parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c 
 SRC_LIST_P = parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c map_autotile.c map_autotile_utils.c map_inits.c
-SRC=$(addprefix $(SRC_DIR),$(SRC_LIST))
-SRC_P=$(addprefix $(SRC_DIR_P),$(SRC_LIST_P))
+SRC=$(addprefix $(SRC_DIR),$(SRC_LIST)) \
+	$(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))
 OBJ_DIR=obj/
-OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC)$(SRC_P))
+OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
 
 INCLUDE = -L libft -l ft -Lminilibx-linux -lmlx_Linux -lX11 -lXext -lm
 LIBFT_DIR=libft/
@@ -22,7 +23,7 @@ LIBFT = $(LIBFT_DIR)libft.a
 
 MINILIBX = minilibx-linux/libmlx_Linux.a
 
-NB_FILES=$(words $(SRC_LIST))
+NB_FILES=$(words $(OBJ))
 
 GREEN="\033[0;32m"
 RED="\033[0;31m"
@@ -30,7 +31,7 @@ BLUE="\033[0;34m"
 END_COLOUR="\033[0m"
 
 define percent
-	@echo -ne $(BLUE)"[$$(echo "scale=2; $$(find $(OBJ_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(GREEN)
+	@echo -n $(BLUE)"[$$(echo "scale=2; $$(find $(OBJ_DIR) -maxdepth 2 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(GREEN)
 endef
 
 define prompt
@@ -61,13 +62,13 @@ all :
 
 $(OBJ_DIR)%.o:  $(SRC_DIR)%.c Makefile $(HEADER)
 	$(call percent)
-	$(CC) $(FLAG) -c $< -o $@
-	@echo -ne $(END_COLOUR)
+	$(CC) $(CFLAGS) -c $< -o $@
+	@echo -n $(END_COLOUR)
 
 $(NAME) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ)
 	$(call percent)
-	$(CC) $(FLAG) -o $@ $(OBJ) $(INCLUDE)
-	@echo -ne $(END_COLOUR)
+	$(CC) $(CFLAGS) -o $@ $(OBJ) $(INCLUDE)
+	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
 
 $(LIBFT) : $(LIBFT_SRC_FULL) libft/libft.h
@@ -77,7 +78,7 @@ $(MINILIBX) :
 	$(MAKE) -C minilibx-linux
 
 $(OBJ_DIR):
-	@mkdir $@
+	@mkdir -p $(sort $(dir ${OBJ}))
 
 clean :
 	@echo -e $(BLUE)Cleaning...$(END_COLOUR)

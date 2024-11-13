@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   length.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 21:01:36 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/09/25 14:18:52 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
+#include "cube3d.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -6,11 +6,11 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:10:14 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/03 18:55:40 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
+#include "cube3d.h"
 
 void	tile_assembler(t_tile *tile, int nb, t_pos pos)
 {

@@ -6,12 +6,12 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 18:00:39 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/22 14:20:15 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
-#include "../headers/parsing.h"
+#include "cube3d.h"
+#include "parsing.h"
 
 int	get_color_value(char *key_v)
 {
