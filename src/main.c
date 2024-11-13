@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/11 15:49:51 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 00:14:17 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,13 @@ int	key_hook( int keycode, t_mlx *vars)
 		gettimeofday(&timer, NULL);
 		mlx_do_key_autorepeaton(vars->mlx);
 		while (vars->map[i])
-			free(vars->map[i++]);
-		free(vars->map);
+			nfree(vars->map[i++]);
+		nfree(vars->map);
 		printf("fps : %lu", vars->fps / (timer.tv_sec - vars->time.tv_sec));
 		mlx_destroy_image(vars->mlx, vars->img.img);
 		mlx_destroy_window(vars->mlx, vars->win);
 		mlx_destroy_display(vars->mlx);
-		free(vars->mlx);
+		nfree(vars->mlx);
 		exit(1);
 	}
 	else if (keycode == 'd')
@@ -212,6 +212,12 @@ void	map(t_mlx *vars)
   vars->fps++;
 }
 
+void	nfree(void *pointer)
+{
+	free(pointer);
+	pointer = NULL;
+}
+
 int	main(int argc, char **argv)
 {
 	t_info	*info;
@@ -221,7 +227,7 @@ int	main(int argc, char **argv)
 	info = init_info();
 	vars.mlx = mlx_init();
 	vars.stats = info;
-	info->win.mlx = vars.mlx;
+	info->display->mlx = vars.mlx;
 	if (!info)
 		return (error_msg(E_MALLOC), 0);
 	if (argc != 2)
@@ -229,27 +235,10 @@ int	main(int argc, char **argv)
 	else
 	{
 		if (parsing_cube(argv[1], &vars.stats) == 0)
-			;//return (1);
+			return (1);
 		else
 			ft_printf("PARSING ✅\n");
 	}
-	////////////////////////////////////////////////////////////////////////////
-	int i = -1;
-	while (++i < 4)
-	{
-		if (info->img_texture[i].img)
-			mlx_destroy_image(vars.mlx,info->img_texture[i].img);
-	}
-	if (vars.mlx)
-	{
-		mlx_destroy_display(vars.mlx);
-		free(vars.mlx);
-	}
-	if (info->map)
-		freetab(info->map);
-	free(info);
-	exit(EXIT_SUCCESS);
-	////////////////////////////////////////////////////////////////////////////
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Cube3D");
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
 	gettimeofday(&vars.time, NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:35:14 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/11 11:59:50 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 00:05:42 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	get_back(t_stats **stats, char **map)
 	while ((*stats)->prev && (*stats)->dir == 0)
 	{
 		*stats = (*stats)->prev;
-		free((*stats)->next);
+		nfree((*stats)->next);
 		(*stats)->next = NULL;
 		if ((*stats)->dir != 0)
 		{

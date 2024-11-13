@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:55:06 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/18 15:04:18 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 00:05:42 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	free_stats(t_stats **stats)
 	{
 		tmp = *stats;
 		(*stats) = (*stats)->next;
-		free (tmp);
+		nfree (tmp);
 	}
 }
 

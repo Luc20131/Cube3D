@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:19:00 by sjean             #+#    #+#             */
-/*   Updated: 2024/10/22 17:56:43 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 00:21:41 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ void	freetab(char **tab)
 
 	i = 0;
 	while (tab[i])
-		free(tab[i++]);
-	free(tab);
+		nfree(tab[i++]);
+	nfree(tab);
 }
 
 int	valid_key(t_info *info)
 {
 	int	i;
-	int fd;
+	int	fd;
 
 	i = -1;
 	while (++i < 4)
@@ -72,15 +72,15 @@ int	check_map(t_info *info, t_list **head)
 	int	result;
 
 	if (init_map(info, *head) == E_MALLOC)
-		return (ft_lstclear(head, free), E_MALLOC);
+		return (ft_lstclear(head, nfree), E_MALLOC);
 	if (!check_valid_chr_map(info->map))
-		return (ft_lstclear(head, free), E_INVALID_MAP);
+		return (ft_lstclear(head, nfree), E_INVALID_MAP);
 	result = parse_map(info->map, info->player);
 	if (result == E_HOLE)
-		return (ft_lstclear(head, free), E_HOLE);
+		return (ft_lstclear(head, nfree), E_HOLE);
 	if (result == E_MALLOC)
-		return (ft_lstclear(head, free), E_MALLOC);
-	return (ft_lstclear(head, free), SUCCESS);
+		return (ft_lstclear(head, nfree), E_MALLOC);
+	return (ft_lstclear(head, nfree), SUCCESS);
 }
 
 void	show_map(char **map)

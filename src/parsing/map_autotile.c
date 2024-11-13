@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_autotile.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:28:03 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/03 18:26:30 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/13 00:05:42 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	*x_dir(int *c, t_pos pos, t_mlx g, t_pos map_size)
 	g.map[pos.x + 1][pos.y -1] == '0')
 		c[6] = '0' - 48;
 	else if ((pos.x + 1 < map_size.y && pos.y -1 >= 0 && \
-	g.map[pos.x + 1][pos.y -1] == '1') || (pos.x + 1 >= map_size.y ))
+	g.map[pos.x + 1][pos.y -1] == '1') || (pos.x + 1 >= map_size.y))
 		c[6] = '1' - 48;
 	return (c);
 }
@@ -80,8 +80,8 @@ int	*init_dir(int *c, t_pos pos, t_mlx g, t_pos map_size)
 
 void	autotile_dir(char **map, t_mlx *g, int *t, t_pos pos)
 {
-	int	i;
-	int	*dir;
+	int		i;
+	int		*dir;
 	t_pos	map_size;
 
 	map_size = size_map(map);
@@ -92,22 +92,22 @@ void	autotile_dir(char **map, t_mlx *g, int *t, t_pos pos)
 	dir = init_dir(dir, pos, *g, map_size);
 	*t = (1 * dir[0] + 2 * dir[1] + 4 * dir[2] + 8 * dir[3] + \
 		16 * dir[4] + 32 * dir[5] + 64 * dir[6] + 128 * dir[7] + 256 * dir[8]);
-	free(dir);
+	nfree(dir);
 }
 
 void	autotile_generator(char **map, t_mlx *g)
 {
-	int	h;
-	int	w;
-	int	i;
-	int	size;
+	int		h;
+	int		w;
+	int		i;
+	int		size;
 	t_pos	map_size;
 
 	map_size = size_map(g->map);
 	i = -1;
 	h = -1;
 	size = map_size.y * map_size.x;
-	g->stats_tile = ft_calloc(size ,sizeof(int *));
+	g->stats_tile = ft_calloc(size, sizeof(int *));
 	while (map[++h])
 	{
 		w = -1;
