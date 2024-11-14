@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/13 21:13:15 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/14 00:10:56 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_posf
 
 typedef struct s_direction
 {
-	int	up;
+	int	forward;
 	int	down;
 	int	right;
 	int	left;

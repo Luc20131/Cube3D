@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/13 21:11:13 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/14 00:11:55 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #include <sys/time.h>
 #define SKY_COLOR 0xFF5EACFF
 #define GROUND_COLOR 0xFF5E3B10
-#define FPS_LIMIT 120
+#define FPS_LIMIT 1200
 
 void	map(t_mlx *vars);
 t_pos	get_carac_index(char **map);
@@ -45,7 +45,7 @@ int	key_released(int keycode, t_mlx *vars)
 	else if (keycode == 'd')
 		vars->movement.right = 0;
 	else if (keycode == 'w')
-		vars->movement.up = 0;
+		vars->movement.forward = 0;
 	else if (keycode == 's')
 		vars->movement.down = 0;
 	return (0);
@@ -59,12 +59,12 @@ int	tick(t_mlx *vars)
 		vars->offset.x += PLAYER_SPEED * (vars->movement.right + vars->movement.left);
 	else if (vars->movement.left && !check_colision(vars->carac_index, vars, 'W'))
 		vars->offset.x += PLAYER_SPEED * (vars->movement.right + vars->movement.left);
-	if ( vars->movement.up && !check_colision(vars->carac_index, vars, 'N'))
-		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
+	if ( vars->movement.forward && !check_colision(vars->carac_index, vars, 'N'))
+		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.forward);
 	else if (vars->movement.down && !check_colision(vars->carac_index, vars, 'S'))
-		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.up);
+		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.forward);
 	map(vars);
-	usleep(1000000/FPS_LIMIT);
+	// usleep(1000000/FPS_LIMIT);
 	return (1);
 }
 
@@ -103,7 +103,7 @@ int	key_hook( int keycode, t_mlx *vars)
 	}
 	else if (keycode == 'w')
 	{
-		vars->movement.up = -1;
+		vars->movement.forward = -1;
 	}
 	return (0);
 }
@@ -193,6 +193,7 @@ void	map(t_mlx *vars)
 		vars->stats->old_pos = get_carac_pos(vars->map, &vars->offset);
 		draw_map(vars);
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
+		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
 	}
 	if (vars->stats->old_pos.x != vars->offset.x \
@@ -201,10 +202,10 @@ void	map(t_mlx *vars)
 		vars->stats->old_pos.x = vars->offset.x;
 		vars->stats->old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
+		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
 	}
 	// usleep(1000000/120);
-	raycast(vars);
 	vars->fps++;
 }
 
