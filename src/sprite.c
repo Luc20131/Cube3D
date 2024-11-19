@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/13 20:45:46 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/15 07:56:38 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ t_data	resize_img(t_mlx *vars, t_data *img, unsigned int width, unsigned int hei
 	t_pos			pos_img;
 	t_data			resized_img;
 	int				color;
-	// int				next_color;
-	// int				delta_color;
+	int				next_color;
+	int				delta_color;
 	t_pos			ratio;
 	int				i;
 	int				j;
@@ -73,17 +73,15 @@ t_data	resize_img(t_mlx *vars, t_data *img, unsigned int width, unsigned int hei
 		while (pos_img.x < img->w)
 		{
 			color = get_pixel_img(img, pos_img.x, pos_img.y);
-			// my_mlx_pixel_put(&resized_img, pos_resized.x, pos_resized.y, color);
-
-			// if (pos_img.x + 1 < img->w)
-			// {
-			// 	next_color = get_pixel_img(img, pos_img.x + 1, pos_img.y);
-			// 	delta_color = next_color - color;
+			if (pos_img.x + 1 < img->w)
+			{
+				next_color = get_pixel_img(img, pos_img.x + 1, pos_img.y);
+				delta_color = next_color - color;
 				i = 0;
 				while (i < ratio.x)
 				{
-					// color += delta_color;
-					// color = get_pixel_img(img, pos_img.x, pos_img.y);
+					color += delta_color;
+					color = get_pixel_img(img, pos_img.x, pos_img.y);
 					j = 0;
 					while (j != pos_img.x && j != pos_img.y)
 					{
@@ -98,16 +96,13 @@ t_data	resize_img(t_mlx *vars, t_data *img, unsigned int width, unsigned int hei
 					}
 					i++;
 				}
-			// }
-			// my_mlx_pixel_put(&resized_img, pos_resized.x + 1, pos_resized.y, color);
-			// my_mlx_pixel_put(&resized_img, pos_resized.x, pos_resized.y + 1, color);
-			// my_mlx_pixel_put(&resized_img, pos_resized.x + 1, pos_resized.y + 1, color);
+			}
 			pos_resized.x += ratio.x;
 			pos_img.x++;
 		}
 		pos_resized.y += ratio.y;
 		pos_img.y++;
 	}
-	mlx_destroy_image(vars->mlx, img->img);
+	// mlx_destroy_image(vars->mlx, img->img);
 	return (resized_img);
 }

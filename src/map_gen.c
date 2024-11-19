@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/13 20:41:26 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/16 11:37:01 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ t_data	new_img(t_mlx *vars, unsigned int width, unsigned int height)
 	return (frame);
 }
 
-int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
+int	init_mini_map(t_mlx *vars,t_pos carac_pos)
 {
-	t_pos	index;
-	t_pos	size;
-	t_pos	origin;
-	t_pos	map_size;
+	t_pos			index;
+	t_pos			size;
+	t_pos			origin;
+	t_pos			map_size;
 	unsigned int	pixel;
-	t_data	monitoring;
+	t_data			monitoring;
 
 	index.x = 0;
 	index.y = 0;
@@ -58,8 +58,8 @@ int	 	init_mini_map(t_mlx *vars,t_pos	carac_pos)
 		{
 			if (index.y == 0 || index.y == size.y - 1)
 				pixel = 0xFF3F3F3F;
-			else if (origin.x + index.x < 0 || origin.y + index.y < 0 ||
-			origin.x + index.x >= map_size.x * TILE_SIZE || origin.y + index.y >= map_size.y * TILE_SIZE)
+			else if (origin.x + index.x < 0 || origin.y + index.y < 0 \
+			|| origin.x + index.x >= map_size.x * TILE_SIZE || origin.y + index.y >= map_size.y * TILE_SIZE)
 				pixel = 0x00000000;
 			else
 				pixel = get_pixel_img(&vars->map_img, origin.x + index.x, origin.y + index.y);
@@ -273,7 +273,8 @@ void	draw_map(t_mlx *game)
 	start_tiles_init(game);
 	autotile_generator(game->map, game);
 	map_size = size_map(game->map);
- 	game->map_img = new_img(game, map_size.x * TILE_SIZE, map_size.y * TILE_SIZE);
+	game->map_img = new_img(game, map_size.x * TILE_SIZE, \
+		map_size.y * TILE_SIZE);
 	while (++j < map_size.y)
 	{
 		i = -1;
@@ -281,7 +282,8 @@ void	draw_map(t_mlx *game)
 		{
 			pos = tile_selector(game->tile, &game->stats_tile[++k]);
 			img = img_cut("texture/SusMap.xpm", pos, game);
-			put_data_to_img(game->map_img, img, i * TILE_SIZE, j * TILE_SIZE);
+			put_data_to_img(game->map_img, img, i * TILE_SIZE, \
+				j * TILE_SIZE);
 			mlx_destroy_image(game->mlx, img.img);
 		}
 	}

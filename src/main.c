@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/14 00:11:55 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/17 07:49:04 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@
 #include "parsing.h"
 #include "../minilibx-linux/mlx_int.h"
 #include "../minilibx-linux/mlx.h"
-#include <sys/time.h>
-#define SKY_COLOR 0xFF5EACFF
-#define GROUND_COLOR 0xFF5E3B10
 #define FPS_LIMIT 1200
 
 void	map(t_mlx *vars);
@@ -38,92 +35,30 @@ int	is_carac(char c)
 	return (c == 'N' || c == 'E' || c == 'S' || c == 'W');
 }
 
-int	key_released(int keycode, t_mlx *vars)
-{
-	if (keycode == 'a')
-		vars->movement.left = 0;
-	else if (keycode == 'd')
-		vars->movement.right = 0;
-	else if (keycode == 'w')
-		vars->movement.forward = 0;
-	else if (keycode == 's')
-		vars->movement.down = 0;
-	return (0);
-}
-
 int	tick(t_mlx *vars)
 {
 	vars->carac_index = get_carac_index(vars->map);
 	vars->carac_pos = get_carac_pos(vars->map, &vars->offset);
-	if (vars->movement.right && !check_colision(vars->carac_index, vars, 'E'))
-		vars->offset.x += PLAYER_SPEED * (vars->movement.right + vars->movement.left);
-	else if (vars->movement.left && !check_colision(vars->carac_index, vars, 'W'))
-		vars->offset.x += PLAYER_SPEED * (vars->movement.right + vars->movement.left);
-	if ( vars->movement.forward && !check_colision(vars->carac_index, vars, 'N'))
-		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.forward);
-	else if (vars->movement.down && !check_colision(vars->carac_index, vars, 'S'))
-		vars->offset.y += PLAYER_SPEED * (vars->movement.down + vars->movement.forward);
+	if (vars->movement.right \
+	&& !check_colision(vars->carac_index, vars, 'E'))
+		vars->offset.x += PLAYER_SPEED * \
+		(vars->movement.right + vars->movement.left);
+	else if (vars->movement.left \
+		&& !check_colision(vars->carac_index, vars, 'W'))
+		vars->offset.x += PLAYER_SPEED * \
+		(vars->movement.right + vars->movement.left);
+	if ( vars->movement.forward \
+		&& !check_colision(vars->carac_index, vars, 'N'))
+		vars->offset.y += PLAYER_SPEED * \
+		(vars->movement.down + vars->movement.forward);
+	else if (vars->movement.down \
+		&& !check_colision(vars->carac_index, vars, 'S'))
+		vars->offset.y += PLAYER_SPEED * \
+		(vars->movement.down + vars->movement.forward);
 	map(vars);
 	// usleep(1000000/FPS_LIMIT);
 	return (1);
 }
-
-int	key_hook( int keycode, t_mlx *vars)
-{
-	int	i;
-	struct timeval timer;
-
-	i = 0;
-	if (keycode == 65307)
-	{
-		gettimeofday(&timer, NULL);
-		mlx_do_key_autorepeaton(vars->mlx);
-		while (vars->map[i])
-			nfree(vars->map[i++]);
-		nfree(vars->map);
-		printf("fps : %lu", vars->fps / (timer.tv_sec - vars->time.tv_sec));
-		mlx_destroy_image(vars->mlx, vars->img.img);
-		mlx_destroy_window(vars->mlx, vars->win);
-		mlx_destroy_display(vars->mlx);
-		nfree(vars->mlx);
-		exit(1);
-		mlx_do_key_autorepeaton(vars->mlx);
-	}
-	else if (keycode == 'd')
-	{
-		vars->movement.right = 1;
-	}
-	else if (keycode == 'a')
-	{
-		vars->movement.left = -1;
-	}
-	else if (keycode == 's')
-	{
-		vars->movement.down = 1;
-	}
-	else if (keycode == 'w')
-	{
-		vars->movement.forward = -1;
-	}
-	return (0);
-}
-
-// void	wall(t_data *img, float distance)
-// {
-// 	t_pos	pos;
-
-// 	pos.y = SIZE_IMG >> 1;
-// 	pos.x = 0;
-// 	while (pos.x < SIZE_IMG)
-// 	{
-// 		if (pos.x > 650 && pos.x < 900)
-// 			distance--;
-// 		else
-// 			distance++;
-// 		draw_line_from_mid(img, pos, distance);
-// 		pos.x++;
-// 	}
-// }
 
 t_pos	get_carac_index(char **map)
 {
@@ -175,13 +110,17 @@ t_pos	get_carac_pos(char **map, t_pos *offset)
 int	check_colision(t_pos index, t_mlx *vars, char direction)
 {
 	if (direction == 'N')
-		return (vars->map[index.y - 1][index.x] == '1' && vars->offset.y - PLAYER_SPEED < 0);
+		return (vars->map[index.y - 1][index.x] == '1' \
+		&& vars->offset.y - PLAYER_SPEED < 0);
 	if (direction == 'S')
-		return (vars->map[index.y + 1][index.x] == '1' && vars->offset.y + PLAYER_SPEED > TILE_SIZE - (PLAYER_SIZE));
+		return (vars->map[index.y + 1][index.x] == '1' \
+	&& vars->offset.y + PLAYER_SPEED > TILE_SIZE - (PLAYER_SIZE));
 	if (direction == 'E')
-		return (vars->map[index.y][index.x + 1] == '1' && vars->offset.x + PLAYER_SPEED > TILE_SIZE - (PLAYER_SIZE));
+		return (vars->map[index.y][index.x + 1] == '1' \
+	&& vars->offset.x + PLAYER_SPEED > TILE_SIZE - (PLAYER_SIZE));
 	if (direction == 'W')
-		return (vars->map[index.y][index.x - 1] == '1' && vars->offset.x - PLAYER_SPEED < 0);
+		return (vars->map[index.y][index.x - 1] == '1' \
+	&& vars->offset.x - PLAYER_SPEED < 0);
 	return (0);
 }
 
@@ -194,7 +133,8 @@ void	map(t_mlx *vars)
 		draw_map(vars);
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		raycast(vars);
-		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
+		mlx_put_image_to_window(vars->mlx, vars->win,
+			 vars->mini_map.img, 100, 100);
 	}
 	if (vars->stats->old_pos.x != vars->offset.x \
 	|| vars->stats->old_pos.y != vars->offset.y)
@@ -203,10 +143,9 @@ void	map(t_mlx *vars)
 		vars->stats->old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		raycast(vars);
-		mlx_put_image_to_window(vars->mlx, vars->win, vars->mini_map.img, 100, 100);
+		mlx_put_image_to_window(vars->mlx, vars->win,
+			 vars->mini_map.img, 100, 100);
 	}
-	// usleep(1000000/120);
-	vars->fps++;
 }
 
 void	nfree(void *pointer)
@@ -240,7 +179,7 @@ int	main(int argc, char **argv)
 	vars.offset.x = (TILE_SIZE >> 1) - (PLAYER_SIZE >> 1);
 	vars.offset.y = TILE_SIZE >> 1;
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Cube3D");
+	vars.win = mlx_new_window(vars.mlx, WIDTH_WIN, HEIGHT_WIN, "Cube3D");
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
 	gettimeofday(&vars.time, NULL);
 	vars.map = info->map;
@@ -321,33 +260,10 @@ void	my_draw_line(t_pos origin, t_pos end, t_data *img)
 	while (current.x < end.x)
 	{
 		current.y = mid * (current.x - origin.x) + origin.y;
-		my_mlx_pixel_put(img, current.x, current.y, create_trgb(255, 255, 255, 255));
+		my_mlx_pixel_put(img, current.x, current.y, 0xFFFFFFFF);
 		current.x++;
 	}
 }
-
-// void	draw_horizon(t_data *img)
-// {
-// 	int x;
-// 	int y;
-// 	int	color;
-
-// 	x = 0;
-// 	y = 0;
-// 	color = create_trgb(255, 0, 170, 235);
-// 	while (y < SIZE_IMG)
-// 	{
-// 		x = 0;
-// 		while (x < SIZE_IMG)
-// 		{
-// 			if (y > SIZE_IMG / 2)
-// 				color = create_trgb(255, 100, 20, 225);
-// 			my_mlx_pixel_put(img, x, y, color);
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// }
 
 void	draw_line_from_mid(t_data *img, t_pos origin, int distance)
 {
@@ -359,13 +275,16 @@ void	draw_line_from_mid(t_data *img, t_pos origin, int distance)
 	current.y = origin.y;
 	while (current.y < origin.y + size)
 	{
-		my_mlx_pixel_put(img, current.x, origin.y + (origin.y - current.y), create_trgb(255, 255, 255, 255));
-		my_mlx_pixel_put(img, current.x, current.y, create_trgb(255, 255, 255, 255));
+		my_mlx_pixel_put(img, current.x, origin.y + (origin.y - current.y), \
+		create_trgb(255, 255, 255, 255));
+		my_mlx_pixel_put(img, current.x, current.y, \
+		create_trgb(255, 255, 255, 255));
 		current.y++;
 	}
 	while (current.y < HEIGHT)
 	{
-		my_mlx_pixel_put(img, current.x, origin.y + (origin.y - current.y), SKY_COLOR);
+		my_mlx_pixel_put(img, current.x, origin.y + (origin.y - current.y), \
+		SKY_COLOR);
 		my_mlx_pixel_put(img, current.x, current.y, GROUND_COLOR);
 		current.y++;
 	}

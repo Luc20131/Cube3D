@@ -6,13 +6,15 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/14 00:10:56 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/18 17:08:12 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE3D_H
 # define CUBE3D_H
 
+
+# include <sys/time.h>
 # include <X11/X.h>
 # include <bits/types/struct_timeval.h>
 # include <linux/limits.h>
@@ -20,16 +22,21 @@
 # include <stdint.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
+# include <math.h>
 
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 
-# define SIZE_IMG 1024
+// # define SIZE_IMG 1024
 # define SKY_COLOR 0xFF5EACFF
-# define GROUND_COLOR 0xFF5E3B10
-# define FOV 90
+# define GROUND_COLOR 0xFF170501
+
 # define HEIGHT 1080
 # define WIDTH 1920
+# define HEIGHT_WIN 1080
+# define WIDTH_WIN 1920
+
 # define TILE_SIZE 64
 # define PLAYER_SPEED 4
 # define PLAYER_SIZE 8
@@ -133,6 +140,31 @@ typedef struct s_info
 
 }	t_info;
 
+typedef struct s_ray
+{
+	double	dir_x;
+	double	dir_y;
+	double	camera_x;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	step_x;
+	double	step_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	pos_x;
+	double	pos_y;
+	double	plane_x;
+	double	plane_y;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	int		hit;
+	t_pos	map_pos;
+	double	perp_wall_dist;
+	int		side;
+	t_pos	end_ray;
+	t_pos	initial_pos;
+}	t_ray;
+
 void			nfree(void *pointer);
 void			carac_pos_update(t_pos *offset, t_pos *carac_pos, char **map);
 int				map_gen(t_mlx *vars, char **map_tab);
@@ -143,25 +175,22 @@ void			print_map(char *map[]);
 t_data			new_img(t_mlx *vars, unsigned int width, unsigned int height);
 void			carac_pos_update(t_pos *offset, t_pos *carac_pos, char **map);
 int				map_gen(t_mlx *vars, char **map_tab);
-void			draw_square(t_data *img, t_pos origin, int size, int color);
 void			my_draw_line(t_pos origin, t_pos end, t_data *img);
 t_tab_size		char_tab_len(char **tab);
 void			print_map(char *map[]);
 t_data			new_img(t_mlx *vars, unsigned int width, unsigned int height);
 unsigned int	get_pixel_img(t_data *img, int x, int y);
-void					draw_horizon(t_data *img);
-void					draw_line_from_mid(t_data *img, t_pos origin, int distance);
-void					wall(t_data *img, float distance);
-void					my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int							create_trgb(int t, int r, int g, int b);
-int							raycast_one_vector(char **map);
-int							ray_dist(t_mlx *vars);
-t_data					resize_img(t_mlx *vars, t_data *img, unsigned int width, \
-	\
-				unsigned int height);
-int							init_mini_map(t_mlx *vars,  t_pos carac_pos);
+void			draw_horizon(t_data *img);
+void			draw_line_from_mid(t_data *img, t_pos origin, int distance);
+void			wall(t_data *img, float distance);
+void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int				create_trgb(int t, int r, int g, int b);
+int				raycast_one_vector(char **map);
+int				ray_dist(t_mlx *vars);
+t_data			resize_img(t_mlx *vars, t_data *img, unsigned int width, \
+	unsigned int height);
+int				init_mini_map(t_mlx *vars, t_pos carac_pos);
 t_pos			size_map(char **map);
-
 void			autotile_generator(char **map, t_mlx *g);
 void			start_tiles_init(t_mlx *g);
 t_data			new_file_img(char *path, t_mlx *window);
@@ -176,4 +205,8 @@ int				is_carac(char c);
 int				raycast(t_mlx *vars);
 t_pos			get_carac_pos(char **map, t_pos *offset);
 t_pos			get_carac_index(char **map);
+void			print_ray_param(t_ray *ray);
+void			init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin);
+int				key_hook( int keycode, t_mlx *vars);
+int				key_released(int keycode, t_mlx *vars);
 #endif
