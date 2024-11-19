@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/19 16:06:52 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/19 16:33:43 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	print_wall_from_ray(t_pos *origin, t_pos *end, t_data *img, int color)
 	{
 		my_mlx_pixel_put(img, current.x, current.y, color);
 		current.y++;
+		
 	}
 	while (current.y < img->h)
 	{
