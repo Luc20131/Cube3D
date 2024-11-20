@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   casting_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 02:06:05 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/19 14:47:28 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/20 13:45:09 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 {
-	ray->dir_x = -0.5;
+	ray->dir_x = 0.5;
 	ray->dir_y = 0;
 	ray->plane_y = 0.66;
     ray->plane_x = 0;
