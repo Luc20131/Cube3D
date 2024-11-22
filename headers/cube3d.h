@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/20 13:26:02 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/22 14:51:08 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,4 +209,9 @@ void			print_ray_param(t_ray *ray);
 void			init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin);
 int				key_hook( int keycode, t_mlx *vars);
 int				key_released(int keycode, t_mlx *vars);
+int	get_t(int trgb);
+int	get_r(int trgb);
+int	get_g(int trgb);
+int	get_b(int trgb);
+
 #endif

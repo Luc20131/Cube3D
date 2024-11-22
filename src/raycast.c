@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/20 16:54:48 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/22 15:03:48 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,62 +41,59 @@ void	side_dist_and_stepper(t_ray	*ray)
 	}
 }
 
-int	print_wall_from_ray(t_pos *origin, t_pos *end, t_mlx *vars, t_ray *ray)
+int	print_wall_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
 {
 	t_pos	current;
-	double	wallx;
+	double	wall_x;
 	double	step;
-	double	tex_pos;
-	int		texx;
-	int		texy;
-	int 	pixel;
+	int		tex_x;
+	float	tex_y;
+	unsigned int 	pixel;
 
-	current.x = origin->x;
-	if (current.x < 0)
-		current.x = 0;
+	current.x = wall_top->x;
 	current.y = 0;
-	if (current.y >= origin->y)
-		current.y = origin->y;
-	step = 1.0 * vars->stats->img_texture[0].h / (end->y - origin->y);
-	tex_pos = (origin->y - vars->img.h / 2 + (end->y - origin->y) / 2) * step;
+	if (current.y >= wall_top->y)
+		current.y = wall_top->y;
+	step = (1.0 * vars->stats->img_texture[0].h / (end->y - wall_top->y));
 	
 	if (ray->side == 0)
-		wallx = ray->pos_y + ray->perp_wall_dist * ray->ray_dir_y;
+		wall_x = ray->pos_y + ray->perp_wall_dist * ray->ray_dir_y;
 	else
-		wallx = ray->pos_x + ray->perp_wall_dist * ray->ray_dir_x;
-	wallx -= floor(wallx);
+		wall_x = ray->pos_x + ray->perp_wall_dist * ray->ray_dir_x;
+	wall_x -= floor(wall_x);
 
-	texx = (int)(wallx * (double)(vars->stats->img_texture[0].w));
+	tex_x = vars->stats->img_texture[0].w -(int)(wall_x * (double)(vars->stats->img_texture[0].w));
 	if (ray->side == 0 && ray->dir_x > 0)
-		texx = vars->stats->img_texture[0].w - texx - 1;
-	if (ray->side == 1 && ray->dir_y < 0)
-		texx = vars->stats->img_texture[0].w - texx - 1;
-	
-	while (current.y < origin->y)
+		tex_x = vars->stats->img_texture[0].w - tex_x;
+	if (ray->side == 1 && ray->dir_y <= 0)
+		tex_x = vars->stats->img_texture[0].w - tex_x;
+	while (current.y < wall_top->y)
 	{
-		my_mlx_pixel_put(&vars->img, current.x, current.y, 0xFF000030);
+		my_mlx_pixel_put(&vars->img, current.x, current.y, 0x00000030);
 		current.y++;
+	}
+	tex_y = -step;
+	if (current.y < 0)
+	{
+		tex_y = (step * (-1 * current.y));
+		current.y = 0;	
 	}
 	while (current.y < end->y && current.y < vars->img.h)
 	{
-		texy = (int)tex_pos & (vars->stats->img_texture[0].h - 1);	
-		if (current.y < 0)
-		{
-			tex_pos += (step * (-1 * current.y));
-			current.y = 0;	
-		}
-		else
-			tex_pos += step;
+		tex_y += step;
 		
-		pixel = get_pixel_img(&vars->stats->img_texture[0], texx, texy);
+		pixel = get_pixel_img(&vars->stats->img_texture[0], tex_x, tex_y);
+		// unsigned int test;
+		// pixel = pixel >> (int) ray->perp_wall_dist;
 		if (ray->side == 1)
-			pixel = (pixel >> 1) & 8355711;
+			pixel = ((pixel >> 1) & 0x007F7F7F);
+		// pixel -= test;
 		my_mlx_pixel_put(&vars->img, current.x, current.y, pixel);
 		current.y++;
 	}
 	while (current.y < vars->img.h)
 	{
-		my_mlx_pixel_put(&vars->img, current.x, current.y, 0xFF170501);
+		my_mlx_pixel_put(&vars->img, current.x, current.y, 0x00170501);
 		current.y++;
 	}
 	return (0);
@@ -130,7 +127,7 @@ int	one_cast(t_ray *ray, t_mlx *vars)
 	return (0);
 }
 
-void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
+void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *wall_top)
 {
 	int		line_height;
 	t_pos	end;
@@ -140,41 +137,41 @@ void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 	if (ray->perp_wall_dist == 0)
 		ray->perp_wall_dist = 0.001;
 	line_height = (int)(vars->map_img.h / ray->perp_wall_dist);
-	origin->y = -line_height + vars->img.h / 2;
-	// if (origin->y < 0)
-	// 	origin->y = 0;
-	end = *origin;
+	wall_top->y = -line_height + vars->img.h / 2;
+	// if (wall_top->y < 0)
+	// 	wall_top->y = 0;
+	end = *wall_top;
 	end.y = line_height + (vars->img.h / 2);
 	// if (end.y >= vars->img.h)
 	// 	end.y = vars->img.h - 1;
 	while (i < PIX_PER_RAY)
 	{
-		print_wall_from_ray(origin, &end, vars, ray);
+		print_wall_from_ray(wall_top, &end, vars, ray);
 		i++;
-		origin->x++;
+		wall_top->x++;
 	}
-	origin->x -= PIX_PER_RAY;
+	wall_top->x -= PIX_PER_RAY;
 }
 
 int	raycast(t_mlx *vars)
 {
 	t_ray	ray;
-	t_pos	origin;
+	t_pos	wall_top;
 
 	ft_bzero(&ray, sizeof(ray));
-	origin = get_carac_pos(vars->map, &vars->offset);
+	wall_top = get_carac_pos(vars->map, &vars->offset);
 	ray.map_pos = get_carac_index(vars->map);
 	ray.pos_x = ray.map_pos.x + ((double)vars->offset.x / TILE_SIZE);
 	ray.pos_y = ray.map_pos.y + ((double)vars->offset.y / TILE_SIZE);
 	ray.initial_pos = ray.map_pos;
-	origin.x = 0;
-	while (origin.x < vars->img.w)
+	wall_top.x = 0;
+	while (wall_top.x < vars->img.w)
 	{
-		init_value_for_cast(&ray, vars, &origin);
+		init_value_for_cast(&ray, vars, &wall_top);
 		side_dist_and_stepper(&ray);
 		one_cast(&ray, vars);
-		wall_printer_from_cast(&ray, vars, &origin);
-		origin.x += PIX_PER_RAY;
+		wall_printer_from_cast(&ray, vars, &wall_top);
+		wall_top.x += PIX_PER_RAY;
 	}
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
 	print_ray_param(&ray);
