@@ -2,7 +2,7 @@ MAKE = @make --no-print-directory
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -Werror -Wall -Wextra -g3 ${IFLAGS}
+CFLAGS = -Werror -Wall -Wextra -o3 ${IFLAGS}
 NAME = cub3D
 
 HEADER = ./headers/cube3d.h ./headers/parsing.h

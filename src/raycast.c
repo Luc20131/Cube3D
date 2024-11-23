@@ -6,13 +6,13 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/19 16:06:52 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/22 15:12:39 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/cube3d.h"
 #include <math.h>
-
+#define ROT_SPEED 0.05
 #define PIX_PER_RAY 1
 
 void	side_dist_and_stepper(t_ray	*ray)
@@ -88,8 +88,6 @@ int	one_cast(t_ray *ray, t_mlx *vars)
 		ray->perp_wall_dist = ray->side_dist_x - ray->delta_dist_x;
 	else
 		ray->perp_wall_dist = ray->side_dist_y - ray->delta_dist_y;
-	ray->end_ray.y = (int) ray->delta_dist_y * ray->dir_y;
-	ray->end_ray.x = (int) ray->delta_dist_x * ray->dir_y;
 	return (0);
 }
 
@@ -102,11 +100,11 @@ void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 
 	i = 0;
 	line_height = (int)(vars->map_img.h / ray->perp_wall_dist);
-	origin->y = -line_height + vars->img.h / 2;
+	origin->y = -line_height + (vars->img.h >> 1);
 	if (origin->y < 0)
 		origin->y = 0;
 	end = *origin;
-	end.y = line_height + (vars->img.h / 2);
+	end.y = line_height + (vars->img.h >> 1);
 	if (end.y >= vars->img.h)
 		end.y = vars->img.h - 1;
 	if (ray->side == 1)
@@ -124,26 +122,45 @@ void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 
 int	raycast(t_mlx *vars)
 {
-	t_ray	ray;
+	t_ray	*ray;
 	t_pos	origin;
 
 	ft_bzero(&ray, sizeof(ray));
+	ray = &vars->ray;
 	origin = get_carac_pos(vars->map, &vars->offset);
-	ray.map_pos = get_carac_index(vars->map);
-	ray.pos_x = ray.map_pos.x + ((double)vars->offset.x / TILE_SIZE);
-	ray.pos_y = ray.map_pos.y + ((double)vars->offset.y / TILE_SIZE);
-	ray.initial_pos = ray.map_pos;
+	ray->map_pos = get_carac_index(vars->map);
+	ray->pos_x = ray->map_pos.x + ((double)vars->offset.x / TILE_SIZE);
+	ray->pos_y = ray->map_pos.y + ((double)vars->offset.y / TILE_SIZE);
+	ray->initial_pos = ray->map_pos;
+    if (vars->movement.rotating == 1)
+      {
+        double oldDirX = ray->dir_x;
+      	ray->dir_x = ray->dir_x * cos(-ROT_SPEED) - ray->dir_y * sin(-ROT_SPEED);
+      	ray->dir_y = oldDirX * sin(-ROT_SPEED) + ray->dir_y * cos(-ROT_SPEED);
+      	double oldPlaneX = ray->plane_x;
+      	ray->plane_x = ray->plane_x * cos(-ROT_SPEED) - ray->plane_y * sin(-ROT_SPEED);
+      	ray->plane_y = oldPlaneX * sin(-ROT_SPEED) + ray->plane_y * cos(-ROT_SPEED);
+      }
+    else if (vars->movement.rotating == -1)
+       {
+        double oldDirX = ray->dir_x;
+      	ray->dir_x = ray->dir_x * cos(ROT_SPEED) - ray->dir_y * sin(ROT_SPEED);
+      	ray->dir_y = oldDirX * sin(ROT_SPEED) + ray->dir_y * cos(ROT_SPEED);
+      	double oldPlaneX = ray->plane_x;
+      	ray->plane_x = ray->plane_x * cos(ROT_SPEED) - ray->plane_y * sin(ROT_SPEED);
+      	ray->plane_y = oldPlaneX * sin(ROT_SPEED) + ray->plane_y * cos(ROT_SPEED);
+       }
 	origin.x = 0;
 	while (origin.x < vars->img.w)
 	{
-		init_value_for_cast(&ray, vars, &origin);
-		side_dist_and_stepper(&ray);
-		one_cast(&ray, vars);
-		wall_printer_from_cast(&ray, vars, &origin);
+		init_value_for_cast(ray, vars, &origin);
+		side_dist_and_stepper(ray);
+		one_cast(ray, vars);
+		wall_printer_from_cast(ray, vars, &origin);
 		origin.x += PIX_PER_RAY;
 	}
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
-	print_ray_param(&ray);
+//	print_ray_param(&ray);
 	vars->fps++;
 	return (0);
 }
