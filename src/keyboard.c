@@ -21,8 +21,12 @@ int	key_released(int keycode, t_mlx *vars)
 	else if (keycode == 'w')
 		vars->movement.forward = 0;
 	else if (keycode == 's')
-		vars->movement.down = 0;
-	return (0);
+		vars->movement.backward = 0;
+    else if (keycode == 65363)
+        vars->movement.rotating = 0;
+    else if (keycode == 65361)
+        vars->movement.rotating = 0;
+    return (0);
 }
 
 void	fps(t_mlx *vars)
@@ -56,8 +60,14 @@ int	key_hook( int keycode, t_mlx *vars)
 	else if (keycode == 'a')
 		vars->movement.left = -1;
 	else if (keycode == 's')
-		vars->movement.down = 1;
+		vars->movement.backward = -1;
 	else if (keycode == 'w')
-		vars->movement.forward = -1;
+		vars->movement.forward = 1;
+   	else if (keycode == 65363)
+        vars->movement.rotating = -1;
+    else if (keycode == 65361)
+        vars->movement.rotating = 1;
+    else
+      printf("%i\n", keycode);
 	return (0);
 }

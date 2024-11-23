@@ -13,7 +13,6 @@
 #ifndef CUBE3D_H
 # define CUBE3D_H
 
-
 # include <sys/time.h>
 # include <X11/X.h>
 # include <bits/types/struct_timeval.h>
@@ -57,10 +56,12 @@ typedef struct s_posf
 
 typedef struct s_direction
 {
-	int	forward;
-	int	down;
-	int	right;
-	int	left;
+	int		forward;
+	int		backward;
+	int		right;
+	int		left;
+    float		rotating;
+    int		rotation_speed;
 }	t_direction;
 
 typedef struct s_tile
@@ -96,50 +97,6 @@ typedef struct s_player_data
 
 }	t_player_data;
 
-typedef struct s_mlx
-{
-	void			*mlx;
-	void			*win;
-	t_data			img;
-	int				distance;
-	t_data			map_img;
-	t_data			mini_map;
-	t_data			tilemap;
-	t_tile			tile[50];
-	int				*stats_tile;
-	t_pos			size_map;
-	t_pos			offset;
-	char			**map;
-	t_direction		movement;
-	size_t			fps;
-	struct timeval	time;
-	t_pos			carac_index;
-	t_pos			carac_pos;
-	struct s_info	*stats;
-}	t_mlx;
-
-typedef struct s_tab_size
-{
-	size_t	row;
-	size_t	column;
-}	t_tab_size;
-
-typedef struct s_info
-{
-	int		map_fd;
-	char	texture_path[4][PATH_MAX];
-	int		ceiling[3];
-	int		floor[3];
-	int		texture_valid[4];
-	t_data	img_texture[4];
-	t_mlx	*display;
-	t_pos	player;
-	t_pos	old_pos;
-	int		map_is_create;
-	char	**map;
-
-}	t_info;
-
 typedef struct s_ray
 {
 	double	dir_x;
@@ -164,6 +121,52 @@ typedef struct s_ray
 	t_pos	end_ray;
 	t_pos	initial_pos;
 }	t_ray;
+
+typedef struct s_mlx
+{
+	void			*mlx;
+	void			*win;
+	t_data			img;
+	int				distance;
+	t_data			map_img;
+	t_data			mini_map;
+	t_data			tilemap;
+	t_tile			tile[50];
+	int				*stats_tile;
+	t_pos			size_map;
+	t_pos			offset;
+	char			**map;
+	t_direction		movement;
+	size_t			fps;
+	struct timeval	time;
+	t_pos			carac_index;
+	t_posd			carac_pos;
+	struct s_info	*stats;
+    t_ray			ray;
+}	t_mlx;
+
+typedef struct s_tab_size
+{
+	size_t	row;
+	size_t	column;
+}	t_tab_size;
+
+typedef struct s_info
+{
+	int		map_fd;
+	char	texture_path[4][PATH_MAX];
+	int		ceiling[3];
+	int		floor[3];
+	int		texture_valid[4];
+	t_data	img_texture[4];
+	t_mlx	*display;
+	t_pos	player;
+	t_pos	old_pos;
+    float	old_angle;
+	int		map_is_create;
+	char	**map;
+
+}	t_info;
 
 void			nfree(void *pointer);
 void			carac_pos_update(t_pos *offset, t_pos *carac_pos, char **map);

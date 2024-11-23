@@ -39,22 +39,26 @@ int	tick(t_mlx *vars)
 {
 	vars->carac_index = get_carac_index(vars->map);
 	vars->carac_pos = get_carac_pos(vars->map, &vars->offset);
-	if (vars->movement.right \
-	&& !check_colision(vars->carac_index, vars, 'E'))
-		vars->offset.x += PLAYER_SPEED * \
-		(vars->movement.right + vars->movement.left);
-	else if (vars->movement.left \
-		&& !check_colision(vars->carac_index, vars, 'W'))
-		vars->offset.x += PLAYER_SPEED * \
-		(vars->movement.right + vars->movement.left);
-	if ( vars->movement.forward \
-		&& !check_colision(vars->carac_index, vars, 'N'))
-		vars->offset.y += PLAYER_SPEED * \
-		(vars->movement.down + vars->movement.forward);
-	else if (vars->movement.down \
-		&& !check_colision(vars->carac_index, vars, 'S'))
-		vars->offset.y += PLAYER_SPEED * \
-		(vars->movement.down + vars->movement.forward);
+	// if (vars->movement.forward)
+	// {
+ //    	vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_x);
+ //    	vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_y);
+	// }
+	// else if (vars->movement.backward)
+	// {
+ //    	vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_x);
+ //    	vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_y);
+	// }
+	// else if (vars->movement.right)
+	// {
+ //    	vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_y);
+ //    	vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_x);
+	// }
+	// else if (vars->movement.left)
+	// {
+ //    	vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_y);
+ //    	vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_x);
+	// }
 	map(vars);
 	// usleep(1000000/FPS_LIMIT);
 	return (1);
@@ -137,8 +141,9 @@ void	map(t_mlx *vars)
 			 vars->mini_map.img, 100, 100);
 	}
 	if (vars->stats->old_pos.x != vars->offset.x \
-	|| vars->stats->old_pos.y != vars->offset.y)
+	|| vars->stats->old_pos.y != vars->offset.y || vars->movement.rotating)
 	{
+        vars->stats->old_angle = vars->movement.rotating;
 		vars->stats->old_pos.x = vars->offset.x;
 		vars->stats->old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
@@ -185,6 +190,15 @@ int	main(int argc, char **argv)
 	vars.map = info->map;
 	vars.carac_index = get_carac_index(vars.map);
 	vars.carac_pos = get_carac_pos(vars.map, &vars.offset);
+    vars.movement.rotating = 0;
+    vars.movement.rotation_speed = 1;
+	if (vars.map[vars.carac_index.y][vars.carac_index.x] == 'N')
+    {
+     vars.ray.dir_x = 1;
+     vars.ray.dir_y = 0;
+    }
+   	vars.ray.plane_y = 0.66;
+    vars.ray.plane_x = 0;
 	map(&vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
