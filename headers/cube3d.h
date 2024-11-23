@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/22 14:51:08 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/23 19:22:05 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,30 @@
 # define PLAYER_SIZE 8
 
 # define MINIMAP_SIZE 5
+
+typedef unsigned char t_uchar;
+typedef unsigned int t_uint;
+
+struct s_argb {
+    t_uchar b;
+    t_uchar g;
+    t_uchar r;
+    t_uchar a;
+};
+
+union u_color {
+    t_uchar tab[4];
+    struct s_argb    argb;
+    struct {
+        t_uchar b;
+        t_uchar g;
+        t_uchar r;
+        t_uchar a;
+    };
+    t_uint x;
+};
+
+typedef union u_color t_color;
 
 typedef struct s_pos
 {
@@ -96,50 +120,6 @@ typedef struct s_player_data
 
 }	t_player_data;
 
-typedef struct s_mlx
-{
-	void			*mlx;
-	void			*win;
-	t_data			img;
-	int				distance;
-	t_data			map_img;
-	t_data			mini_map;
-	t_data			tilemap;
-	t_tile			tile[50];
-	int				*stats_tile;
-	t_pos			size_map;
-	t_pos			offset;
-	char			**map;
-	t_direction		movement;
-	size_t			fps;
-	struct timeval	time;
-	t_pos			carac_index;
-	t_pos			carac_pos;
-	struct s_info	*stats;
-}	t_mlx;
-
-typedef struct s_tab_size
-{
-	size_t	row;
-	size_t	column;
-}	t_tab_size;
-
-typedef struct s_info
-{
-	int		map_fd;
-	char	texture_path[4][PATH_MAX];
-	int		ceiling[3];
-	int		floor[3];
-	int		texture_valid[4];
-	t_data	img_texture[4];
-	t_mlx	*display;
-	t_pos	player;
-	t_pos	old_pos;
-	int		map_is_create;
-	char	**map;
-
-}	t_info;
-
 typedef struct s_ray
 {
 	double	dir_x;
@@ -165,6 +145,53 @@ typedef struct s_ray
 	t_pos	initial_pos;
 }	t_ray;
 
+typedef struct s_mlx
+{
+	void			*mlx;
+	void			*win;
+	t_data			img;
+	t_data			overlay;
+	int				distance;
+	t_data			map_img;
+	t_data			mini_map;
+	t_data			tilemap;
+	t_tile			tile[50];
+	int				*stats_tile;
+	t_pos			size_map;
+	t_pos			offset;
+	char			**map;
+	t_direction		movement;
+	size_t			fps;
+	struct timeval	time;
+	t_pos			carac_index;
+	t_pos			carac_pos;
+	struct s_info	*stats;
+	t_ray			ray;
+}	t_mlx;
+
+typedef struct s_tab_size
+{
+	size_t	row;
+	size_t	column;
+}	t_tab_size;
+
+typedef struct s_info
+{
+	int		map_fd;
+	char	texture_path[4][PATH_MAX];
+	int		ceiling[3];
+	int		floor[3];
+	int		texture_valid[4];
+	t_data	img_texture[4];
+	t_mlx	*display;
+	t_pos	player;
+	t_pos	old_pos;
+	int		map_is_create;
+	char	**map;
+
+}	t_info;
+
+
 void			nfree(void *pointer);
 void			carac_pos_update(t_pos *offset, t_pos *carac_pos, char **map);
 int				map_gen(t_mlx *vars, char **map_tab);
@@ -188,7 +215,7 @@ int				create_trgb(int t, int r, int g, int b);
 int				raycast_one_vector(char **map);
 int				ray_dist(t_mlx *vars);
 t_data			resize_img(t_mlx *vars, t_data *img, unsigned int width, \
-	unsigned int height);
+				unsigned int height);
 int				init_mini_map(t_mlx *vars, t_pos carac_pos);
 t_pos			size_map(char **map);
 void			autotile_generator(char **map, t_mlx *g);
@@ -209,6 +236,13 @@ void			print_ray_param(t_ray *ray);
 void			init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin);
 int				key_hook( int keycode, t_mlx *vars);
 int				key_released(int keycode, t_mlx *vars);
+float			init_pixel_tex_y(t_pos *current, double step);
+int				init_pixel_tex_x(t_ray *ray, t_mlx *vars);
+void			get_darker_color(float coef, t_color *color);
+int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
+int				print_floor(t_pos *current, t_mlx *vars, t_ray *ray);
+int				print_wall(t_pos *current, t_mlx *vars, double step, \
+				t_pos *end);
 int	get_t(int trgb);
 int	get_r(int trgb);
 int	get_g(int trgb);

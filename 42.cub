@@ -1,7 +1,7 @@
 NO texture/Wall.xpm
-WE texture/Sprite-0004.xpm
-SO texture/Sprite-0004.xpm
-EA                         texture/Sprite-0004.xpm
+WE texture/Wall.xpm
+SO texture/Wall.xpm
+EA                         texture/Wall.xpm
 F 220,100,0
 C 0  ,10,  0
 
