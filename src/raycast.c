@@ -94,7 +94,7 @@ void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *wall_top)
 	i = 0;
 	if (ray->perp_wall_dist == 0)
 		ray->perp_wall_dist = 0.001;
-	line_height = (int)(vars->map_img.h / ray->perp_wall_dist);
+	line_height = (int)(vars->img.h / ray->perp_wall_dist);
 	wall_top->y = -line_height + vars->img.h / 2;
 	end = *wall_top;
 	end.y = line_height + (vars->img.h / 2);
@@ -126,6 +126,73 @@ void put_img_to_img(t_data *src, t_data *dst)
 	}
 }
 
+void    upscale_raycast_to_screen(t_mlx *vars, t_data *screen)
+{
+	t_pos    screen_pos;
+	t_pos    raycast_pos;
+	unsigned int    pixel_color[WIDTH];
+	char    *dst;
+	int        nb_pixels;
+	int        nb_lines;
+	int        nb_pixel_in_lines;
+	float    ratio_w;
+	float    ratio_h;
+	int        i;
+
+	ratio_h = HEIGHT_WIN / HEIGHT;
+	ratio_w = WIDTH_WIN / WIDTH;
+	screen_pos.x = 0;
+	screen_pos.y = 0;
+	nb_pixels = screen->bits_per_pixel >> 3;
+	raycast_pos = screen_pos;
+	while (raycast_pos.y < vars->img.h)
+	{
+		screen_pos.x = 0;
+		raycast_pos.x = 0;
+		nb_lines = screen_pos.y * screen->line_length;
+		int nb_lines_raycast = raycast_pos.y * vars->img.line_length;
+		while (raycast_pos.x < vars->img.w)
+		{
+			nb_pixel_in_lines = screen_pos.x * nb_pixels;
+			dst = screen->addr + (nb_lines + nb_pixel_in_lines);
+			pixel_color[raycast_pos.x] = *(unsigned int *)((vars->img.addr + (nb_lines_raycast) + (raycast_pos.x * nb_pixels)));
+			i = 0;
+			while (i < ratio_w)
+			{
+				*(unsigned int *) dst = pixel_color[raycast_pos.x];
+				dst += nb_pixels;
+				i++;
+			}
+			raycast_pos.x++;
+			screen_pos.x += ratio_w;
+		}
+		i = 0;
+		while (i < ratio_h)
+		{
+			screen_pos.x = 0;
+			raycast_pos.x = 0;
+			nb_lines = screen_pos.y * screen->line_length;
+			while (raycast_pos.x < vars->img.w)
+			{
+				nb_pixel_in_lines = screen_pos.x * nb_pixels;
+				dst = screen->addr + (nb_lines + nb_pixel_in_lines);
+				int j = 0;
+				while (j < ratio_w)
+				{
+					*(unsigned int *) dst = pixel_color[raycast_pos.x];
+					dst += nb_pixels;
+					j++;
+				}
+				raycast_pos.x++;
+				screen_pos.x += ratio_w;
+			}
+			screen_pos.y++;
+			i++;
+		}
+		raycast_pos.y++;
+	}
+}
+
 int	raycast(t_mlx *vars)
 {
 	t_pos	wall_top;
@@ -148,8 +215,9 @@ int	raycast(t_mlx *vars)
 		wall_top.x += PIX_PER_RAY;
 	}
 	put_img_to_img(&vars->overlay, &vars->img);
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
-	print_ray_param(&vars->ray);
+	upscale_raycast_to_screen(vars, &vars->screen);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->screen.img, 0, 0);
+	// print_ray_param(&vars->ray);
 	vars->fps++;
 	return (0);
 }

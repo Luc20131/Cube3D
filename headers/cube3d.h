@@ -32,8 +32,8 @@
 # define SKY_COLOR 0xFF5EACFF
 # define GROUND_COLOR 0xFF170501
 
-# define HEIGHT 1080
-# define WIDTH 1920
+# define HEIGHT 270
+# define WIDTH 480
 # define HEIGHT_WIN 1080
 # define WIDTH_WIN 1920
 
@@ -155,6 +155,7 @@ typedef struct s_mlx
 	t_data			map_img;
 	t_data			mini_map;
 	t_data			tilemap;
+	t_data			screen;
 	t_tile			tile[50];
 	int				*stats_tile;
 	t_pos			size_map;

@@ -143,8 +143,6 @@ void	map(t_mlx *vars)
 		vars->stats->old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		raycast(vars);
-		mlx_put_image_to_window(vars->mlx, vars->win,
-			 vars->mini_map.img, WIDTH - vars->mini_map.w - 100, 100);
 	}
 }
 
@@ -180,6 +178,7 @@ int	main(int argc, char **argv)
 	vars.offset.y = TILE_SIZE >> 1;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIDTH_WIN, HEIGHT_WIN, "Cube3D");
+	vars.screen = new_img(&vars, WIDTH_WIN, HEIGHT_WIN);
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
 	vars.overlay = new_file_img("texture/Overlay.xpm", &vars);
 	gettimeofday(&vars.time, NULL);
