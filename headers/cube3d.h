@@ -13,7 +13,6 @@
 #ifndef CUBE3D_H
 # define CUBE3D_H
 
-
 # include <sys/time.h>
 # include <X11/X.h>
 # include <bits/types/struct_timeval.h>
@@ -81,10 +80,12 @@ typedef struct s_posf
 
 typedef struct s_direction
 {
-	int	forward;
-	int	down;
-	int	right;
-	int	left;
+	int		forward;
+	int		backward;
+	int		right;
+	int		left;
+    float		rotating;
+    int		rotation_speed;
 }	t_direction;
 
 typedef struct s_tile
@@ -165,7 +166,7 @@ typedef struct s_mlx
 	size_t			fps;
 	struct timeval	time;
 	t_pos			carac_index;
-	t_pos			carac_pos;
+	t_posd			carac_pos;
 	struct s_info	*stats;
 	t_ray			ray;
 }	t_mlx;
@@ -187,11 +188,11 @@ typedef struct s_info
 	t_mlx	*display;
 	t_pos	player;
 	t_pos	old_pos;
+    float	old_angle;
 	int		map_is_create;
 	char	**map;
 
 }	t_info;
-
 
 void			nfree(void *pointer);
 void			carac_pos_update(t_pos *offset, t_pos *carac_pos, char **map);

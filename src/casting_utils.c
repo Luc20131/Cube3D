@@ -15,16 +15,6 @@
 
 void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 {
-	ray->dir_x = 0.5;
-	ray->dir_y = 0;
-	ray->plane_y = 0.66;
-    ray->plane_x = 0;
-//	 double old_dir_x = ray->dir_x;
-//	 ray->dir_x = ray->dir_x * cos(-ROT_SPEED) - ray->dir_y * sin(-ROT_SPEED);
-//	 ray->dir_y = old_dir_x * sin(-ROT_SPEED) + ray->dir_y * cos(-ROT_SPEED);
-//	 double old_plane_x = ray->plane_x;
-//	 ray->plane_x = ray->plane_x * cos(-ROT_SPEED) - ray->plane_y * sin(-ROT_SPEED);
-//	 ray->plane_y = old_plane_x * sin(-ROT_SPEED) + ray->plane_y * cos(-ROT_SPEED);
 	ray->hit = 0;
 	ray->map_pos = ray->initial_pos;
 	ray->camera_x = ((2 * origin->x) / (double) vars->img.w) - 1;

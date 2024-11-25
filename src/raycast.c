@@ -12,7 +12,7 @@
 
 #include "../headers/cube3d.h"
 #include <math.h>
-
+#define ROT_SPEED 0.05
 #define PIX_PER_RAY 1
 
 void	side_dist_and_stepper(t_ray	*ray)
@@ -80,8 +80,6 @@ int	one_cast(t_ray *ray, t_mlx *vars)
 		ray->perp_wall_dist = ray->side_dist_x - ray->delta_dist_x;
 	else
 		ray->perp_wall_dist = ray->side_dist_y - ray->delta_dist_y;
-	ray->end_ray.y = (int) ray->delta_dist_y * ray->dir_y;
-	ray->end_ray.x = (int) ray->delta_dist_x * ray->dir_y;
 	return (0);
 }
 
@@ -205,6 +203,24 @@ int	raycast(t_mlx *vars)
 	vars->ray.pos_y = vars->ray.map_pos.y \
 	+ ((double)vars->offset.y / TILE_SIZE);
 	vars->ray.initial_pos = vars->ray.map_pos;
+      if (vars->movement.rotating == 1)
+      {
+        double oldDirX = ray->dir_x;
+      	ray->dir_x = ray->dir_x * cos(-ROT_SPEED) - ray->dir_y * sin(-ROT_SPEED);
+      	ray->dir_y = oldDirX * sin(-ROT_SPEED) + ray->dir_y * cos(-ROT_SPEED);
+      	double oldPlaneX = ray->plane_x;
+      	ray->plane_x = ray->plane_x * cos(-ROT_SPEED) - ray->plane_y * sin(-ROT_SPEED);
+      	ray->plane_y = oldPlaneX * sin(-ROT_SPEED) + ray->plane_y * cos(-ROT_SPEED);
+      }
+    else if (vars->movement.rotating == -1)
+       {
+        double oldDirX = ray->dir_x;
+      	ray->dir_x = ray->dir_x * cos(ROT_SPEED) - ray->dir_y * sin(ROT_SPEED);
+      	ray->dir_y = oldDirX * sin(ROT_SPEED) + ray->dir_y * cos(ROT_SPEED);
+      	double oldPlaneX = ray->plane_x;
+      	ray->plane_x = ray->plane_x * cos(ROT_SPEED) - ray->plane_y * sin(ROT_SPEED);
+      	ray->plane_y = oldPlaneX * sin(ROT_SPEED) + ray->plane_y * cos(ROT_SPEED);
+       }
 	wall_top.x = 0;
 	while (wall_top.x < vars->img.w)
 	{
@@ -217,7 +233,6 @@ int	raycast(t_mlx *vars)
 	put_img_to_img(&vars->overlay, &vars->img);
 	upscale_raycast_to_screen(vars, &vars->screen);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->screen.img, 0, 0);
-	// print_ray_param(&vars->ray);
 	vars->fps++;
 	return (0);
 }
