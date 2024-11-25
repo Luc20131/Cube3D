@@ -1,8 +1,8 @@
-NO texture/1bd.xpm
-WE texture/1bd.xpm
+NO texture/van_gogh.xpm
+WE texture/Wall.xpm
+SO texture/Wall.xpm
+EA                         texture/Wall.xpm
 F 220,100,0
-SO texture/1bd.xpm
-EA                         texture/1bd.xpm
 C 0  ,10,  0
 
 111111111111111111111111

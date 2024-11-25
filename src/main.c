@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/17 07:49:04 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/23 19:50:24 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void	map(t_mlx *vars)
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win,
-			 vars->mini_map.img, 100, 100);
+			 vars->mini_map.img, WIDTH - vars->mini_map.w - 100, 100);
 	}
 	if (vars->stats->old_pos.x != vars->offset.x \
 	|| vars->stats->old_pos.y != vars->offset.y || vars->movement.rotating)
@@ -148,8 +148,6 @@ void	map(t_mlx *vars)
 		vars->stats->old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		raycast(vars);
-		mlx_put_image_to_window(vars->mlx, vars->win,
-			 vars->mini_map.img, 100, 100);
 	}
 }
 
@@ -185,7 +183,9 @@ int	main(int argc, char **argv)
 	vars.offset.y = TILE_SIZE >> 1;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIDTH_WIN, HEIGHT_WIN, "Cube3D");
+	vars.screen = new_img(&vars, WIDTH_WIN, HEIGHT_WIN);
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
+	vars.overlay = new_file_img("texture/Overlay.xpm", &vars);
 	gettimeofday(&vars.time, NULL);
 	vars.map = info->map;
 	vars.carac_index = get_carac_index(vars.map);
@@ -210,9 +210,16 @@ int	main(int argc, char **argv)
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
+	// t_color	pixel;
+	// t_color colour = (t_color)(unsigned int)color;
 
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *) dst = color;
+	// pixel = *(t_color *)dst;
+	// float perc = colour.a / 255.;
+	// pixel.r = pixel.r * perc + colour.r * (1 - perc);
+	// pixel.g = pixel.g * perc + colour.g * (1 - perc);
+	// pixel.b = pixel.b * perc + colour.b * (1 - perc);
+	*(unsigned int *)dst = color;
 }
 
 t_tab_size	char_tab_len(char **tab)

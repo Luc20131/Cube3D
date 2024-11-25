@@ -2,13 +2,13 @@ MAKE = @make --no-print-directory
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -Werror -Wall -Wextra -o3 ${IFLAGS}
+CFLAGS = -Werror -Wall -Wextra ${IFLAGS}
 NAME = cub3D
 
 HEADER = ./headers/cube3d.h ./headers/parsing.h
 SRC_DIR=src/
 
-SRC_LIST= player.c keyboard.c casting_utils.c main.c map_gen.c length.c sprite.c raycast.c  #map_autotile.c map_autotile_utils.c map_inits.c parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c
+SRC_LIST= player.c keyboard.c casting_utils.c main.c map_gen.c length.c sprite.c raycast.c draw.c draw_utils.c
 SRC_LIST_P = parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c map_autotile.c map_autotile_utils.c map_inits.c
 SRC=$(addprefix $(SRC_DIR),$(SRC_LIST)) \
 	$(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))

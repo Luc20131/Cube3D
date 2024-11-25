@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/18 17:08:12 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/23 19:22:05 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 # define SKY_COLOR 0xFF5EACFF
 # define GROUND_COLOR 0xFF170501
 
-# define HEIGHT 1080
-# define WIDTH 1920
+# define HEIGHT 270
+# define WIDTH 480
 # define HEIGHT_WIN 1080
 # define WIDTH_WIN 1920
 
@@ -41,6 +41,30 @@
 # define PLAYER_SIZE 8
 
 # define MINIMAP_SIZE 5
+
+typedef unsigned char t_uchar;
+typedef unsigned int t_uint;
+
+struct s_argb {
+    t_uchar b;
+    t_uchar g;
+    t_uchar r;
+    t_uchar a;
+};
+
+union u_color {
+    t_uchar tab[4];
+    struct s_argb    argb;
+    struct {
+        t_uchar b;
+        t_uchar g;
+        t_uchar r;
+        t_uchar a;
+    };
+    t_uint x;
+};
+
+typedef union u_color t_color;
 
 typedef struct s_pos
 {
@@ -127,10 +151,12 @@ typedef struct s_mlx
 	void			*mlx;
 	void			*win;
 	t_data			img;
+	t_data			overlay;
 	int				distance;
 	t_data			map_img;
 	t_data			mini_map;
 	t_data			tilemap;
+	t_data			screen;
 	t_tile			tile[50];
 	int				*stats_tile;
 	t_pos			size_map;
@@ -142,7 +168,7 @@ typedef struct s_mlx
 	t_pos			carac_index;
 	t_posd			carac_pos;
 	struct s_info	*stats;
-    t_ray			ray;
+	t_ray			ray;
 }	t_mlx;
 
 typedef struct s_tab_size
@@ -191,7 +217,7 @@ int				create_trgb(int t, int r, int g, int b);
 int				raycast_one_vector(char **map);
 int				ray_dist(t_mlx *vars);
 t_data			resize_img(t_mlx *vars, t_data *img, unsigned int width, \
-	unsigned int height);
+				unsigned int height);
 int				init_mini_map(t_mlx *vars, t_pos carac_pos);
 t_pos			size_map(char **map);
 void			autotile_generator(char **map, t_mlx *g);
@@ -212,4 +238,16 @@ void			print_ray_param(t_ray *ray);
 void			init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin);
 int				key_hook( int keycode, t_mlx *vars);
 int				key_released(int keycode, t_mlx *vars);
+float			init_pixel_tex_y(t_pos *current, double step);
+int				init_pixel_tex_x(t_ray *ray, t_mlx *vars);
+void			get_darker_color(float coef, t_color *color);
+int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
+int				print_floor(t_pos *current, t_mlx *vars, t_ray *ray);
+int				print_wall(t_pos *current, t_mlx *vars, double step, \
+				t_pos *end);
+int	get_t(int trgb);
+int	get_r(int trgb);
+int	get_g(int trgb);
+int	get_b(int trgb);
+
 #endif
