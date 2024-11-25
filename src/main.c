@@ -39,26 +39,26 @@ int	tick(t_mlx *vars)
 {
 	vars->carac_index = get_carac_index(vars->map);
 	vars->carac_pos = get_carac_pos(vars->map, &vars->offset);
-	// if (vars->movement.forward)
-	// {
- //    	vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_x);
- //    	vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_y);
-	// }
-	// else if (vars->movement.backward)
-	// {
- //    	vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_x);
- //    	vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_y);
-	// }
-	// else if (vars->movement.right)
-	// {
- //    	vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_y);
- //    	vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_x);
-	// }
-	// else if (vars->movement.left)
-	// {
- //    	vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_y);
- //    	vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_x);
-	// }
+	if (vars->movement.forward)
+	{
+    	vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_x);
+    	vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_y);
+	}
+	else if (vars->movement.backward)
+	{
+    	vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_x);
+    	vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_y);
+	}
+	else if (vars->movement.right)
+	{
+    	vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_y);
+    	vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_x);
+	}
+	else if (vars->movement.left)
+	{
+    	vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_y);
+    	vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_x);
+	}
 	map(vars);
 	// usleep(1000000/FPS_LIMIT);
 	return (1);
@@ -148,6 +148,8 @@ void	map(t_mlx *vars)
 		vars->stats->old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
 		raycast(vars);
+		mlx_put_image_to_window(vars->mlx, vars->win,
+	 vars->mini_map.img, WIDTH - vars->mini_map.w - 100, 100);
 	}
 }
 
@@ -192,11 +194,9 @@ int	main(int argc, char **argv)
 	vars.carac_pos = get_carac_pos(vars.map, &vars.offset);
     vars.movement.rotating = 0;
     vars.movement.rotation_speed = 1;
-	if (vars.map[vars.carac_index.y][vars.carac_index.x] == 'N')
-    {
+	ft_bzero(&vars.ray, sizeof(vars.ray));
      vars.ray.dir_x = 1;
      vars.ray.dir_y = 0;
-    }
    	vars.ray.plane_y = 0.66;
     vars.ray.plane_x = 0;
 	map(&vars);

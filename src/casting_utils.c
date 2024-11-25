@@ -15,6 +15,10 @@
 
 void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 {
+	// ray->dir_x = 0.5;
+	// ray->dir_y = 0;
+	// ray->plane_y = 0.66;
+	// ray->plane_x = 0;
 	ray->hit = 0;
 	ray->map_pos = ray->initial_pos;
 	ray->camera_x = ((2 * origin->x) / (double) vars->img.w) - 1;

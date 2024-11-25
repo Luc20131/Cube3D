@@ -165,8 +165,8 @@ typedef struct s_mlx
 	t_direction		movement;
 	size_t			fps;
 	struct timeval	time;
-	t_pos			carac_index;
-	t_posd			carac_pos;
+	t_pos				carac_index;
+	t_pos			carac_pos;
 	struct s_info	*stats;
 	t_ray			ray;
 }	t_mlx;

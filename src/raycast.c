@@ -195,7 +195,6 @@ int	raycast(t_mlx *vars)
 {
 	t_pos	wall_top;
 
-	ft_bzero(&vars->ray, sizeof(vars->ray));
 	wall_top = get_carac_pos(vars->map, &vars->offset);
 	vars->ray.map_pos = get_carac_index(vars->map);
 	vars->ray.pos_x = vars->ray.map_pos.x \
@@ -203,25 +202,25 @@ int	raycast(t_mlx *vars)
 	vars->ray.pos_y = vars->ray.map_pos.y \
 	+ ((double)vars->offset.y / TILE_SIZE);
 	vars->ray.initial_pos = vars->ray.map_pos;
-      if (vars->movement.rotating == 1)
-      {
-        double oldDirX = ray->dir_x;
-      	ray->dir_x = ray->dir_x * cos(-ROT_SPEED) - ray->dir_y * sin(-ROT_SPEED);
-      	ray->dir_y = oldDirX * sin(-ROT_SPEED) + ray->dir_y * cos(-ROT_SPEED);
-      	double oldPlaneX = ray->plane_x;
-      	ray->plane_x = ray->plane_x * cos(-ROT_SPEED) - ray->plane_y * sin(-ROT_SPEED);
-      	ray->plane_y = oldPlaneX * sin(-ROT_SPEED) + ray->plane_y * cos(-ROT_SPEED);
-      }
-    else if (vars->movement.rotating == -1)
-       {
-        double oldDirX = ray->dir_x;
-      	ray->dir_x = ray->dir_x * cos(ROT_SPEED) - ray->dir_y * sin(ROT_SPEED);
-      	ray->dir_y = oldDirX * sin(ROT_SPEED) + ray->dir_y * cos(ROT_SPEED);
-      	double oldPlaneX = ray->plane_x;
-      	ray->plane_x = ray->plane_x * cos(ROT_SPEED) - ray->plane_y * sin(ROT_SPEED);
-      	ray->plane_y = oldPlaneX * sin(ROT_SPEED) + ray->plane_y * cos(ROT_SPEED);
-       }
 	wall_top.x = 0;
+	if (vars->movement.rotating == 1)
+	{
+		double oldDirX = vars->ray.dir_x;
+		vars->ray.dir_x = vars->ray.dir_x * cos(-ROT_SPEED) - vars->ray.dir_y * sin(-ROT_SPEED);
+		vars->ray.dir_y = oldDirX * sin(-ROT_SPEED) + vars->ray.dir_y * cos(-ROT_SPEED);
+		double oldPlaneX = vars->ray.plane_x;
+		vars->ray.plane_x = vars->ray.plane_x * cos(-ROT_SPEED) - vars->ray.plane_y * sin(-ROT_SPEED);
+		vars->ray.plane_y = oldPlaneX * sin(-ROT_SPEED) + vars->ray.plane_y * cos(-ROT_SPEED);
+	}
+	else if (vars->movement.rotating == -1)
+	{
+		double oldDirX = vars->ray.dir_x;
+		vars->ray.dir_x = vars->ray.dir_x * cos(ROT_SPEED) - vars->ray.dir_y * sin(ROT_SPEED);
+		vars->ray.dir_y = oldDirX * sin(ROT_SPEED) + vars->ray.dir_y * cos(ROT_SPEED);
+		double oldPlaneX = vars->ray.plane_x;
+		vars->ray.plane_x = vars->ray.plane_x * cos(ROT_SPEED) - vars->ray.plane_y * sin(ROT_SPEED);
+		vars->ray.plane_y = oldPlaneX * sin(ROT_SPEED) + vars->ray.plane_y * cos(ROT_SPEED);
+	}
 	while (wall_top.x < vars->img.w)
 	{
 		init_value_for_cast(&vars->ray, vars, &wall_top);
@@ -233,6 +232,7 @@ int	raycast(t_mlx *vars)
 	put_img_to_img(&vars->overlay, &vars->img);
 	upscale_raycast_to_screen(vars, &vars->screen);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->screen.img, 0, 0);
+	print_ray_param(&vars->ray);
 	vars->fps++;
 	return (0);
 }
