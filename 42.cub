@@ -1,9 +1,9 @@
-NO texture/van_gogh.xpm
-WE texture/Wall.xpm
-SO texture/Wall.xpm
-EA                         texture/Wall.xpm
-F 220,100,0
-C 0  ,10,  0
+NO texture/North.xpm
+SO texture/South.xpm
+WE texture/Sprite-0004.xpm
+EA texture/East.xpm
+C 0,0,255
+F 23,5,1
 
 111111111111111111111111
 100000000000000000000001

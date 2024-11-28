@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/23 19:22:05 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/27 17:56:36 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ typedef struct s_mlx
 	t_direction		movement;
 	size_t			fps;
 	struct timeval	time;
-	t_pos				carac_index;
+	t_pos			carac_index;
 	t_pos			carac_pos;
 	struct s_info	*stats;
 	t_ray			ray;
@@ -177,6 +177,13 @@ typedef struct s_tab_size
 	size_t	column;
 }	t_tab_size;
 
+enum e_dir
+{
+	NO,
+	SO,
+	WE,
+	EA	
+};
 typedef struct s_info
 {
 	int		map_fd;
@@ -184,6 +191,7 @@ typedef struct s_info
 	int		ceiling[3];
 	int		floor[3];
 	int		texture_valid[4];
+	/*0 NO + 1 SO + 2 WE + 3 EA*/
 	t_data	img_texture[4];
 	t_mlx	*display;
 	t_pos	player;
@@ -245,6 +253,7 @@ int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
 int				print_floor(t_pos *current, t_mlx *vars, t_ray *ray);
 int				print_wall(t_pos *current, t_mlx *vars, double step, \
 				t_pos *end);
+t_data			select_texture(t_data img[4], t_mlx *vars);
 int	get_t(int trgb);
 int	get_r(int trgb);
 int	get_g(int trgb);

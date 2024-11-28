@@ -6,11 +6,27 @@
 /*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:31:17 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/23 16:34:58 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/27 19:23:01 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
+
+t_data select_texture(t_data img[4], t_mlx *vars)
+{
+	if (vars->ray.side == 1)
+	{
+		if (vars->ray.ray_dir_y > 0)
+			return (img[NO]);
+		else if (vars->ray.ray_dir_y < 0)
+			return (img[SO]);
+	}
+	else if (vars->ray.ray_dir_x < 0)
+			return (img[WE]);
+	else if (vars->ray.ray_dir_x > 0)
+			return (img[EA]);
+	return (img[EA]);
+}
 
 int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 {
@@ -50,13 +66,15 @@ int	print_wall(t_pos *current, t_mlx *vars, double step, t_pos *end)
 	int		tex_x;
 	float	tex_y;
 	t_color	pixel;
+	t_data	img_wall;
 
 	tex_x = init_pixel_tex_x(&vars->ray, vars);
 	tex_y = init_pixel_tex_y(current, step);
 	while (current->y < end->y && current->y < vars->img.h)
 	{
 		tex_y += step;
-		pixel.x = get_pixel_img(&vars->stats->img_texture[0], tex_x, tex_y);
+		img_wall = select_texture(vars->stats->img_texture, vars);
+		pixel.x = get_pixel_img(&img_wall, tex_x, tex_y);
 		if (vars->ray.side == 1)
 			pixel.x = ((pixel.x >> 1) & 0x007F7F7F);
 		if (vars->ray.perp_wall_dist > 1)

@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/23 19:48:32 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/27 18:58:07 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,14 @@ int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
 {
 	t_pos	current;
 	double	step;
+	t_data	img_wall;
 
 	current.x = wall_top->x;
 	current.y = 0;
 	if (current.y >= wall_top->y)
 		current.y = wall_top->y;
-	step = (1.0 * vars->stats->img_texture[0].h / (end->y - wall_top->y));
+	img_wall = select_texture(vars->stats->img_texture, vars);
+	step = (1.0 * img_wall.h / (end->y - wall_top->y));
 	print_ceilling(&current, vars, wall_top);
 	print_wall(&current, vars, step, end);
 	print_floor(&current, vars, ray);
