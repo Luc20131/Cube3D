@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/23 19:50:24 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/28 18:19:38 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,28 +41,28 @@ int	tick(t_mlx *vars)
 	vars->carac_pos = get_carac_pos(vars->map, &vars->offset);
 	if (vars->movement.forward)
 	{
-    	vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_x);
-    	vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_y);
+		vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_x);
+		vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_y);
 	}
 	else if (vars->movement.backward)
 	{
-    	vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_x);
-    	vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_y);
+		vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_x);
+		vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_y);
 	}
 	else if (vars->movement.right)
 	{
-    	vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_y);
-    	vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_x);
+		vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_y);
+		vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_x);
 	}
 	else if (vars->movement.left)
 	{
-    	vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_y);
-    	vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_x);
+		vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_y);
+		vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_x);
 	}
 	map(vars);
-	// usleep(1000000/FPS_LIMIT);
 	return (1);
 }
+	/* usleep(1000000/FPS_LIMIT);*/
 
 t_pos	get_carac_index(char **map)
 {
@@ -136,20 +136,22 @@ void	map(t_mlx *vars)
 		vars->stats->old_pos = get_carac_pos(vars->map, &vars->offset);
 		draw_map(vars);
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
+		vertical_raycast(vars);
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win,
-			 vars->mini_map.img, WIDTH - vars->mini_map.w - 100, 100);
+			vars->mini_map.img, WIDTH - vars->mini_map.w - 100, 100);
 	}
 	if (vars->stats->old_pos.x != vars->offset.x \
 	|| vars->stats->old_pos.y != vars->offset.y || vars->movement.rotating)
 	{
-        vars->stats->old_angle = vars->movement.rotating;
+		vars->stats->old_angle = vars->movement.rotating;
 		vars->stats->old_pos.x = vars->offset.x;
 		vars->stats->old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
+		vertical_raycast(vars);
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win,
-	 vars->mini_map.img, WIDTH - vars->mini_map.w - 100, 100);
+			vars->mini_map.img, WIDTH - vars->mini_map.w - 100, 100);
 	}
 }
 
@@ -188,17 +190,18 @@ int	main(int argc, char **argv)
 	vars.screen = new_img(&vars, WIDTH_WIN, HEIGHT_WIN);
 	vars.img = new_img(&vars, WIDTH, HEIGHT);
 	vars.overlay = new_file_img("texture/Overlay.xpm", &vars);
+	vars.floor = new_file_img("texture/Ground.xpm", &vars);
 	gettimeofday(&vars.time, NULL);
 	vars.map = info->map;
 	vars.carac_index = get_carac_index(vars.map);
 	vars.carac_pos = get_carac_pos(vars.map, &vars.offset);
-    vars.movement.rotating = 0;
-    vars.movement.rotation_speed = 1;
+	vars.movement.rotating = 0;
+	vars.movement.rotation_speed = 1;
 	ft_bzero(&vars.ray, sizeof(vars.ray));
-     vars.ray.dir_x = 1;
-     vars.ray.dir_y = 0;
+	vars.ray.dir_x = 1;
+	vars.ray.dir_y = 0;
    	vars.ray.plane_y = 0.66;
-    vars.ray.plane_x = 0;
+	vars.ray.plane_x = 0;
 	map(&vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
@@ -210,15 +213,8 @@ int	main(int argc, char **argv)
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
-	// t_color	pixel;
-	// t_color colour = (t_color)(unsigned int)color;
 
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	// pixel = *(t_color *)dst;
-	// float perc = colour.a / 255.;
-	// pixel.r = pixel.r * perc + colour.r * (1 - perc);
-	// pixel.g = pixel.g * perc + colour.g * (1 - perc);
-	// pixel.b = pixel.b * perc + colour.b * (1 - perc);
 	*(unsigned int *)dst = color;
 }
 
@@ -270,7 +266,7 @@ int	create_trgb(int t, int r, int g, int b)
 void	my_draw_line(t_pos origin, t_pos end, t_data *img)
 {
 	t_pos	delta_pos;
-	float		mid;
+	float	mid;
 	t_pos	current;
 
 	current.x = origin.x;
@@ -309,5 +305,4 @@ void	draw_line_from_mid(t_data *img, t_pos origin, int distance)
 		my_mlx_pixel_put(img, current.x, current.y, GROUND_COLOR);
 		current.y++;
 	}
-
 }

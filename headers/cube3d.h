@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/27 17:56:36 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/28 18:19:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,20 @@ typedef struct s_ray
 	double	plane_y;
 	double	ray_dir_x;
 	double	ray_dir_y;
+
+	/*raycast floor ceilling*/
+	double	ray_dir_x_first;
+	double	ray_dir_y_first;
+	double	ray_dir_x_sec;
+	double	ray_dir_y_sec;
+	int		horizon_point;
+	double	pos_z;
+	double	row_distance;
+	double	floor_step_y;
+	double	floor_step_x;
+	double	floor_x;
+	double	floor_y;
+	/*endif lmao*/
 	int		hit;
 	t_pos	map_pos;
 	double	perp_wall_dist;
@@ -157,6 +171,7 @@ typedef struct s_mlx
 	t_data			mini_map;
 	t_data			tilemap;
 	t_data			screen;
+	t_data			floor;
 	t_tile			tile[50];
 	int				*stats_tile;
 	t_pos			size_map;
@@ -254,6 +269,7 @@ int				print_floor(t_pos *current, t_mlx *vars, t_ray *ray);
 int				print_wall(t_pos *current, t_mlx *vars, double step, \
 				t_pos *end);
 t_data			select_texture(t_data img[4], t_mlx *vars);
+int 			vertical_raycast(t_mlx *vars);
 int	get_t(int trgb);
 int	get_r(int trgb);
 int	get_g(int trgb);

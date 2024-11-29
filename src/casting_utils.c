@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   casting_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 02:06:05 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/20 19:40:46 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/28 11:40:25 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 #define ROT_SPEED 2
 
+	/*ray->dir_x = 0.5;
+	ray->dir_y = 0;
+	ray->plane_y = 0.66;
+	ray->plane_x = 0;*/
 void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 {
-	// ray->dir_x = 0.5;
-	// ray->dir_y = 0;
-	// ray->plane_y = 0.66;
-	// ray->plane_x = 0;
 	ray->hit = 0;
 	ray->map_pos = ray->initial_pos;
 	ray->camera_x = ((2 * origin->x) / (double) vars->img.w) - 1;

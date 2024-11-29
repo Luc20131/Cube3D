@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   draw_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:34:16 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/27 20:23:11 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/28 12:50:30 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
+
+t_data	select_texture(t_data img[4], t_mlx *vars)
+{
+	if (vars->ray.side == 1)
+	{
+		if (vars->ray.ray_dir_y > 0)
+			return (img[NO]);
+		else if (vars->ray.ray_dir_y < 0)
+			return (img[SO]);
+	}
+	else if (vars->ray.ray_dir_x < 0)
+		return (img[EA]);
+	else if (vars->ray.ray_dir_x > 0)
+		return (img[WE]);
+	return (img[WE]);
+}
 
 void	get_darker_color(float coef, t_color *color)
 {

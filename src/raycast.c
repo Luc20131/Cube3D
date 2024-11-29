@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/27 18:58:07 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/28 18:31:49 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
 	double	step;
 	t_data	img_wall;
 
+	(void)ray;
 	current.x = wall_top->x;
 	current.y = 0;
 	if (current.y >= wall_top->y)
@@ -107,7 +108,7 @@ void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *wall_top)
 	wall_top->x -= PIX_PER_RAY;
 }
 
-void put_img_to_img(t_data *src, t_data *dst)
+void	put_img_to_img(t_data *src, t_data *dst)
 {
 	int		x;
 	int		y;
@@ -119,25 +120,26 @@ void put_img_to_img(t_data *src, t_data *dst)
 		x = -1;
 		while (++x < dst->w)
 		{
-			pixel.x = get_pixel_img(src, x * ((float)src->w / dst->w), y * ((float)src->h / dst->h));
-			if (pixel.r+pixel.g+pixel.b != 0)
+			pixel.x = get_pixel_img(src, x * ((float)src->w / dst->w),
+					y * ((float)src->h / dst->h));
+			if (pixel.r + pixel.g + pixel.b != 0)
 				my_mlx_pixel_put(dst, x, y, pixel.x);
 		}
 	}
 }
 
-void    upscale_raycast_to_screen(t_mlx *vars, t_data *screen)
+void	upscale_raycast_to_screen(t_mlx *vars, t_data *screen)
 {
-	t_pos    screen_pos;
-	t_pos    raycast_pos;
-	unsigned int    pixel_color[WIDTH];
-	char    *dst;
-	int        nb_pixels;
-	int        nb_lines;
-	int        nb_pixel_in_lines;
-	float    ratio_w;
-	float    ratio_h;
-	int        i;
+	t_pos			screen_pos;
+	t_pos			raycast_pos;
+	unsigned int	pixel_color[WIDTH];
+	char			*dst;
+	int				nb_pixels;
+	int				nb_lines;
+	int				nb_pixel_in_lines;
+	float			ratio_w;
+	float			ratio_h;
+	int				i;
 
 	ratio_h = HEIGHT_WIN / HEIGHT;
 	ratio_w = WIDTH_WIN / WIDTH;
@@ -193,6 +195,8 @@ void    upscale_raycast_to_screen(t_mlx *vars, t_data *screen)
 	}
 }
 
+
+
 int	raycast(t_mlx *vars)
 {
 	t_pos	wall_top;
@@ -236,5 +240,66 @@ int	raycast(t_mlx *vars)
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->screen.img, 0, 0);
 	print_ray_param(&vars->ray);
 	vars->fps++;
+	return (0);
+}
+
+int	print_floor_ceilling(t_mlx *vars, int y)
+{
+	int		x;
+	t_color	pixel;
+	int 	cellX;
+	int 	cellY;
+	int 	tx;
+	int 	ty;
+	float	coef;
+
+	x = -1;
+	while (++x < vars->img.w)
+	{
+		cellX = (int)(vars->ray.floor_x);
+		cellY = (int)(vars->ray.floor_y);
+		tx = (int)(vars->floor.w * (vars->ray.floor_x - cellX)) & (vars->floor.w - 1);
+		ty = (int)(vars->floor.h * (vars->ray.floor_y - cellY)) & (vars->floor.h - 1);
+		vars->ray.floor_x += vars->ray.floor_step_x;
+		vars->ray.floor_y += vars->ray.floor_step_y;
+		// floor
+		pixel.x = get_pixel_img(&vars->floor, tx, ty);
+		coef = ((y - vars->img.h / 2) / (1. * (vars->img.h / 2.)));
+		get_darker_color(coef, &pixel);
+		my_mlx_pixel_put(&vars->img, x, y, pixel.x);
+
+		//ceiling (symmetrical, at screenHeight - y - 1 instead of y)
+		pixel.x = get_pixel_img(&vars->floor, tx, ty);
+		// coef = (1 - y / (vars->img.h / 2.));
+		get_darker_color(coef, &pixel);
+		my_mlx_pixel_put(&vars->img, x, vars->img.h - y - 1, pixel.x);
+	}
+	return (0);
+}
+
+int vertical_raycast(t_mlx *vars)
+{
+	int y;
+
+	y = -1;
+	while (++y < vars->img.h)
+	{
+	  vars->ray.ray_dir_x_first = vars->ray.dir_x - vars->ray.plane_x;
+	  vars->ray.ray_dir_y_first = vars->ray.dir_y - vars->ray.plane_y;
+	  vars->ray.ray_dir_x_sec = vars->ray.dir_x + vars->ray.plane_x;
+	  vars->ray.ray_dir_y_sec = vars->ray.dir_y + vars->ray.plane_y;
+
+	  vars->ray.horizon_point = y - vars->img.h / 2;
+	  vars->ray.pos_z = 0.5 * vars->img.h;
+	  vars->ray.row_distance = vars->ray.pos_z / vars->ray.horizon_point;
+
+	  vars->ray.floor_step_x = vars->ray.row_distance * (vars->ray.ray_dir_x_sec - vars->ray.ray_dir_x_first) / vars->img.w;
+	  vars->ray.floor_step_y = vars->ray.row_distance * (vars->ray.ray_dir_y_sec - vars->ray.ray_dir_y_first) / vars->img.w;
+
+	
+	  vars->ray.floor_x = vars->ray.pos_x + vars->ray.row_distance * vars->ray.ray_dir_x_first;
+	  vars->ray.floor_y = vars->ray.pos_y + vars->ray.row_distance * vars->ray.ray_dir_y_first;
+	  print_floor_ceilling(vars, y);
+	}
 	return (0);
 }

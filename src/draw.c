@@ -3,42 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:31:17 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/27 19:23:01 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/28 14:26:18 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 
-t_data select_texture(t_data img[4], t_mlx *vars)
-{
-	if (vars->ray.side == 1)
-	{
-		if (vars->ray.ray_dir_y > 0)
-			return (img[NO]);
-		else if (vars->ray.ray_dir_y < 0)
-			return (img[SO]);
-	}
-	else if (vars->ray.ray_dir_x < 0)
-			return (img[WE]);
-	else if (vars->ray.ray_dir_x > 0)
-			return (img[EA]);
-	return (img[EA]);
-}
-
 int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 {
-	t_color	pixel;
-	float	coef;
+	// t_color	pixel;
+	// float	coef;
 
+	(void)current;
+	(void)vars;
+	(void)wall_top;
 	while (current->y < wall_top->y)
 	{
-		pixel.x = 0xFF000030;
-		coef = (1 - current->y / (vars->img.h / 2.));
-		get_darker_color(coef, &pixel);
-		my_mlx_pixel_put(&vars->img, current->x, current->y, pixel.x);
+		// pixel.x = 0xFF000030;
+		// coef = (1 - current->y / (vars->img.h / 2.));
+		// get_darker_color(coef, &pixel);
+		// my_mlx_pixel_put(&vars->img, current->x, current->y, pixel.x);
 		current->y++;
 	}
 	return (0);
@@ -46,16 +33,18 @@ int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 
 int	print_floor(t_pos *current, t_mlx *vars, t_ray *ray)
 {
-	t_color	pixel;
-	float	coef;
-
+	// t_color	pixel;
+	// float	coef;
+	(void)current;
+	(void)vars;
+	(void)ray;
 	while (current->y < vars->img.h)
 	{
-		pixel.x = 0xFF170501;
-		coef = ((current->y - vars->img.h / 2) / (1. * (vars->img.h / 2.)));
-		if (ray->perp_wall_dist > 1)
-			get_darker_color(coef, &pixel);
-		my_mlx_pixel_put(&vars->img, current->x, current->y, pixel.x);
+		// pixel.x = 0xFF170501;
+		// coef = ((current->y - vars->img.h / 2) / (1. * (vars->img.h / 2.)));
+		// if (ray->perp_wall_dist > 1)
+		// 	get_darker_color(coef, &pixel);
+		// my_mlx_pixel_put(&vars->img, current->x, current->y, pixel.x);
 		current->y++;
 	}
 	return (0);
