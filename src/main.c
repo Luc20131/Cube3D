@@ -230,6 +230,7 @@ void	init_vars(t_mlx *vars)
 	vars->layer[LAYER_SCREEN] = new_img(vars, WIDTH_WIN, HEIGHT_WIN);
 	vars->layer[LAYER_RAYCAST] = new_img(vars, WIDTH, HEIGHT);
 	vars->layer[LAYER_OVERLAY] = new_file_img("texture/Overlay.xpm", vars);
+	vars->layer[LAYER_FLOOR] = new_file_img("texture/Ground.xpm", vars);
 	vars->player_data.index_pos = get_player_index(vars->map);
 	vars->player_data.pixel_pos = get_player_pos(vars->map, &vars->offset);
 	vars->player_data.movement.rotating = 0;

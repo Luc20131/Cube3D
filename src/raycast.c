@@ -13,7 +13,7 @@
 #include "../headers/cube3d.h"
 #include <math.h>
 
-#define PIX_PER_RAY 2
+#define PIX_PER_RAY 1
 
 void	side_dist_and_stepper(t_ray	*ray)
 {
@@ -57,7 +57,7 @@ int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
 	current.y = wall_top->y;
 	// print_ceilling(&current, vars, wall_top);
 	print_wall(&current, vars, step, end);
-	vertical_raycast(vars, *end);
+	vertical_raycast(vars, end);
 	// print_floor(&current, vars, ray);
 	return (0);
 }
@@ -247,14 +247,13 @@ int	raycast(t_mlx *vars)
 	return (0);
 }
 
-int	print_floor_ceilling(t_mlx *vars, t_pos end)
+int	print_floor_ceilling(t_mlx *vars, t_pos *end)
 {
 	int		y;
 	t_color	pixel;
 	float	coef;
 
-	y = end.y;
-	printf("%d\n", end.y);
+	y = end->y;
 	while (y < HEIGHT)
 	{
 		vars->ray.current_dist = HEIGHT / (2.0 * y - HEIGHT);
@@ -264,25 +263,25 @@ int	print_floor_ceilling(t_mlx *vars, t_pos end)
 		double currentFloorY = weight * vars->ray.floor_y_wall + (0.5 - weight) * vars->ray.pos_y;
 
 		int floorTexX, floorTexY;
-		floorTexX = (int)(currentFloorX * vars->floor.w) % vars->floor.w;
-		floorTexY = (int)(currentFloorY * vars->floor.h) % vars->floor.h;
+		floorTexX = (int)(currentFloorX * vars->layer[LAYER_FLOOR].w) % vars->layer[LAYER_FLOOR].w;
+		floorTexY = (int)(currentFloorY * vars->layer[LAYER_FLOOR].h) % vars->layer[LAYER_FLOOR].h;
 		// floor
-		if ((floorTexX < vars->floor.w && floorTexX > 0) || (floorTexY < vars->floor.h && floorTexY > 0))
+		if ((floorTexX < vars->layer[LAYER_FLOOR].w && floorTexX > 0) || (floorTexY < vars->layer[LAYER_FLOOR].h && floorTexY > 0))
 		{
-			pixel.x = get_pixel_img(&vars->floor, floorTexX, floorTexY);
-			coef = ((y - vars->img.h / 2) / (1. * (vars->img.h / 2.)));
+			pixel.x = get_pixel_img(&vars->layer[LAYER_FLOOR], floorTexX, floorTexY);
+			coef = ((y - vars->layer[LAYER_RAYCAST].h / 2) / (1. * (vars->layer[LAYER_RAYCAST].h / 2.)));
 			get_darker_color(coef, &pixel);
-			my_mlx_pixel_put(&vars->img, end.x, y, pixel.x);
+			my_mlx_pixel_put(&vars->layer[LAYER_RAYCAST], end->x, y, pixel.x);
 			
 			get_darker_color(coef, &pixel);
-			my_mlx_pixel_put(&vars->img, end.x, vars->img.h - y - 1, pixel.x);	
+			my_mlx_pixel_put(&vars->layer[LAYER_RAYCAST], end->x, vars->layer[LAYER_RAYCAST].h - y - 1, pixel.x);
 		}
 		y++;
 	}
 	return (0);
 }
 
-int vertical_raycast(t_mlx *vars, t_pos end)
+int vertical_raycast(t_mlx *vars, t_pos *end)
 {
 	if(vars->ray.side == 0 && vars->ray.ray_dir_x > 0)
 	{
@@ -306,8 +305,8 @@ int vertical_raycast(t_mlx *vars, t_pos end)
 	}
 	vars->ray.dist_wall = vars->ray.perp_wall_dist;
     vars->ray.dist_player = 0.0;
-	if (end.y < 0)
-		end.y = HEIGHT;
+	if (end->y < 0)
+		end->y = HEIGHT;
 	print_floor_ceilling(vars, end);
 	return (0);
 }

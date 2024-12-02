@@ -14,8 +14,8 @@
 
 int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 {
-	// t_color	pixel;
-	// float	coef;
+	t_color	pixel;
+	float	coef;
 
 	(void)current;
 	(void)vars;
@@ -53,7 +53,6 @@ int	print_wall(t_pos *current, t_mlx *vars, double step, t_pos *end)
 	int		tex_x;
 	float	tex_y;
 	t_color	pixel;
-	t_data	img_wall;
 
 	tex_x = init_pixel_tex_x(&vars->ray, vars);
 	tex_y = init_pixel_tex_y(current, step);

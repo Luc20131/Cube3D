@@ -115,7 +115,7 @@ t_pos	size_map(char **map)
 unsigned int	get_pixel_img(t_data *img, int x, int y)
 {
 	return (*(unsigned int *)((img->addr + (y * img->line_length) \
-		+ (x << 2))));
+		+ (x * img->bits_per_pixel/ 8))));
 }
 
 void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
