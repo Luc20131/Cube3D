@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/23 19:22:05 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/29 16:12:31 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,28 @@ typedef struct s_ray
 	double	plane_y;
 	double	ray_dir_x;
 	double	ray_dir_y;
+
+	/*raycast floor ceilling*/
+	double	ray_dir_x_first;
+	double	ray_dir_y_first;
+	double	ray_dir_x_sec;
+	double	ray_dir_y_sec;
+	int		horizon_point;
+	double	pos_z;
+	double	row_distance;
+	double	floor_step_y;
+	double	floor_step_x;
+	double	floor_x;
+	double	floor_y;
+
+	
+	double	wall_x;
+	double	dist_wall;
+	double	dist_player;
+	double	current_dist;
+	double	floor_x_wall;
+	double	floor_y_wall;
+	/*endif lmao*/
 	int		hit;
 	t_pos	map_pos;
 	double	perp_wall_dist;
@@ -156,25 +178,11 @@ enum e_layer
 	LAYER_RAYCAST
 };
 
-typedef struct s_info
-{
-	int		map_fd;
-	char	texture_path[4][PATH_MAX];
-	int		ceiling[3];
-	int		floor[3];
-	int		texture_valid[4];
-	t_data	img_texture[4];
-	t_pos	player;
-	t_pos	old_pos;
-	float	old_angle;
-	int		map_is_create;
-	char	**map;
-}	t_info;
-
 typedef struct s_mlx
 {
 	void			*mlx;
 	void			*win;
+	t_data			floor;
 	t_data			layer[6];
 	t_tile			tile[50];
 	int				*stats_tile;
@@ -194,6 +202,29 @@ typedef struct s_tab_size
 	size_t	column;
 }	t_tab_size;
 
+enum e_dir
+{
+	NO,
+	SO,
+	WE,
+	EA	
+};
+typedef struct s_info
+{
+	int		map_fd;
+	char	texture_path[4][PATH_MAX];
+	int		ceiling[3];
+	int		floor[3];
+	int		texture_valid[4];
+	/*0 NO + 1 SO + 2 WE + 3 EA*/
+	t_data	img_texture[4];
+	t_mlx	*display;
+	t_pos	player;
+	t_pos	old_pos;
+    float	old_angle;
+	int		map_is_create;
+	char	**map;
+}
 t_tab_size		char_tab_len(char **tab);
 void			wall(t_data *img, float distance);
 
@@ -250,9 +281,13 @@ int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
 int				print_floor(t_pos *current, t_mlx *vars, t_ray *ray);
 int				print_wall(t_pos *current, t_mlx *vars, double step, \
 				t_pos *end);
+
+t_data			select_texture(t_data img[4], t_mlx *vars);
+int				vertical_raycast(t_mlx *vars, t_pos end);
 void			fps(const t_mlx *vars);
 void			nfree(void *pointer);
 void			print_ray_param(t_ray *ray);
 void			print_map(char *map[]);
+
 
 #endif

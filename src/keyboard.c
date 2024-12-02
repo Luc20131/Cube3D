@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyboard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 13:24:21 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/18 12:02:23 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/11/28 12:27:57 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ int	key_released(const int keycode, t_mlx *vars)
 		vars->player_data.movement.forward = 0;
 	else if (keycode == 's')
 		vars->player_data.movement.backward = 0;
-    else if (keycode == 65363)
-        vars->player_data.movement.rotating = 0;
-    else if (keycode == 65361)
-        vars->player_data.movement.rotating = 0;
-    return (0);
+  else if (keycode == 65363)
+      vars->player_data.movement.rotating = 0;
+  else if (keycode == 65361)
+      vars->player_data.movement.rotating = 0;
+  return (0);
 }
 
 int	key_hook(const int keycode, t_mlx *vars)
@@ -64,11 +64,11 @@ int	key_hook(const int keycode, t_mlx *vars)
 		vars->player_data.movement.backward = -1;
 	else if (keycode == 'w')
 		vars->player_data.movement.forward = 1;
-   	else if (keycode == 65363)
-        vars->player_data.movement.rotating = -1;
-    else if (keycode == 65361)
-        vars->player_data.movement.rotating = 1;
-    else
-      printf("%i\n", keycode);
+  else if (keycode == 65363)
+      vars->player_data.movement.rotating = -1;
+  else if (keycode == 65361)
+      vars->player_data.movement.rotating = 1;
+  else
+    printf("%i\n", keycode);
 	return (0);
 }

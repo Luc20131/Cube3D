@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:31:17 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/23 16:34:58 by sjean            ###   ########.fr       */
+/*   Updated: 2024/11/28 14:26:18 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 {
-	t_color	pixel;
-	float	coef;
+	// t_color	pixel;
+	// float	coef;
 
+	(void)current;
+	(void)vars;
+	(void)wall_top;
 	while (current->y < wall_top->y)
 	{
 		pixel.x = 0xFF000030;
@@ -50,13 +53,14 @@ int	print_wall(t_pos *current, t_mlx *vars, double step, t_pos *end)
 	int		tex_x;
 	float	tex_y;
 	t_color	pixel;
+	t_data	img_wall;
 
 	tex_x = init_pixel_tex_x(&vars->ray, vars);
 	tex_y = init_pixel_tex_y(current, step);
 	while (current->y < end->y && current->y < vars->layer[LAYER_RAYCAST].h)
 	{
 		tex_y += step;
-		if (vars->ray.perp_wall_dist > 10)
+		if (vars->ray.perp_wall_dist > 13)
 			pixel.x = 0x00000000;
 		else
 		{

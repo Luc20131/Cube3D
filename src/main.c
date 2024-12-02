@@ -47,27 +47,29 @@ int	tick(t_mlx *vars)
 	vars->player_data.pixel_pos = get_player_pos(vars->map, &vars->offset);
 	if (vars->player_data.movement.forward)
 	{
-    	vars->offset.x += (PLAYER_SPEED * vars->ray.dir_x);
-    	vars->offset.y += (PLAYER_SPEED * vars->ray.dir_y);
+		vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_x);
+		vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_y);
+
 	}
 	else if (vars->player_data.movement.backward)
 	{
-    	vars->offset.x -= (PLAYER_SPEED * vars->ray.dir_x);
-    	vars->offset.y -= (PLAYER_SPEED * vars->ray.dir_y);
+		vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_x);
+		vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_y);   
 	}
 	else if (vars->player_data.movement.right)
 	{
-    	vars->offset.x -= (PLAYER_SPEED * vars->ray.dir_y);
-    	vars->offset.y += (PLAYER_SPEED * vars->ray.dir_x);
+		vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_y);
+		vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_x);
 	}
 	else if (vars->player_data.movement.left)
 	{
-    	vars->offset.x += (PLAYER_SPEED * vars->ray.dir_y);
-    	vars->offset.y -= (PLAYER_SPEED * vars->ray.dir_x);
+		vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_y);
+		vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_x);
 	}
 	map(vars);
 	return (1);
 }
+	/* usleep(1000000/FPS_LIMIT);*/
 
 t_pos	get_player_index(char **map)
 {
@@ -165,14 +167,14 @@ void	map(t_mlx *vars)
 		init_mini_map(vars, get_player_pos(vars->map, &vars->offset));
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win,
-			 vars->layer[LAYER_MINIMAP].img, WIDTH - vars->layer[LAYER_MINIMAP].w - 100, 100);
+    vars->layer[LAYER_MINIMAP].img, WIDTH - vars->layer[LAYER_MINIMAP].w - 100, 100);
 	}
 	// if (vars->stats->old_pos.x != vars->offset.x
 	// || vars->stats->old_pos.y != vars->offset.y || vars->player_data.movement.rotating)
 	else
 	{
 		gettimeofday(&vars->time, NULL);
-        vars->stats->old_angle = vars->player_data.movement.rotating;
+    vars->stats->old_angle = vars->player_data.movement.rotating;
 		vars->stats->old_pos.x = vars->offset.x;
 		vars->stats->old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_player_pos(vars->map, &vars->offset));
@@ -181,7 +183,7 @@ void	map(t_mlx *vars)
 		mlx_put_image_to_window(vars->mlx, vars->win,
 			vars->layer[LAYER_MINIMAP].img, WIDTH_WIN - vars->layer[LAYER_MINIMAP].w - 100, 100);
 		fps(vars);
-	}
+  }
 }
 
 void	nfree(void *pointer)
@@ -322,4 +324,3 @@ int	create_trgb(const int t, const int r, const int g, const int b)
 		(g & ((1 << 8) - 1)) << 8 | \
 		(b & ((1 << 8) - 1)));
 }
-
