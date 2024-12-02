@@ -31,7 +31,7 @@ void	end_tiles_init(t_tile *t, t_mlx *g)
 	tile_assembler(&t[47], 0, (t_pos){2, 1});
 	tile_assembler(&t[48], 186, (t_pos){5, 1});
 	tile_assembler(&t[49], 499, (t_pos){4, 4});
-	mlx_destroy_image(g->mlx, g->tilemap.img);
+	mlx_destroy_image(g->mlx, g->layer[LAYER_TILE_MAP].img);
 }
 
 void	middle_tiles_init(t_tile *t, t_mlx *g)
@@ -61,7 +61,7 @@ void	middle_tiles_init(t_tile *t, t_mlx *g)
 
 void	start_tiles_init(t_mlx *g)
 {
-	g->tilemap = new_file_img("texture/SusMap.xpm", g);
+	g->layer[LAYER_TILE_MAP] = new_file_img("texture/SusMap.xpm", g);
 	tile_assembler(&g->tile[0], 48, (t_pos){0, 0});
 	tile_assembler(&g->tile[1], 18, (t_pos){0, 1});
 	tile_assembler(&g->tile[2], 144, (t_pos){1, 0});
