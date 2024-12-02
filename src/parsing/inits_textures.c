@@ -12,7 +12,7 @@
 
 #include "parsing.h"
 
-int	init_data_texture(t_info *info)
+int	init_data_texture(t_info *info, t_mlx *mlx)
 {
 	int	i;
 
@@ -20,7 +20,7 @@ int	init_data_texture(t_info *info)
 	while (++i < 4)
 	{
 		info->img_texture[i] = \
-		new_file_img(info->texture_path[i], info->display);
+		new_file_img(info->texture_path[i], mlx);
 		if (info->img_texture[i].img == NULL)
 			return (E_MALLOC);
 	}

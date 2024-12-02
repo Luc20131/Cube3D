@@ -30,10 +30,11 @@ t_data	new_img(t_mlx *vars, unsigned int width, unsigned int height)
 		&frame.line_length, &frame.endian);
 	frame.h = height;
 	frame.w = width;
+	// printf("bits per pixels : %d\n", frame.bits_per_pixel);
 	return (frame);
 }
 
-int	init_mini_map(t_mlx *vars,t_pos carac_pos)
+int	init_mini_map(t_mlx *vars, t_pos carac_pos)
 {
 	t_pos			index;
 	t_pos			size;
@@ -48,8 +49,8 @@ int	init_mini_map(t_mlx *vars,t_pos carac_pos)
 	size.y = MINIMAP_SIZE * TILE_SIZE;
 	origin.x = carac_pos.x - ((size.x + PLAYER_SIZE) >> 1);
 	origin.y = carac_pos.y - ((size.y + PLAYER_SIZE) >> 1);
-	if (vars->mini_map.img == NULL)
-		vars->mini_map = new_img(vars, size.x, size.y);
+	if (vars->layer[LAYER_MINIMAP].img == NULL)
+		vars->layer[LAYER_MINIMAP] = new_img(vars, size.x, size.y);
 	map_size = size_map(vars->map);
 	while (index.y < size.y)
 	{
@@ -62,19 +63,21 @@ int	init_mini_map(t_mlx *vars,t_pos carac_pos)
 			|| origin.x + index.x >= map_size.x * TILE_SIZE || origin.y + index.y >= map_size.y * TILE_SIZE)
 				pixel = 0x00000000;
 			else
-				pixel = get_pixel_img(&vars->map_img, origin.x + index.x, origin.y + index.y);
-			my_mlx_pixel_put(&vars->mini_map, index.x, index.y, pixel);
+				pixel = get_pixel_img(&vars->layer[LAYER_MAP], origin.x + index.x, origin.y + index.y);
+			my_mlx_pixel_put(&vars->layer[LAYER_MINIMAP], index.x, index.y, pixel);
 
 			index.x++;
 		}
-		my_mlx_pixel_put(&vars->mini_map, 0, index.y, 0xFF3F3F3F);
-		my_mlx_pixel_put(&vars->mini_map, index.x - 1, index.y, 0xFF3F3F3F);
+		my_mlx_pixel_put(&vars->layer[LAYER_MINIMAP], 0, index.y, 0xFF3F3F3F);
+		my_mlx_pixel_put(&vars->layer[LAYER_MINIMAP], index.x - 1, index.y, 0xFF3F3F3F);
 		index.y++;
 	}
+
 	monitoring = new_file_img("texture/monitoring.xpm", vars);
-	put_data_to_img(vars->mini_map, monitoring, 0 * TILE_SIZE, 0 * TILE_SIZE);
-	draw_square(&vars->mini_map, (t_pos){(size.x + PLAYER_SIZE) / 2, (size.y + PLAYER_SIZE) / 2}, PLAYER_SIZE, 0xFF0FFF0F);
-	vars->mini_map = vars->mini_map;
+	put_data_to_img(vars->layer[LAYER_MINIMAP], monitoring, 0 * TILE_SIZE, 0 * TILE_SIZE);
+	mlx_destroy_image(vars->mlx, monitoring.img);
+	draw_square(&vars->layer[LAYER_MINIMAP], (t_pos){(size.x + PLAYER_SIZE) / 2, (size.y + PLAYER_SIZE) / 2}, PLAYER_SIZE, 0xFF0FFF0F);
+	vars->layer[LAYER_MINIMAP] = vars->layer[LAYER_MINIMAP];
 	return (1);
 }
 
@@ -112,7 +115,7 @@ t_pos	size_map(char **map)
 unsigned int	get_pixel_img(t_data *img, int x, int y)
 {
 	return (*(unsigned int *)((img->addr + (y * img->line_length) \
-		+ (x * img->bits_per_pixel / 8))));
+		+ (x << 2))));
 }
 
 void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
@@ -135,7 +138,7 @@ void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
 	}
 }
 
-void	carac_pos_update(t_pos *offset, t_pos *carac_pos, char **map)
+void	player_pos_update(t_pos *offset, t_pos *carac_pos, char **map)
 {
 	if (offset->x > TILE_SIZE && map[carac_pos->y][carac_pos->x + 1] != '1')
 	{
@@ -276,7 +279,7 @@ void	draw_map(t_mlx *game)
 	start_tiles_init(game);
 	autotile_generator(game->map, game);
 	map_size = size_map(game->map);
-	game->map_img = new_img(game, map_size.x * TILE_SIZE, \
+	game->layer[LAYER_MAP] = new_img(game, map_size.x * TILE_SIZE, \
 		map_size.y * TILE_SIZE);
 	while (++j < map_size.y)
 	{
@@ -285,7 +288,7 @@ void	draw_map(t_mlx *game)
 		{
 			pos = tile_selector(game->tile, &game->stats_tile[++k]);
 			img = img_cut("texture/SusMap.xpm", pos, game);
-			put_data_to_img(game->map_img, img, i * TILE_SIZE, \
+			put_data_to_img(game->layer[LAYER_MAP], img, i * TILE_SIZE, \
 				j * TILE_SIZE);
 			mlx_destroy_image(game->mlx, img.img);
 		}

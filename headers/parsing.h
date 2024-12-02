@@ -61,8 +61,8 @@ int		choose_dir(t_stats **stats, char **map, t_pos pos);
 int		init_map(t_info *info, t_list *list);
 void	free_stats(t_stats **stats);
 void	show_map(char **map);
-int		init_data_texture(t_info *info);
-t_info	*init_info(void);
+int		init_data_texture(t_info *info, t_mlx *mlx);
+int		init_info(t_info *info);
 
 int		check_format(char *map, char *find);
 int		check_valid_chr_map(char **map);
@@ -79,5 +79,5 @@ int		get_key_value(char *key_v, t_key key, t_info *info);
 int		key_finder(char *line);
 int		skip_key_word(char *key_v);
 int		get_color(char *key_v, t_key key, t_info *info);
-int		parsing_cube(char *arg, t_info **info);
+int		parsing_cube(char *arg, t_info *info, t_mlx *mlx);
 #endif
