@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/28 18:19:38 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/02 10:58:40 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ void	map(t_mlx *vars)
 		vars->stats->old_pos = get_carac_pos(vars->map, &vars->offset);
 		draw_map(vars);
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
-		vertical_raycast(vars);
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win,
 			vars->mini_map.img, WIDTH - vars->mini_map.w - 100, 100);
@@ -148,7 +147,6 @@ void	map(t_mlx *vars)
 		vars->stats->old_pos.x = vars->offset.x;
 		vars->stats->old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_carac_pos(vars->map, &vars->offset));
-		vertical_raycast(vars);
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win,
 			vars->mini_map.img, WIDTH - vars->mini_map.w - 100, 100);

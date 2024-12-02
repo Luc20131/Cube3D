@@ -1,7 +1,7 @@
-NO texture/North.xpm
-SO texture/South.xpm
-WE texture/Sprite-0004.xpm
-EA texture/East.xpm
+NO texture/Wall.xpm
+SO texture/Wall.xpm
+WE texture/Wall.xpm
+EA texture/Wall.xpm
 C 0,0,255
 F 23,5,1
 
