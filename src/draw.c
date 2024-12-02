@@ -22,10 +22,10 @@ int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 	(void)wall_top;
 	while (current->y < wall_top->y)
 	{
-		// pixel.x = 0xFF000030;
-		// coef = (1 - current->y / (vars->img.h / 2.));
-		// get_darker_color(coef, &pixel);
-		// my_mlx_pixel_put(&vars->img, current->x, current->y, pixel.x);
+		pixel.x = 0xFF000030;
+		coef = (1 - current->y / (vars->layer[LAYER_RAYCAST].h / 2.));
+		get_darker_color(coef, &pixel);
+		my_mlx_pixel_put(&vars->layer[LAYER_RAYCAST], current->x, current->y, pixel.x);
 		current->y++;
 	}
 	return (0);
@@ -33,18 +33,16 @@ int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 
 int	print_floor(t_pos *current, t_mlx *vars, t_ray *ray)
 {
-	// t_color	pixel;
-	// float	coef;
-	(void)current;
-	(void)vars;
-	(void)ray;
-	while (current->y < vars->img.h)
+	t_color	pixel;
+	float	coef;
+
+	while (current->y < vars->layer[LAYER_RAYCAST].h)
 	{
-		// pixel.x = 0xFF170501;
-		// coef = ((current->y - vars->img.h / 2) / (1. * (vars->img.h / 2.)));
-		// if (ray->perp_wall_dist > 1)
-		// 	get_darker_color(coef, &pixel);
-		// my_mlx_pixel_put(&vars->img, current->x, current->y, pixel.x);
+		pixel.x = 0xFF170501;
+		coef = ((current->y - vars->layer[LAYER_RAYCAST].h / 2) / (1. * (vars->layer[LAYER_RAYCAST].h / 2.)));
+		if (ray->perp_wall_dist > 1)
+			get_darker_color(coef, &pixel);
+		my_mlx_pixel_put(&vars->layer[LAYER_RAYCAST], current->x, current->y, pixel.x);
 		current->y++;
 	}
 	return (0);
@@ -59,20 +57,24 @@ int	print_wall(t_pos *current, t_mlx *vars, double step, t_pos *end)
 
 	tex_x = init_pixel_tex_x(&vars->ray, vars);
 	tex_y = init_pixel_tex_y(current, step);
-	while (current->y < end->y && current->y < vars->img.h)
+	while (current->y < end->y && current->y < vars->layer[LAYER_RAYCAST].h)
 	{
 		tex_y += step;
-		img_wall = select_texture(vars->stats->img_texture, vars);
-		pixel.x = get_pixel_img(&img_wall, tex_x, tex_y);
-		if (vars->ray.side == 1)
-			pixel.x = ((pixel.x >> 1) & 0x007F7F7F);
-		if (vars->ray.perp_wall_dist > 1)
+		if (vars->ray.perp_wall_dist > 13)
+			pixel.x = 0x00000000;
+		else
 		{
-			pixel.r /= (vars->ray.perp_wall_dist);
-			pixel.g /= (vars->ray.perp_wall_dist);
-			pixel.b /= (vars->ray.perp_wall_dist);
+			pixel.x = get_pixel_img(&vars->stats->img_texture[0], tex_x, tex_y);
+			if (vars->ray.side == 1)
+				pixel.x = ((pixel.x >> 1) & 0x007F7F7F);
+			if (vars->ray.perp_wall_dist > 1)
+			{
+				pixel.r /= (vars->ray.perp_wall_dist);
+				pixel.g /= (vars->ray.perp_wall_dist);
+				pixel.b /= (vars->ray.perp_wall_dist);
+			}
 		}
-		my_mlx_pixel_put(&vars->img, current->x, current->y, pixel.x);
+		my_mlx_pixel_put(&vars->layer[LAYER_RAYCAST], current->x, current->y, pixel.x);
 		current->y++;
 	}
 	return (0);

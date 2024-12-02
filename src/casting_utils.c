@@ -10,8 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <float.h>
+
 #include "cube3d.h"
-#define ROT_SPEED 2
+// #define ROT_SPEED 2
 
 	/*ray->dir_x = 0.5;
 	ray->dir_y = 0;
@@ -21,15 +23,15 @@ void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 {
 	ray->hit = 0;
 	ray->map_pos = ray->initial_pos;
-	ray->camera_x = ((2 * origin->x) / (double) vars->img.w) - 1;
+	ray->camera_x = ((2 * origin->x) / (double) vars->layer[LAYER_RAYCAST].w) - 1;
 	ray->ray_dir_x = ray->dir_x + ray->plane_x * ray->camera_x;
 	ray->ray_dir_y = ray->dir_y + ray->plane_y * ray->camera_x;
 	if (ray->ray_dir_x == 0)
-		ray->delta_dist_x = 1e30;
+		ray->delta_dist_x = DBL_MAX;
 	else
 		ray->delta_dist_x = fabs(1.f / ray->ray_dir_x);
 	if (ray->ray_dir_y == 0)
-		ray->delta_dist_y = 1e30;
+		ray->delta_dist_y = DBL_MAX;
 	else
 		ray->delta_dist_y = fabs(1.f / ray->ray_dir_y);
 }

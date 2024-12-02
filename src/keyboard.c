@@ -12,32 +12,24 @@
 
 #include "cube3d.h"
 
-int	key_released(int keycode, t_mlx *vars)
+int	key_released(const int keycode, t_mlx *vars)
 {
 	if (keycode == 'a')
-		vars->movement.left = 0;
+		vars->player_data.movement.left = 0;
 	else if (keycode == 'd')
-		vars->movement.right = 0;
+		vars->player_data.movement.right = 0;
 	else if (keycode == 'w')
-		vars->movement.forward = 0;
+		vars->player_data.movement.forward = 0;
 	else if (keycode == 's')
-		vars->movement.backward = 0;
-	else if (keycode == 65363)
-		vars->movement.rotating = 0;
-	else if (keycode == 65361)
-		vars->movement.rotating = 0;
-	return (0);
+		vars->player_data.movement.backward = 0;
+  else if (keycode == 65363)
+      vars->player_data.movement.rotating = 0;
+  else if (keycode == 65361)
+      vars->player_data.movement.rotating = 0;
+  return (0);
 }
 
-void	fps(t_mlx *vars)
-{
-	struct timeval	timer;
-
-	gettimeofday(&timer, NULL);
-	printf("fps : %lu", vars->fps / (timer.tv_sec - vars->time.tv_sec));
-}
-
-int	key_hook( int keycode, t_mlx *vars)
+int	key_hook(const int keycode, t_mlx *vars)
 {
 	int	i;
 
@@ -49,25 +41,34 @@ int	key_hook( int keycode, t_mlx *vars)
 		while (vars->map[i])
 			nfree(vars->map[i++]);
 		nfree(vars->map);
-		mlx_destroy_image(vars->mlx, vars->img.img);
+		mlx_destroy_image(vars->mlx, vars->layer[LAYER_RAYCAST].img);
+		mlx_destroy_image(vars->mlx, vars->layer[LAYER_SCREEN].img);
+		mlx_destroy_image(vars->mlx, vars->layer[LAYER_MAP].img);
+		mlx_destroy_image(vars->mlx, vars->layer[LAYER_MINIMAP].img);
+		mlx_destroy_image(vars->mlx, vars->layer[LAYER_OVERLAY].img);
+		mlx_destroy_image(vars->mlx, vars->stats->img_texture[0].img);
+		mlx_destroy_image(vars->mlx, vars->stats->img_texture[1].img);
+		mlx_destroy_image(vars->mlx, vars->stats->img_texture[2].img);
+		mlx_destroy_image(vars->mlx, vars->stats->img_texture[3].img);
+		// mlx_destroy_image(vars->mlx, vars->layer[LAYER_TILE_MAP].img);
 		mlx_destroy_window(vars->mlx, vars->win);
 		mlx_destroy_display(vars->mlx);
 		nfree(vars->mlx);
 		exit(1);
 	}
 	else if (keycode == 'd')
-		vars->movement.right = 1;
+		vars->player_data.movement.right = 1;
 	else if (keycode == 'a')
-		vars->movement.left = -1;
+		vars->player_data.movement.left = -1;
 	else if (keycode == 's')
-		vars->movement.backward = -1;
+		vars->player_data.movement.backward = -1;
 	else if (keycode == 'w')
-		vars->movement.forward = 1;
-	else if (keycode == 65363)
-		vars->movement.rotating = -1;
-	else if (keycode == 65361)
-		vars->movement.rotating = 1;
-	else
-		printf("%i\n", keycode);
+		vars->player_data.movement.forward = 1;
+  else if (keycode == 65363)
+      vars->player_data.movement.rotating = -1;
+  else if (keycode == 65361)
+      vars->player_data.movement.rotating = 1;
+  else
+    printf("%i\n", keycode);
 	return (0);
 }
