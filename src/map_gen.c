@@ -34,7 +34,7 @@ t_data	new_img(t_mlx *vars, unsigned int width, unsigned int height)
 	return (frame);
 }
 
-int	init_mini_map(t_mlx *vars, t_pos carac_pos)
+int	init_mini_map(t_mlx *vars)
 {
 	t_pos			index;
 	t_pos			size;
@@ -47,8 +47,8 @@ int	init_mini_map(t_mlx *vars, t_pos carac_pos)
 	index.y = 0;
 	size.x = MINIMAP_SIZE * TILE_SIZE;
 	size.y = MINIMAP_SIZE * TILE_SIZE;
-	origin.x = carac_pos.x - ((size.x + PLAYER_SIZE) >> 1);
-	origin.y = carac_pos.y - ((size.y + PLAYER_SIZE) >> 1);
+	origin.x = vars->player_data.pixel_pos.x;
+	origin.y = vars->player_data.pixel_pos.y;
 	if (vars->layer[LAYER_MINIMAP].img == NULL)
 		vars->layer[LAYER_MINIMAP] = new_img(vars, size.x, size.y);
 	map_size = size_map(vars->map);
@@ -138,32 +138,21 @@ void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
 	}
 }
 
-void	player_pos_update(t_pos *offset, t_pos *carac_pos, char **map)
+void	player_pos_update(t_mlx *vars, char **map)
 {
-	if (offset->x > TILE_SIZE && map[carac_pos->y][carac_pos->x + 1] != '1')
+	static t_pos	old_pos = {0,0};
+	if (old_pos.x == 0 && old_pos.y == 0)
 	{
-		offset->x -= TILE_SIZE;
-		map[carac_pos->y][carac_pos->x] = '0';
-		map[carac_pos->y][++carac_pos->x] = 'N';
+		old_pos.x = (int)vars->player_data.float_pos.x;
+		old_pos.y = (int)vars->player_data.float_pos.y;
 	}
-	if (offset->y > TILE_SIZE && map[carac_pos->y + 1][carac_pos->x] != '1')
-	{
-		offset->y -= TILE_SIZE;
-		map[carac_pos->y][carac_pos->x] = '0';
-		map[++carac_pos->y][carac_pos->x] = 'N';
-	}
-	if (offset->x < 0 && map[carac_pos->y][carac_pos->x - 1] != '1')
-	{
-		offset->x += TILE_SIZE;
-		map[carac_pos->y][carac_pos->x] = '0';
-		map[carac_pos->y][--carac_pos->x] = 'N';
-	}
-	if (offset->y < 0 && map[carac_pos->y - 1][carac_pos->x] != '1')
-	{
-		offset->y += TILE_SIZE;
-		map[carac_pos->y][carac_pos->x] = '0';
-		map[--carac_pos->y][carac_pos->x] = 'N';
-	}
+	map[old_pos.y][old_pos.x] = '0';
+	map[(int)vars->player_data.float_pos.y][(int)vars->player_data.float_pos.x] = 'N';
+	old_pos.x = (int)vars->player_data.float_pos.x;
+	old_pos.y = (int)vars->player_data.float_pos.y;
+	vars->player_data.pixel_pos.x = TILE_SIZE * vars->player_data.float_pos.x;
+	vars->player_data.pixel_pos.y = TILE_SIZE * vars->player_data.float_pos.y;
+
 }
 
 t_data	new_file_img(char *path, t_mlx *window)

@@ -32,8 +32,6 @@ enum
 	WEST,
 };
 void	map(t_mlx *vars);
-t_pos	get_player_index(char **map);
-t_pos	get_player_pos(char **map, t_pos *offset);
 int		check_collision(t_pos index, const t_mlx *vars, char direction);
 
 int	is_player(const char c)
@@ -43,29 +41,35 @@ int	is_player(const char c)
 
 int	tick(t_mlx *vars)
 {
-	vars->player_data.index_pos = get_player_index(vars->map);
-	vars->player_data.pixel_pos = get_player_pos(vars->map, &vars->offset);
 	if (vars->player_data.movement.forward)
 	{
-		vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_x);
-		vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_y);
-
+		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir_x);
+		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir_y);
+		printf("Player Movement: %f\n", vars->player_data.float_pos.x);
+		printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
 	else if (vars->player_data.movement.backward)
 	{
-		vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_x);
-		vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_y);   
+		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir_x);
+		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir_y);
+		printf("Player Movement: %f\n", vars->player_data.float_pos.x);
+		printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
 	else if (vars->player_data.movement.right)
 	{
-		vars->offset.x -= (float)(PLAYER_SPEED * vars->ray.dir_y);
-		vars->offset.y += (float)(PLAYER_SPEED * vars->ray.dir_x);
+		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir_y);
+		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir_x);
+		printf("Player Movement: %f\n", vars->player_data.float_pos.x);
+		printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
 	else if (vars->player_data.movement.left)
 	{
-		vars->offset.x += (float)(PLAYER_SPEED * vars->ray.dir_y);
-		vars->offset.y -= (float)(PLAYER_SPEED * vars->ray.dir_x);
+		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir_y);
+		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir_x);
+		printf("Player Movement: %f\n", vars->player_data.float_pos.x);
+		printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
+	player_pos_update(vars, vars->map);
 	map(vars);
 	return (1);
 }
@@ -91,10 +95,9 @@ t_pos	get_player_index(char **map)
 	return (index);
 }
 
-t_pos	get_player_pos(char **map, t_pos *offset)
+void	get_player_pos(char **map, t_mlx *vars)
 {
 	t_pos	index;
-
 	index.x = 0;
 	index.y = 0;
 	while (map[index.y])
@@ -104,16 +107,18 @@ t_pos	get_player_pos(char **map, t_pos *offset)
 		{
 			if (is_player(map[index.y][index.x]))
 			{
-				player_pos_update(offset, &index, map);
-				index.x = index.x * TILE_SIZE + offset->x;
-				index.y = index.y * TILE_SIZE + offset->y;
-				return (index);
+				vars->player_data.float_pos.x = 0.5 + index.x;
+				vars->player_data.float_pos.y = 0.5 + index.y;
+				vars->player_data.index_pos.x = index.x;
+				vars->player_data.index_pos.y = index.y;
+				vars->player_data.pixel_pos.x = index.x * TILE_SIZE;
+				vars->player_data.pixel_pos.y = index.y * TILE_SIZE;
+				return ;
 			}
 			index.x++;
 		}
 		index.y++;
 	}
-	return (index);
 }
 
 int	check_collision(t_pos index, const t_mlx *vars, char direction)
@@ -152,7 +157,7 @@ void	fps(const t_mlx *vars)
 	total_time.tv_usec = timer.tv_usec - vars->time.tv_usec;
 	fps_string = ft_itoa(1000000 / total_time.tv_usec);
 	fps_string = free_s2_to_join("fps : ", fps_string);
-	mlx_string_put(vars->mlx, vars->win, 5, 10, 0x00FFFFFF, fps_string);
+	mlx_string_put(vars->mlx, vars->win, 5, 10, 0x00444444, fps_string);
 	free(fps_string);
 }
 
@@ -161,23 +166,22 @@ void	map(t_mlx *vars)
 	if (vars->stats->map_is_create == 0)
 	{
 		vars->stats->map_is_create = 1;
-		vars->stats->old_pos = get_player_pos(vars->map, &vars->offset);
+		vars->stats->old_pos = vars->player_data.pixel_pos;
 		draw_map(vars);
 		nfree(vars->stats_tile);
-		init_mini_map(vars, get_player_pos(vars->map, &vars->offset));
+		init_mini_map(vars);
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win, \
 			vars->layer[LAYER_MINIMAP].img, WIDTH - vars->layer[LAYER_MINIMAP].w - 100, 100);
 	}
-	// if (vars->stats->old_pos.x != vars->offset.x
-	// || vars->stats->old_pos.y != vars->offset.y || vars->player_data.movement.rotating)
-	else
+	if (vars->stats->old_pos.x != vars->player_data.float_pos.x \
+	|| vars->stats->old_pos.y != vars->player_data.float_pos.y || vars->player_data.movement.rotating)
 	{
 		gettimeofday(&vars->time, NULL);
 		vars->stats->old_angle = vars->player_data.movement.rotating;
 		vars->stats->old_pos.x = vars->offset.x;
 		vars->stats->old_pos.y = vars->offset.y;
-		init_mini_map(vars, get_player_pos(vars->map, &vars->offset));
+		init_mini_map(vars);
 		raycast(vars);
 		// print_ray_param(&vars->ray);
 		mlx_put_image_to_window(vars->mlx, vars->win,
@@ -231,8 +235,7 @@ void	init_vars(t_mlx *vars)
 	vars->layer[LAYER_RAYCAST] = new_img(vars, WIDTH, HEIGHT);
 	vars->layer[LAYER_OVERLAY] = new_file_img("texture/Overlay.xpm", vars);
 	vars->layer[LAYER_FLOOR] = new_file_img("texture/Ground.xpm", vars);
-	vars->player_data.index_pos = get_player_index(vars->map);
-	vars->player_data.pixel_pos = get_player_pos(vars->map, &vars->offset);
+	get_player_pos(vars->map, vars);
 	vars->player_data.movement.rotating = 0;
 	vars->ray.dir_x = 1;
 	vars->ray.dir_y = 0;
@@ -245,7 +248,7 @@ int	main(const int argc, char **argv)
 	t_info	info;
 	t_mlx	vars;
 
-	ft_memset(&vars, 0, sizeof(t_mlx));
+	ft_bzero(&vars, sizeof(t_mlx));
 	init_info(&info);
 	vars.stats = &info;
 	vars.mlx = mlx_init();

@@ -36,7 +36,7 @@
 # define WIDTH_WIN 1920
 
 # define TILE_SIZE 64
-# define PLAYER_SPEED 4
+# define PLAYER_SPEED 0.04
 # define PLAYER_SIZE 8
 # define ROT_SPEED 0.05
 # define MINIMAP_SIZE 5
@@ -186,7 +186,7 @@ typedef struct s_mlx
 	t_tile			tile[50];
 	int				*stats_tile;
 	t_pos			size_map;
-	t_pos			offset;
+	t_posf			offset;
 	char			**map;
 	t_player_data	player_data;
 	struct timeval	time;
@@ -248,9 +248,9 @@ void			wall(t_data *img, float distance);
 // ------------ PLAYER -------------
 
 int				is_player(char c);
-t_pos			get_player_pos(char **map, t_pos *offset);
+void			get_player_pos(char **map, t_mlx *vars);
 t_pos			get_player_index(char **map);
-void			player_pos_update(t_pos *offset, t_pos *player_pos, char **map);
+void			player_pos_update(t_mlx *vars, char **map);
 
 // ------------ KEYBOARD -------------
 
@@ -259,7 +259,7 @@ int				key_released(int keycode, t_mlx *vars);
 
 // ------------ MINIMAP -------------
 
-int				init_mini_map(t_mlx *vars, t_pos player_pos);
+int				init_mini_map(t_mlx *vars);
 t_pos			size_map(char **map);
 void			draw_map(t_mlx *game);
 int				map_gen(t_mlx *vars, char **map_tab);

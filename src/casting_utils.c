@@ -27,11 +27,11 @@ void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 	ray->ray_dir_x = ray->dir_x + ray->plane_x * ray->camera_x;
 	ray->ray_dir_y = ray->dir_y + ray->plane_y * ray->camera_x;
 	if (ray->ray_dir_x == 0)
-		ray->delta_dist_x = DBL_MAX;
+		ray->delta_dist_x = FLT_MAX;
 	else
 		ray->delta_dist_x = fabs(1.f / ray->ray_dir_x);
 	if (ray->ray_dir_y == 0)
-		ray->delta_dist_y = DBL_MAX;
+		ray->delta_dist_y = FLT_MAX;
 	else
 		ray->delta_dist_y = fabs(1.f / ray->ray_dir_y);
 }
