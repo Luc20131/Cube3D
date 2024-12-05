@@ -25,7 +25,7 @@ int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 		pixel.x = 0xFF000030;
 		coef = (1 - current->y / (vars->layer[LAYER_RAYCAST].h / 2.));
 		get_darker_color(coef, &pixel);
-		my_mlx_pixel_put(&vars->layer[LAYER_RAYCAST], current->x, current->y, pixel.x);
+		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * (vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);
@@ -42,13 +42,13 @@ int	print_floor(t_pos *current, t_mlx *vars, t_ray *ray)
 		coef = ((current->y - vars->layer[LAYER_RAYCAST].h / 2) / (1. * (vars->layer[LAYER_RAYCAST].h / 2.)));
 		if (ray->perp_wall_dist > 1)
 			get_darker_color(coef, &pixel);
-		my_mlx_pixel_put(&vars->layer[LAYER_RAYCAST], current->x, current->y, pixel.x);
+		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * (vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);
 }
 
-int	print_wall(t_pos *current, t_mlx *vars, double step, t_pos *end)
+int	print_wall(t_pos *current, t_mlx *vars, float step, t_pos *end)
 {
 	int		tex_x;
 	float	tex_y;
@@ -73,7 +73,7 @@ int	print_wall(t_pos *current, t_mlx *vars, double step, t_pos *end)
 				pixel.b /= (vars->ray.perp_wall_dist);
 			}
 		}
-		my_mlx_pixel_put(&vars->layer[LAYER_RAYCAST], current->x, current->y, pixel.x);
+		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * (vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);

@@ -166,20 +166,20 @@ void	map(t_mlx *vars)
 		nfree(vars->stats_tile);
 		init_mini_map(vars, get_player_pos(vars->map, &vars->offset));
 		raycast(vars);
-		mlx_put_image_to_window(vars->mlx, vars->win,
-    vars->layer[LAYER_MINIMAP].img, WIDTH - vars->layer[LAYER_MINIMAP].w - 100, 100);
+		mlx_put_image_to_window(vars->mlx, vars->win, \
+			vars->layer[LAYER_MINIMAP].img, WIDTH - vars->layer[LAYER_MINIMAP].w - 100, 100);
 	}
 	// if (vars->stats->old_pos.x != vars->offset.x
 	// || vars->stats->old_pos.y != vars->offset.y || vars->player_data.movement.rotating)
 	else
 	{
 		gettimeofday(&vars->time, NULL);
-    vars->stats->old_angle = vars->player_data.movement.rotating;
+		vars->stats->old_angle = vars->player_data.movement.rotating;
 		vars->stats->old_pos.x = vars->offset.x;
 		vars->stats->old_pos.y = vars->offset.y;
 		init_mini_map(vars, get_player_pos(vars->map, &vars->offset));
 		raycast(vars);
-		print_ray_param(&vars->ray);
+		// print_ray_param(&vars->ray);
 		mlx_put_image_to_window(vars->mlx, vars->win,
 			vars->layer[LAYER_MINIMAP].img, WIDTH_WIN - vars->layer[LAYER_MINIMAP].w - 100, 100);
 		fps(vars);
@@ -194,8 +194,8 @@ void	nfree(void *pointer)
 
 void	set_starting_direction(t_mlx *vars, const int side)
 {
-	double old_dir_x;
-	double old_plane_x;
+	float old_dir_x;
+	float old_plane_x;
 
 	old_dir_x = vars->ray.dir_x;
 	old_plane_x = vars->ray.plane_x;
@@ -270,15 +270,6 @@ int	main(const int argc, char **argv)
 	mlx_loop_hook(vars.mlx, tick, &vars);
 	mlx_loop(vars.mlx);
 	return (0);
-}
-
-void	my_mlx_pixel_put(const t_data *data, const int x, const int y, const int color)
-{
-	char		*dst;
-	const int	nb_pixel = (data->bits_per_pixel / 8);
-
-	dst = data->addr + (y * data->line_length + x * nb_pixel);
-	*(unsigned int *)dst = color;
 }
 
 t_tab_size	char_tab_len(char **tab)

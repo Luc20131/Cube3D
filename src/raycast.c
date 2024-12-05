@@ -44,7 +44,7 @@ void	side_dist_and_stepper(t_ray	*ray)
 int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
 {
 	t_pos	current;
-	double	step;
+	float	step;
 	t_data	img_wall;
 
 	(void)ray;
@@ -98,9 +98,9 @@ void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *wall_top)
 	if (ray->perp_wall_dist == 0)
 		ray->perp_wall_dist = 0.001;
 	line_height = (int)(vars->layer[LAYER_RAYCAST].h / ray->perp_wall_dist);
-	wall_top->y = -line_height + vars->layer[LAYER_RAYCAST].h / 2;
+	wall_top->y = -line_height + (vars->layer[LAYER_RAYCAST].h >> 1);
 	end = *wall_top;
-	end.y = line_height + (vars->layer[LAYER_RAYCAST].h / 2);
+	end.y = line_height + (vars->layer[LAYER_RAYCAST].h >> 1);
 	while (i < PIX_PER_RAY)
 	{
 		print_display_from_ray(wall_top, &end, vars, ray);
@@ -127,79 +127,10 @@ void	put_img_to_img(t_data *src, t_data *dst)
 		{
 			pixel.x = get_pixel_img(src, x * ratio.x, y * ratio.y);
 			if (pixel.r+pixel.g+pixel.b != 0)
-				my_mlx_pixel_put(dst, x, y, pixel.x);
+				((int *)dst->addr)[y * (dst->line_length >> 2) + x] = pixel.x;
 		}
 	}
 }
-
-void	upscale_raycast_to_screen(t_mlx *vars, t_data *screen)
-{
-	t_pos			screen_pos;
-	t_pos			raycast_pos;
-	unsigned int	pixel_color[WIDTH];
-	char			*dst;
-	int				nb_pixels;
-	int				nb_lines;
-	int				nb_pixel_in_lines;
-	float			ratio_w;
-	float			ratio_h;
-	int				i;
-
-	ratio_h = HEIGHT_WIN / HEIGHT;
-	ratio_w = WIDTH_WIN / WIDTH;
-	screen_pos.x = 0;
-	screen_pos.y = 0;
-	nb_pixels = screen->bits_per_pixel >> 3;
-	raycast_pos = screen_pos;
-	while (raycast_pos.y < vars->layer[LAYER_RAYCAST].h)
-	{
-		screen_pos.x = 0;
-		raycast_pos.x = 0;
-		nb_lines = screen_pos.y * screen->line_length;
-		int nb_lines_raycast = raycast_pos.y * vars->layer[LAYER_RAYCAST].line_length;
-		while (raycast_pos.x < vars->layer[LAYER_RAYCAST].w)
-		{
-			nb_pixel_in_lines = screen_pos.x * nb_pixels;
-			dst = screen->addr + (nb_lines + nb_pixel_in_lines);
-			pixel_color[raycast_pos.x] = *(unsigned int *)((vars->layer[LAYER_RAYCAST].addr + (nb_lines_raycast) + (raycast_pos.x * nb_pixels)));
-			i = 0;
-			while (i < ratio_w)
-			{
-				*(unsigned int *) dst = pixel_color[raycast_pos.x];
-				dst += nb_pixels;
-				i++;
-			}
-			raycast_pos.x++;
-			screen_pos.x += ratio_w;
-		}
-		i = 0;
-		while (i < ratio_h)
-		{
-			screen_pos.x = 0;
-			raycast_pos.x = 0;
-			nb_lines = screen_pos.y * screen->line_length;
-			while (raycast_pos.x < vars->layer[LAYER_RAYCAST].w)
-			{
-				nb_pixel_in_lines = screen_pos.x * nb_pixels;
-				dst = screen->addr + (nb_lines + nb_pixel_in_lines);
-				int j = 0;
-				while (j < ratio_w)
-				{
-					*(unsigned int *) dst = pixel_color[raycast_pos.x];
-					dst += nb_pixels;
-					j++;
-				}
-				raycast_pos.x++;
-				screen_pos.x += ratio_w;
-			}
-			screen_pos.y++;
-			i++;
-		}
-		raycast_pos.y++;
-	}
-}
-
-
 
 int	raycast(t_mlx *vars)
 {
@@ -208,26 +139,26 @@ int	raycast(t_mlx *vars)
 	wall_top = get_player_pos(vars->map, &vars->offset);
 	vars->ray.map_pos = get_player_index(vars->map);
 	vars->ray.pos_x = vars->ray.map_pos.x \
-	+ ((double)vars->offset.x / TILE_SIZE);
+	+ ((float)vars->offset.x / TILE_SIZE);
 	vars->ray.pos_y = vars->ray.map_pos.y \
-	+ ((double)vars->offset.y / TILE_SIZE);
+	+ ((float)vars->offset.y / TILE_SIZE);
 	vars->ray.initial_pos = vars->ray.map_pos;
 	wall_top.x = 0;
 	if (vars->player_data.movement.rotating == 1)
 	{
-		double oldDirX = vars->ray.dir_x;
+		float oldDirX = vars->ray.dir_x;
 		vars->ray.dir_x = vars->ray.dir_x * cos(-ROT_SPEED) - vars->ray.dir_y * sin(-ROT_SPEED);
 		vars->ray.dir_y = oldDirX * sin(-ROT_SPEED) + vars->ray.dir_y * cos(-ROT_SPEED);
-		double oldPlaneX = vars->ray.plane_x;
+		float oldPlaneX = vars->ray.plane_x;
 		vars->ray.plane_x = vars->ray.plane_x * cos(-ROT_SPEED) - vars->ray.plane_y * sin(-ROT_SPEED);
 		vars->ray.plane_y = oldPlaneX * sin(-ROT_SPEED) + vars->ray.plane_y * cos(-ROT_SPEED);
 	}
 	else if (vars->player_data.movement.rotating == -1)
 	{
-		double oldDirX = vars->ray.dir_x;
+		float oldDirX = vars->ray.dir_x;
 		vars->ray.dir_x = vars->ray.dir_x * cos(ROT_SPEED) - vars->ray.dir_y * sin(ROT_SPEED);
 		vars->ray.dir_y = oldDirX * sin(ROT_SPEED) + vars->ray.dir_y * cos(ROT_SPEED);
-		double oldPlaneX = vars->ray.plane_x;
+		float oldPlaneX = vars->ray.plane_x;
 		vars->ray.plane_x = vars->ray.plane_x * cos(ROT_SPEED) - vars->ray.plane_y * sin(ROT_SPEED);
 		vars->ray.plane_y = oldPlaneX * sin(ROT_SPEED) + vars->ray.plane_y * cos(ROT_SPEED);
 	}
@@ -240,8 +171,9 @@ int	raycast(t_mlx *vars)
 		wall_top.x += PIX_PER_RAY;
 	}
 	put_img_to_img(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_RAYCAST]);
-	upscale_raycast_to_screen(vars, &vars->layer[LAYER_SCREEN]);
+	upscale_rc_to_screen(vars, &vars->layer[LAYER_SCREEN]);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_SCREEN].img, 0, 0);
+	// mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_RAYCAST].img, 0, 0);
 	// print_ray_param(&vars->ray);
 	vars->fps++;
 	return (0);
@@ -257,10 +189,10 @@ int	print_floor_ceilling(t_mlx *vars, t_pos *end)
 	while (y < HEIGHT)
 	{
 		vars->ray.current_dist = HEIGHT / (2.0 * y - HEIGHT);
-		double weight = (vars->ray.current_dist - vars->ray.dist_player) / (vars->ray.dist_wall - vars->ray.dist_player);
+		float weight = (vars->ray.current_dist - vars->ray.dist_player) / (vars->ray.dist_wall - vars->ray.dist_player);
 
-		double currentFloorX = weight * vars->ray.floor_x_wall + (0.5 - weight) * vars->ray.pos_x;
-		double currentFloorY = weight * vars->ray.floor_y_wall + (0.5 - weight) * vars->ray.pos_y;
+		float currentFloorX = weight * vars->ray.floor_x_wall + (0.5 - weight) * vars->ray.pos_x;
+		float currentFloorY = weight * vars->ray.floor_y_wall + (0.5 - weight) * vars->ray.pos_y;
 
 		int floorTexX, floorTexY;
 		floorTexX = (int)(currentFloorX * vars->layer[LAYER_FLOOR].w) % vars->layer[LAYER_FLOOR].w;
@@ -271,10 +203,9 @@ int	print_floor_ceilling(t_mlx *vars, t_pos *end)
 			pixel.x = get_pixel_img(&vars->layer[LAYER_FLOOR], floorTexX, floorTexY);
 			coef = ((y - vars->layer[LAYER_RAYCAST].h / 2) / (1. * (vars->layer[LAYER_RAYCAST].h / 2.)));
 			get_darker_color(coef, &pixel);
-			my_mlx_pixel_put(&vars->layer[LAYER_RAYCAST], end->x, y, pixel.x);
-			
+			((int *)vars->layer[LAYER_RAYCAST].addr)[y * (vars->layer[LAYER_RAYCAST].line_length >> 2) + end->x] = pixel.x;
 			get_darker_color(coef, &pixel);
-			my_mlx_pixel_put(&vars->layer[LAYER_RAYCAST], end->x, vars->layer[LAYER_RAYCAST].h - y - 1, pixel.x);
+			((int *)vars->layer[LAYER_RAYCAST].addr)[(vars->layer[LAYER_RAYCAST].h - y - 1) * (vars->layer[LAYER_RAYCAST].line_length >> 2) + end->x] = pixel.x;
 		}
 		y++;
 	}

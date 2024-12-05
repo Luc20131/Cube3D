@@ -23,7 +23,7 @@ void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 {
 	ray->hit = 0;
 	ray->map_pos = ray->initial_pos;
-	ray->camera_x = ((2 * origin->x) / (double) vars->layer[LAYER_RAYCAST].w) - 1;
+	ray->camera_x = ((2 * origin->x) / (float) vars->layer[LAYER_RAYCAST].w) - 1;
 	ray->ray_dir_x = ray->dir_x + ray->plane_x * ray->camera_x;
 	ray->ray_dir_y = ray->dir_y + ray->plane_y * ray->camera_x;
 	if (ray->ray_dir_x == 0)

@@ -75,8 +75,8 @@ typedef struct s_pos
 
 typedef struct s_posf
 {
-	double	x;
-	double	y;
+	float	x;
+	float	y;
 }	t_posf;
 
 typedef struct s_direction
@@ -123,45 +123,44 @@ typedef struct s_player_data
 
 typedef struct s_ray
 {
-	double	dir_x;
-	double	dir_y;
-	double	camera_x;
-	double	delta_dist_x;
-	double	delta_dist_y;
-	double	step_x;
-	double	step_y;
-	double	side_dist_x;
-	double	side_dist_y;
-	double	pos_x;
-	double	pos_y;
-	double	plane_x;
-	double	plane_y;
-	double	ray_dir_x;
-	double	ray_dir_y;
-
+	float	dir_x;
+	float	dir_y;
+	float	camera_x;
+	float	delta_dist_x;
+	float	delta_dist_y;
+	float	step_x;
+	float	step_y;
+	float	side_dist_x;
+	float	side_dist_y;
+	float	pos_x;
+	float	pos_y;
+	float	plane_x;
+	float	plane_y;
+	float	ray_dir_x;
+	float	ray_dir_y;
 	/*raycast floor ceilling*/
-	double	ray_dir_x_first;
-	double	ray_dir_y_first;
-	double	ray_dir_x_sec;
-	double	ray_dir_y_sec;
+	float	ray_dir_x_first;
+	float	ray_dir_y_first;
+	float	ray_dir_x_sec;
+	float	ray_dir_y_sec;
 	int		horizon_point;
-	double	pos_z;
-	double	row_distance;
-	double	floor_step_y;
-	double	floor_step_x;
-	double	floor_x;
-	double	floor_y;
+	float	pos_z;
+	float	row_distance;
+	float	floor_step_y;
+	float	floor_step_x;
+	float	floor_x;
+	float	floor_y;
 
-	double	wall_x;
-	double	dist_wall;
-	double	dist_player;
-	double	current_dist;
-	double	floor_x_wall;
-	double	floor_y_wall;
+	float	wall_x;
+	float	dist_wall;
+	float	dist_player;
+	float	current_dist;
+	float	floor_x_wall;
+	float	floor_y_wall;
 	/*endif lmao*/
 	int		hit;
 	t_pos	map_pos;
-	double	perp_wall_dist;
+	float	perp_wall_dist;
 	int		side;
 	t_pos	end_ray;
 	t_pos	initial_pos;
@@ -227,6 +226,22 @@ typedef struct s_info
 	char	**map;
 }	t_info;
 
+typedef struct s_upscale
+{
+	t_pos			screen_pos;
+	t_pos			rc_pos;
+	unsigned int	pixel_color[WIDTH];
+	int				nb_pixels;
+	int				nb_lines;
+	int				nb_px_in_lines;
+	float			ratio_h;
+	int				i;
+	int				j;
+	char            *dst;
+	int				nb_lines_rc;
+	float			ratio_w;
+}	t_upscale;
+
 t_tab_size		char_tab_len(char **tab);
 void			wall(t_data *img, float distance);
 
@@ -267,7 +282,7 @@ int				get_r(int trgb);
 int				get_g(int trgb);
 int				get_b(int trgb);
 void			get_darker_color(float coef, t_color *color);
-float			init_pixel_tex_y(t_pos *current, double step);
+float			init_pixel_tex_y(t_pos *current, float step);
 int				init_pixel_tex_x(t_ray *ray, t_mlx *vars);
 int				*fill_dir_v(int *c, char **map, t_pos pos, t_pos fill);
 int				*fill_dir_h(int *c, char **map, t_pos pos, t_pos fill);
@@ -276,12 +291,13 @@ int				*face_corner_v(int *c, t_pos pos, t_mlx g, char **map);
 int				*face_corner_h(int *c, t_pos pos, t_mlx g, char **map);
 int				*x_dir(int *c, t_pos pos, t_mlx g, t_pos map_size);
 void			draw_square(t_data *img, t_pos origin, int size, int color);
-void			my_mlx_pixel_put(const t_data *data, const int x, const int y, const int color);
+// void			my_mlx_pixel_put(const t_data *data, const int x, const int y, const int color);
+void			upscale_rc_to_screen(t_mlx *vars, t_data *screen);
 // ------------ UTILS -------------
 
 int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
 int				print_floor(t_pos *current, t_mlx *vars, t_ray *ray);
-int				print_wall(t_pos *current, t_mlx *vars, double step, \
+int				print_wall(t_pos *current, t_mlx *vars, float step, \
 				t_pos *end);
 
 t_data			select_texture(t_data img[4], t_mlx *vars);

@@ -46,7 +46,7 @@ int	init_pixel_tex_x(t_ray *ray, t_mlx *vars)
 	else
 		ray->wall_x = ray->pos_x + ray->perp_wall_dist * ray->ray_dir_x;
 	ray->wall_x -= floor(ray->wall_x);
-	tex_x = img_wall.w -1 -(int)(ray->wall_x * (double)(img_wall.w));
+	tex_x = img_wall.w -1 -(int)(ray->wall_x * (float)(img_wall.w));
 	if (ray->side == 0 && ray->ray_dir_x > 0)
 		tex_x = img_wall.w - (tex_x + 1);
 	if (ray->side == 1 && ray->ray_dir_y < 0)
@@ -54,7 +54,7 @@ int	init_pixel_tex_x(t_ray *ray, t_mlx *vars)
 	return (tex_x);
 }
 
-float	init_pixel_tex_y(t_pos *current, double step)
+float	init_pixel_tex_y(t_pos *current, float step)
 {
 	float	tex_y;
 

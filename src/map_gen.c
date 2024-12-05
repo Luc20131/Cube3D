@@ -64,12 +64,12 @@ int	init_mini_map(t_mlx *vars, t_pos carac_pos)
 				pixel = 0x00000000;
 			else
 				pixel = get_pixel_img(&vars->layer[LAYER_MAP], origin.x + index.x, origin.y + index.y);
-			my_mlx_pixel_put(&vars->layer[LAYER_MINIMAP], index.x, index.y, pixel);
+			((int *)vars->layer[LAYER_MINIMAP].addr)[index.y * (vars->layer[LAYER_MINIMAP].line_length >> 2) + index.x] = pixel;
 
 			index.x++;
 		}
-		my_mlx_pixel_put(&vars->layer[LAYER_MINIMAP], 0, index.y, 0xFF3F3F3F);
-		my_mlx_pixel_put(&vars->layer[LAYER_MINIMAP], index.x - 1, index.y, 0xFF3F3F3F);
+		((int *)vars->layer[LAYER_MINIMAP].addr)[index.y * (vars->layer[LAYER_MINIMAP].line_length >> 2) + 0] = 0xFF3F3F3F;
+		((int *)vars->layer[LAYER_MINIMAP].addr)[index.y * (vars->layer[LAYER_MINIMAP].line_length >> 2) + index.x - 1] = 0xFF3F3F3F;
 		index.y++;
 	}
 
@@ -92,7 +92,7 @@ void	draw_square(t_data *img, t_pos origin, int size, int color)
 		current.x = origin.x;
 		while (current.x < origin.x + size)
 		{
-			my_mlx_pixel_put(img, current.x, current.y, color);
+			((int *)img->addr)[current.y * (img->line_length >> 2) + current.x] = color;
 			current.x++;
 		}
 		current.y++;
@@ -132,8 +132,8 @@ void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
 	{
 		x = -1;
 		while (++x < tile_size)
-			my_mlx_pixel_put(img, ((tile_x - sup) * tile_size) + x, ((tile_y \
-			- sup) * tile_size) + y, get_pixel_img(img, x, y));
+
+			((int *)img->addr)[(((tile_y - sup) * tile_size) + y) * (img->line_length >> 2) + (((tile_x - sup) * tile_size) + x)] = get_pixel_img(img, x, y);
 		y++;
 	}
 }
