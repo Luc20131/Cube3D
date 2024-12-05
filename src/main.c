@@ -45,29 +45,21 @@ int	tick(t_mlx *vars)
 	{
 		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir_x);
 		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir_y);
-		printf("Player Movement: %f\n", vars->player_data.float_pos.x);
-		printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
 	else if (vars->player_data.movement.backward)
 	{
 		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir_x);
 		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir_y);
-		printf("Player Movement: %f\n", vars->player_data.float_pos.x);
-		printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
 	else if (vars->player_data.movement.right)
 	{
 		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir_y);
 		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir_x);
-		printf("Player Movement: %f\n", vars->player_data.float_pos.x);
-		printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
 	else if (vars->player_data.movement.left)
 	{
 		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir_y);
 		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir_x);
-		printf("Player Movement: %f\n", vars->player_data.float_pos.x);
-		printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
 	player_pos_update(vars, vars->map);
 	map(vars);

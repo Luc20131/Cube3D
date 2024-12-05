@@ -53,12 +53,14 @@ int	print_wall(t_pos *current, t_mlx *vars, float step, t_pos *end)
 	int		tex_x;
 	float	tex_y;
 	t_color	pixel;
+	const float		inverse_distance = 1. / vars->ray.perp_wall_dist;
 
 	tex_x = init_pixel_tex_x(&vars->ray, vars);
 	tex_y = init_pixel_tex_y(current, step);
 	while (current->y < end->y && current->y < vars->layer[LAYER_RAYCAST].h)
 	{
 		tex_y += step;
+
 		if (vars->ray.perp_wall_dist > 13)
 			pixel.x = 0x00000000;
 		else
@@ -68,9 +70,9 @@ int	print_wall(t_pos *current, t_mlx *vars, float step, t_pos *end)
 				pixel.x = ((pixel.x >> 1) & 0x007F7F7F);
 			if (vars->ray.perp_wall_dist > 1)
 			{
-				pixel.r /= (vars->ray.perp_wall_dist);
-				pixel.g /= (vars->ray.perp_wall_dist);
-				pixel.b /= (vars->ray.perp_wall_dist);
+					pixel.r *= inverse_distance;
+					pixel.g *= inverse_distance;
+					pixel.b *= inverse_distance;
 			}
 		}
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * (vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;

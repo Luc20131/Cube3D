@@ -47,8 +47,8 @@ int	init_mini_map(t_mlx *vars)
 	index.y = 0;
 	size.x = MINIMAP_SIZE * TILE_SIZE;
 	size.y = MINIMAP_SIZE * TILE_SIZE;
-	origin.x = vars->player_data.pixel_pos.x;
-	origin.y = vars->player_data.pixel_pos.y;
+	origin.x = vars->player_data.float_pos.x * TILE_SIZE;
+	origin.y = vars->player_data.float_pos.y * TILE_SIZE;
 	if (vars->layer[LAYER_MINIMAP].img == NULL)
 		vars->layer[LAYER_MINIMAP] = new_img(vars, size.x, size.y);
 	map_size = size_map(vars->map);
