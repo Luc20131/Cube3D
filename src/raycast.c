@@ -134,16 +134,15 @@ void	put_img_to_img(t_data *src, t_data *dst)
 
 int	raycast(t_mlx *vars)
 {
-	t_pos	wall_top;
+	t_pos	origin;
 
-	wall_top = get_player_pos(vars->map, &vars->offset);
-	vars->ray.map_pos = get_player_index(vars->map);
-	vars->ray.pos_x = vars->ray.map_pos.x \
-	+ ((float)vars->offset.x / TILE_SIZE);
-	vars->ray.pos_y = vars->ray.map_pos.y \
-	+ ((float)vars->offset.y / TILE_SIZE);
+	origin = vars->player_data.pixel_pos;
+	vars->ray.pos_x = vars->player_data.float_pos.x;
+	vars->ray.pos_y = vars->player_data.float_pos.y;
+	vars->ray.map_pos.x = (int) vars->player_data.float_pos.x;
+	vars->ray.map_pos.y = (int) vars->player_data.float_pos.y;
 	vars->ray.initial_pos = vars->ray.map_pos;
-	wall_top.x = 0;
+	origin.x = 0;
 	if (vars->player_data.movement.rotating == 1)
 	{
 		float oldDirX = vars->ray.dir_x;
@@ -162,13 +161,13 @@ int	raycast(t_mlx *vars)
 		vars->ray.plane_x = vars->ray.plane_x * cos(ROT_SPEED) - vars->ray.plane_y * sin(ROT_SPEED);
 		vars->ray.plane_y = oldPlaneX * sin(ROT_SPEED) + vars->ray.plane_y * cos(ROT_SPEED);
 	}
-	while (wall_top.x < vars->layer[LAYER_RAYCAST].w)
+	while (origin.x < vars->layer[LAYER_RAYCAST].w)
 	{
-		init_value_for_cast(&vars->ray, vars, &wall_top);
+		init_value_for_cast(&vars->ray, vars, &origin);
 		side_dist_and_stepper(&vars->ray);
 		one_cast(&vars->ray, vars);
-		wall_printer_from_cast(&vars->ray, vars, &wall_top);
-		wall_top.x += PIX_PER_RAY;
+		wall_printer_from_cast(&vars->ray, vars, &origin);
+		origin.x += PIX_PER_RAY;
 	}
 	put_img_to_img(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_RAYCAST]);
 	upscale_rc_to_screen(vars, &vars->layer[LAYER_SCREEN]);
