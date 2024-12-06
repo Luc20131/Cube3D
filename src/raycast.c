@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/30 16:54:13 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/05 18:48:22 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,23 @@ int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
 	img_wall = select_texture(vars->stats->img_texture, vars);
 	step = (1.0 * img_wall.h / (end->y - wall_top->y));
 	current.y = wall_top->y;
-	// print_ceilling(&current, vars, wall_top);
 	print_wall(&current, vars, step, end);
 	vertical_raycast(vars, end);
-	// print_floor(&current, vars, ray);
 	return (0);
 }
+/*
+	print_ceilling(&current, vars, wall_top);
+	print_floor(&current, vars, ray);
+*/ 
 
 int	one_cast(t_ray *ray, t_mlx *vars)
 {
-	while (ray->hit == 0)
+	t_pos	map_len;
+	int		len;
+
+	map_len = size_map(vars->map);
+	len = -1;
+	while (ray->hit == 0 && ++len != 30)
 	{
 		if (ray->side_dist_x < ray->side_dist_y)
 		{
@@ -78,8 +85,9 @@ int	one_cast(t_ray *ray, t_mlx *vars)
 			ray->map_pos.y += ray->step_y;
 			ray->side = 1;
 		}
-		if (vars->map[ray->map_pos.y][ray->map_pos.x] > '0')
-			ray->hit = 1;
+		if (ray->map_pos.y < map_len.y && ray->map_pos.x < map_len.x && ray->map_pos.y >= 0 && ray->map_pos.x >= 0)
+			if (vars->map[ray->map_pos.y][ray->map_pos.x] > '0')
+				ray->hit = 1;
 	}
 	if (ray->side == 0)
 		ray->perp_wall_dist = ray->side_dist_x - ray->delta_dist_x;
@@ -175,68 +183,5 @@ int	raycast(t_mlx *vars)
 	// mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_RAYCAST].img, 0, 0);
 	// print_ray_param(&vars->ray);
 	vars->fps++;
-	return (0);
-}
-
-int	print_floor_ceilling(t_mlx *vars, t_pos *end)
-{
-	int		y;
-	t_color	pixel;
-	float	coef;
-
-	y = end->y;
-	while (y < HEIGHT)
-	{
-		vars->ray.current_dist = HEIGHT / (2.0 * y - HEIGHT);
-		float weight = (vars->ray.current_dist - vars->ray.dist_player) / (vars->ray.dist_wall - vars->ray.dist_player);
-
-		float currentFloorX = weight * vars->ray.floor_x_wall + (0.5 - weight) * vars->ray.pos_x;
-		float currentFloorY = weight * vars->ray.floor_y_wall + (0.5 - weight) * vars->ray.pos_y;
-
-		int floorTexX, floorTexY;
-		floorTexX = (int)(currentFloorX * vars->layer[LAYER_FLOOR].w) % vars->layer[LAYER_FLOOR].w;
-		floorTexY = (int)(currentFloorY * vars->layer[LAYER_FLOOR].h) % vars->layer[LAYER_FLOOR].h;
-		// floor
-		if ((floorTexX < vars->layer[LAYER_FLOOR].w && floorTexX > 0) || (floorTexY < vars->layer[LAYER_FLOOR].h && floorTexY > 0))
-		{
-			pixel.x = get_pixel_img(&vars->layer[LAYER_FLOOR], floorTexX, floorTexY);
-			coef = ((y - vars->layer[LAYER_RAYCAST].h / 2) / (1. * (vars->layer[LAYER_RAYCAST].h / 2.)));
-			get_darker_color(coef, &pixel);
-			((int *)vars->layer[LAYER_RAYCAST].addr)[y * (vars->layer[LAYER_RAYCAST].line_length >> 2) + end->x] = pixel.x;
-			get_darker_color(coef, &pixel);
-			((int *)vars->layer[LAYER_RAYCAST].addr)[(vars->layer[LAYER_RAYCAST].h - y - 1) * (vars->layer[LAYER_RAYCAST].line_length >> 2) + end->x] = pixel.x;
-		}
-		y++;
-	}
-	return (0);
-}
-
-int vertical_raycast(t_mlx *vars, t_pos *end)
-{
-	if(vars->ray.side == 0 && vars->ray.ray_dir_x > 0)
-	{
-		vars->ray.floor_x_wall = vars->ray.map_pos.x;
-		vars->ray.floor_y_wall = vars->ray.map_pos.y + vars->ray.wall_x;
-	}
-	else if(vars->ray.side == 0 && vars->ray.ray_dir_x < 0)
-	{
-	vars->ray.floor_x_wall = vars->ray.map_pos.x + 1.0;
-	vars->ray.floor_y_wall = vars->ray.map_pos.y + vars->ray.wall_x;
-	}
-	else if(vars->ray.side == 1 && vars->ray.ray_dir_y > 0)
-	{
-		vars->ray.floor_x_wall = vars->ray.map_pos.x + vars->ray.wall_x;
-		vars->ray.floor_y_wall = vars->ray.map_pos.y;
-	}
-	else
-	{
-		vars->ray.floor_x_wall = vars->ray.map_pos.x + vars->ray.wall_x;
-		vars->ray.floor_y_wall = vars->ray.map_pos.y + 1.0;
-	}
-	vars->ray.dist_wall = vars->ray.perp_wall_dist;
-    vars->ray.dist_player = 0.0;
-	if (end->y < 0)
-		end->y = HEIGHT;
-	print_floor_ceilling(vars, end);
 	return (0);
 }

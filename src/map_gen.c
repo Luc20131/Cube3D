@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_gen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/23 19:36:36 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/05 18:23:50 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ int	init_mini_map(t_mlx *vars)
 	index.y = 0;
 	size.x = MINIMAP_SIZE * TILE_SIZE;
 	size.y = MINIMAP_SIZE * TILE_SIZE;
-	origin.x = vars->player_data.pixel_pos.x;
-	origin.y = vars->player_data.pixel_pos.y;
+	map_size = size_map(vars->map);
+	origin.x = (vars->ray.pos_x * TILE_SIZE);
+	origin.y = (vars->ray.pos_y * TILE_SIZE);
 	if (vars->layer[LAYER_MINIMAP].img == NULL)
 		vars->layer[LAYER_MINIMAP] = new_img(vars, size.x, size.y);
-	map_size = size_map(vars->map);
 	while (index.y < size.y)
 	{
 		index.x = 0;
@@ -146,8 +146,9 @@ void	player_pos_update(t_mlx *vars, char **map)
 		old_pos.x = (int)vars->player_data.float_pos.x;
 		old_pos.y = (int)vars->player_data.float_pos.y;
 	}
-	map[old_pos.y][old_pos.x] = '0';
-	map[(int)vars->player_data.float_pos.y][(int)vars->player_data.float_pos.x] = 'N';
+	(void)map;
+	// map[old_pos.y][old_pos.x] = '0';
+	// map[(int)vars->player_data.float_pos.y][(int)vars->player_data.float_pos.x] = 'N';
 	old_pos.x = (int)vars->player_data.float_pos.x;
 	old_pos.y = (int)vars->player_data.float_pos.y;
 	vars->player_data.pixel_pos.x = TILE_SIZE * vars->player_data.float_pos.x;
