@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/06 06:12:52 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/07 00:21:34 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,11 +256,12 @@ int	main(const int argc, char **argv)
 		return (1);
 	else
 	{
-		if (parsing_cube(argv[1], &info, &vars) == 0)
+		if (parsing_cube(argv[1], &info) == 0)
 			return (1);
 		else
 			ft_printf("PARSING ✅\n");
 	}
+	init_data_texture(&info, &vars);
 	gettimeofday(&vars.time, NULL);
 	vars.map = info.map;
 	ft_bzero(&vars.ray, sizeof(vars.ray));

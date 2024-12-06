@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/13 20:33:46 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/12/07 00:18:45 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	check_format(char *map, char *find)
 		return (E_FORMAT);
 }
 
-int	parsing_cube(char *arg, t_info *info, t_mlx *mlx)
+int	parsing_cube(char *arg, t_info *info)
 {
 	int		result;
 
@@ -76,17 +76,15 @@ int	parsing_cube(char *arg, t_info *info, t_mlx *mlx)
 	if (result == E_NO_MORE_KEY)
 	{
 		if (!valid_key(info))
-			return (error_msg(E_WRONG_KEY), nfree(info), 0);
+			return (error_msg(E_WRONG_KEY), 0);
 		else
 			if (get_map(info) != SUCCESS)
 				return (error_msg(E_INVALID_MAP), \
-				freetab((info)->map), nfree(info), 0);
+				freetab((info)->map), 0);
 	}
 	else if (result == E_WRONG_COLOR)
-		return (error_msg(E_WRONG_COLOR), nfree(info), 0);
+		return (error_msg(E_WRONG_COLOR), 0);
 	else if (result == E_CANT_OPEN)
-		return (error_msg(E_CANT_OPEN), nfree(info), 0);
-	if (init_data_texture(info, mlx) == E_MALLOC)
-		return (nfree(info), 0);
+		return (error_msg(E_CANT_OPEN), 0);
 	return (SUCCESS);
 }
