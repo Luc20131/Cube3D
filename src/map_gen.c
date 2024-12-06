@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/05 18:23:50 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/06 06:14:25 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	init_mini_map(t_mlx *vars)
 	size.x = MINIMAP_SIZE * TILE_SIZE;
 	size.y = MINIMAP_SIZE * TILE_SIZE;
 	map_size = size_map(vars->map);
-	origin.x = (vars->ray.pos_x * TILE_SIZE);
-	origin.y = (vars->ray.pos_y * TILE_SIZE);
+	origin.x = (vars->ray.pos.x * TILE_SIZE);
+	origin.y = (vars->ray.pos.y * TILE_SIZE);
 	if (vars->layer[LAYER_MINIMAP].img == NULL)
 		vars->layer[LAYER_MINIMAP] = new_img(vars, size.x, size.y);
 	while (index.y < size.y)
