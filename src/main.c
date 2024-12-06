@@ -164,7 +164,7 @@ void	map(t_mlx *vars)
 		init_mini_map(vars);
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win, \
-			vars->layer[LAYER_MINIMAP].img, WIDTH - vars->layer[LAYER_MINIMAP].w - 100, 100);
+			vars->layer[LAYER_MINIMAP].img, WIDTH_WIN - vars->layer[LAYER_MINIMAP].w - 100, 100);
 	}
 	if (vars->stats->old_pos.x != vars->player_data.float_pos.x \
 	|| vars->stats->old_pos.y != vars->player_data.float_pos.y || vars->player_data.movement.rotating)
@@ -226,13 +226,15 @@ void	init_vars(t_mlx *vars)
 	vars->layer[LAYER_SCREEN] = new_img(vars, WIDTH_WIN, HEIGHT_WIN);
 	vars->layer[LAYER_RAYCAST] = new_img(vars, WIDTH, HEIGHT);
 	vars->layer[LAYER_OVERLAY] = new_file_img("texture/Overlay.xpm", vars);
-	vars->layer[LAYER_FLOOR] = new_file_img("texture/Ground.xpm", vars);
+	vars->layer[LAYER_FLOOR] = new_file_img("texture/8k_texture.xpm", vars);
+	vars->layer[LAYER_MONITOR] = new_file_img("texture/monitoring.xpm", vars);
 	get_player_pos(vars->map, vars);
 	vars->player_data.movement.rotating = 0;
 	vars->ray.dir_x = 1;
 	vars->ray.dir_y = 0;
 	vars->ray.plane_y = 0.66;
 	vars->ray.plane_x = 0;
+	vars->size_map = size_map(vars->map);
 }
 
 int	main(const int argc, char **argv)
@@ -291,7 +293,8 @@ void	print_map(char **map)
 
 	y = 0;
 	i = 0;
-	while (map[i][y])
+	printf("\x1B[H\x1B[J\n");
+	while (map[i])
 	{
 		while (map[i][y])
 		{

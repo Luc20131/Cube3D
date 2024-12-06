@@ -40,24 +40,29 @@ void	upscaling_first_line(t_mlx *vars, t_data *screen, t_upscale *scale)
 
 void	upscale_next_lines(t_mlx *vars, t_data *screen, t_upscale *scale)
 {
-	scale->screen_pos.x = 0;
-	scale->rc_pos.x = 0;
-	scale->nb_lines = scale->screen_pos.y * screen->line_length;
-	while (scale->rc_pos.x < vars->layer[LAYER_RAYCAST].w)
+	scale->i = 0;
+	while (scale->i < scale->ratio_h)
 	{
-		scale->nb_px_in_lines = scale->screen_pos.x * scale->nb_pixels;
-		scale->dst = screen->addr + (scale->nb_lines + scale->nb_px_in_lines);
-		scale->j = 0;
-		while (scale->j < scale->ratio_w)
+		scale->screen_pos.x = 0;
+		scale->rc_pos.x = 0;
+		scale->nb_lines = scale->screen_pos.y * screen->line_length;
+		while (scale->rc_pos.x < vars->layer[LAYER_RAYCAST].w)
 		{
-			*(unsigned int *) scale->dst = scale->pixel_color[scale->rc_pos.x];
-			scale->dst += scale->nb_pixels;
-			scale->j++;
+			scale->nb_px_in_lines = scale->screen_pos.x * scale->nb_pixels;
+			scale->dst = screen->addr + (scale->nb_lines + scale->nb_px_in_lines);
+			scale->j = 0;
+			while (scale->j < scale->ratio_w)
+			{
+				*(unsigned int *) scale->dst = scale->pixel_color[scale->rc_pos.x];
+				scale->dst += scale->nb_pixels;
+				scale->j++;
+			}
+			scale->rc_pos.x++;
+			scale->screen_pos.x += scale->ratio_w;
 		}
-		scale->rc_pos.x++;
-		scale->screen_pos.x += scale->ratio_w;
+		scale->screen_pos.y++;
+		scale->i++;
 	}
-	scale->screen_pos.y++;
 }
 
 void	upscale_rc_to_screen(t_mlx *vars, t_data *screen)
@@ -73,12 +78,7 @@ void	upscale_rc_to_screen(t_mlx *vars, t_data *screen)
 	{
 		scale.rc_pos.x = 0;
 		upscaling_first_line(vars, screen, &scale);
-		scale.i = 0;
-		while (scale.i < scale.ratio_h)
-		{
-			upscale_next_lines(vars, screen, &scale);
-			scale.i++;
-		}
+		upscale_next_lines(vars, screen, &scale);
 		scale.rc_pos.y++;
 	}
 }

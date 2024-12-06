@@ -55,10 +55,8 @@ int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
 	img_wall = select_texture(vars->stats->img_texture, vars);
 	step = (1.0 * img_wall.h / (end->y - wall_top->y));
 	current.y = wall_top->y;
-	// print_ceilling(&current, vars, wall_top);
 	print_wall(&current, vars, step, end);
 	vertical_raycast(vars, end);
-	// print_floor(&current, vars, ray);
 	return (0);
 }
 
@@ -78,7 +76,7 @@ int	one_cast(t_ray *ray, t_mlx *vars)
 			ray->map_pos.y += ray->step_y;
 			ray->side = 1;
 		}
-		if (vars->map[ray->map_pos.y][ray->map_pos.x] > '0')
+		if (vars->map[ray->map_pos.y][ray->map_pos.x] == '1')
 			ray->hit = 1;
 	}
 	if (ray->side == 0)
@@ -169,10 +167,10 @@ int	raycast(t_mlx *vars)
 		wall_printer_from_cast(&vars->ray, vars, &origin);
 		origin.x += PIX_PER_RAY;
 	}
-	put_img_to_img(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_RAYCAST]);
-	upscale_rc_to_screen(vars, &vars->layer[LAYER_SCREEN]);
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_SCREEN].img, 0, 0);
-	// mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_RAYCAST].img, 0, 0);
+	// put_img_to_img(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_RAYCAST]);
+	// upscale_rc_to_screen(vars, &vars->layer[LAYER_SCREEN]);
+	// mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_SCREEN].img, 0, 0);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_RAYCAST].img, 0, 0);
 	// print_ray_param(&vars->ray);
 	vars->fps++;
 	return (0);

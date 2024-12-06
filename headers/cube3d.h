@@ -30,10 +30,10 @@
 # define SKY_COLOR 0xFF5EACFF
 # define GROUND_COLOR 0xFF170501
 
-# define HEIGHT 270
-# define WIDTH 480
-# define HEIGHT_WIN 1080
-# define WIDTH_WIN 1920
+# define HEIGHT 1800
+# define WIDTH 2880
+# define HEIGHT_WIN 1800
+# define WIDTH_WIN 2880
 
 # define TILE_SIZE 64
 # define PLAYER_SPEED 0.04
@@ -111,6 +111,7 @@ typedef struct s_data
 	int		endian;
 	int		h;
 	int		w;
+	int		pixels;
 }	t_data;
 
 typedef struct s_player_data
@@ -174,7 +175,8 @@ enum e_layer
 	LAYER_MINIMAP,
 	LAYER_MAP,
 	LAYER_RAYCAST,
-	LAYER_FLOOR
+	LAYER_FLOOR,
+	LAYER_MONITOR
 };
 
 typedef struct s_mlx
@@ -182,7 +184,7 @@ typedef struct s_mlx
 	void			*mlx;
 	void			*win;
 	t_data			floor;
-	t_data			layer[7];
+	t_data			layer[8];
 	t_tile			tile[50];
 	int				*stats_tile;
 	t_pos			size_map;
