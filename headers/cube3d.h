@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/06 06:02:05 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/07 13:17:15 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ typedef struct s_ray
 	float	dist_wall;
 	float	dist_player;
 	float	current_dist;
-	t_pos	floor_wall;
+	t_posf	floor_wall;
 	/*endif lmao*/
 	int		hit;
 	t_pos	map_pos;

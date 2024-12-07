@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:32:36 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/07 00:49:30 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/07 13:26:35 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	print_floor_ceilling(t_data *layer, t_ray *ray, t_pos *end)
 																	ray->pos.y;
 		current_floor.x = weight * ray->floor_wall.x + (0.5 - weight) * \
 																	ray->pos.x;
-		printf("%f", current_floor.x);
 		floor_tex.x = (int)(current_floor.x * layer[LAYER_FLOOR].w) \
 										% layer[LAYER_FLOOR].w;
 		floor_tex.y = (int)(current_floor.y * layer[LAYER_FLOOR].h) \
