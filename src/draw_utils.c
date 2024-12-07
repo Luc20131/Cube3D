@@ -18,7 +18,7 @@ t_data	select_texture(t_data img[4], t_mlx *vars)
 	{
 		if (vars->ray.ray_dir_y > 0)
 			return (img[NO]);
-		else if (vars->ray.ray_dir_y < 0)
+		if (vars->ray.ray_dir_y < 0)
 			return (img[SO]);
 	}
 	else if (vars->ray.ray_dir_x < 0)

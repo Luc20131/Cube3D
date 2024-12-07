@@ -1,10 +1,10 @@
 
 
-NO texture/Sprite-0002.xpm                   
-WE texture/Sprite-0002.xpm
+NO texture/8k_texture.xpm
+WE texture/8k_texture.xpm
 F 220,100,0 
-SO texture/Sprite-0002.xpm
-EA                         texture/Sprite-0002.xpm                         
+SO texture/8k_texture.xpm
+EA                         texture/8k_texture.xpm
 C 0  ,10,  0                                                        
 
 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111

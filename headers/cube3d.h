@@ -30,10 +30,10 @@
 # define SKY_COLOR 0xFF5EACFF
 # define GROUND_COLOR 0xFF170501
 
-# define HEIGHT 1800
-# define WIDTH 2880
-# define HEIGHT_WIN 1800
-# define WIDTH_WIN 2880
+# define HEIGHT 1080
+# define WIDTH 1920
+# define HEIGHT_WIN 1080
+# define WIDTH_WIN 1920
 
 # define TILE_SIZE 64
 # define PLAYER_SPEED 0.04
@@ -176,7 +176,9 @@ enum e_layer
 	LAYER_MAP,
 	LAYER_RAYCAST,
 	LAYER_FLOOR,
-	LAYER_MONITOR
+	LAYER_MONITOR,
+	LAYER_ACHANGER,
+	LAYER_ACHANGER2
 };
 
 typedef struct s_mlx
@@ -184,7 +186,7 @@ typedef struct s_mlx
 	void			*mlx;
 	void			*win;
 	t_data			floor;
-	t_data			layer[8];
+	t_data			layer[10];
 	t_tile			tile[50];
 	int				*stats_tile;
 	t_pos			size_map;
@@ -300,7 +302,7 @@ void			upscale_rc_to_screen(t_mlx *vars, t_data *screen);
 int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
 int				print_floor(t_pos *current, t_mlx *vars, t_ray *ray);
 int				print_wall(t_pos *current, t_mlx *vars, float step, \
-				t_pos *end);
+				t_pos *end, t_data *img);
 
 t_data			select_texture(t_data img[4], t_mlx *vars);
 int				vertical_raycast(t_mlx *vars, t_pos *end);
