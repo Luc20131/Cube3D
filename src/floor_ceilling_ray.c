@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:32:36 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/05 15:56:13 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/07 13:26:35 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ int	print_floor_ceilling(t_data *layer, t_ray *ray, t_pos *end)
 		ray->current_dist = HEIGHT / (2.0 * y - HEIGHT);
 		weight = (ray->current_dist - ray->dist_player) / \
 										(ray->dist_wall - ray->dist_player);
-		current_floor.y = weight * ray->floor_y_wall + (0.5 - weight) * \
-																	ray->pos_y;
-		current_floor.x = weight * ray->floor_x_wall + (0.5 - weight) * \
-																	ray->pos_x;
+		current_floor.y = weight * ray->floor_wall.y + (0.5 - weight) * \
+																	ray->pos.y;
+		current_floor.x = weight * ray->floor_wall.x + (0.5 - weight) * \
+																	ray->pos.x;
 		floor_tex.x = (int)(current_floor.x * layer[LAYER_FLOOR].w) \
 										% layer[LAYER_FLOOR].w;
 		floor_tex.y = (int)(current_floor.y * layer[LAYER_FLOOR].h) \
@@ -61,25 +61,25 @@ int	print_floor_ceilling(t_data *layer, t_ray *ray, t_pos *end)
 
 int	vertical_raycast(t_mlx *vars, t_pos *end)
 {
-	if (vars->ray.side == 0 && vars->ray.ray_dir_x > 0)
+	if (vars->ray.side == 0 && vars->ray.ray_dir.x > 0)
 	{
-		vars->ray.floor_x_wall = vars->ray.map_pos.x;
-		vars->ray.floor_y_wall = vars->ray.map_pos.y + vars->ray.wall_x;
+		vars->ray.floor_wall.x = vars->ray.map_pos.x;
+		vars->ray.floor_wall.y = vars->ray.map_pos.y + vars->ray.wall_x;
 	}
-	else if (vars->ray.side == 0 && vars->ray.ray_dir_x < 0)
+	else if (vars->ray.side == 0 && vars->ray.ray_dir.x < 0)
 	{
-		vars->ray.floor_x_wall = vars->ray.map_pos.x + 1.0;
-		vars->ray.floor_y_wall = vars->ray.map_pos.y + vars->ray.wall_x;
+		vars->ray.floor_wall.x = vars->ray.map_pos.x + 1.0;
+		vars->ray.floor_wall.y = vars->ray.map_pos.y + vars->ray.wall_x;
 	}
-	else if (vars->ray.side == 1 && vars->ray.ray_dir_y > 0)
+	else if (vars->ray.side == 1 && vars->ray.ray_dir.y > 0)
 	{
-		vars->ray.floor_x_wall = vars->ray.map_pos.x + vars->ray.wall_x;
-		vars->ray.floor_y_wall = vars->ray.map_pos.y;
+		vars->ray.floor_wall.x = vars->ray.map_pos.x + vars->ray.wall_x;
+		vars->ray.floor_wall.y = vars->ray.map_pos.y;
 	}
 	else
 	{
-		vars->ray.floor_x_wall = vars->ray.map_pos.x + vars->ray.wall_x;
-		vars->ray.floor_y_wall = vars->ray.map_pos.y + 1.0;
+		vars->ray.floor_wall.x = vars->ray.map_pos.x + vars->ray.wall_x;
+		vars->ray.floor_wall.y = vars->ray.map_pos.y + 1.0;
 	}
 	vars->ray.dist_wall = vars->ray.perp_wall_dist;
 	vars->ray.dist_player = 0.0;

@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/03 14:49:04 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/07 00:20:44 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,5 @@ int		get_key_value(char *key_v, t_key key, t_info *info);
 int		key_finder(char *line);
 int		skip_key_word(char *key_v);
 int		get_color(char *key_v, t_key key, t_info *info);
-int		parsing_cube(char *arg, t_info *info, t_mlx *mlx);
+int		parsing_cube(char *arg, t_info *info);
 #endif
