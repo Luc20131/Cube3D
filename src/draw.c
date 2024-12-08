@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:31:17 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/28 14:26:18 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/05 16:16:45 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 		pixel.x = 0xFF000030;
 		coef = (1 - current->y / half_height);
 		get_darker_color(coef, &pixel);
-		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * (vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
+		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
+		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);
@@ -44,7 +45,8 @@ int	print_floor(t_pos *current, t_mlx *vars, t_ray *ray)
 		coef = ((current->y - half_height) / half_height);
 		if (ray->perp_wall_dist > 1)
 			get_darker_color(coef, &pixel);
-		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * (vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
+		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
+		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);
@@ -52,15 +54,12 @@ int	print_floor(t_pos *current, t_mlx *vars, t_ray *ray)
 
 int		print_wall(t_pos *current, t_mlx *vars, float step, t_pos *end, t_data *img)
 {
-	int		tex_x;
-	float	tex_y;
+	t_posf	tex;
 	t_color	pixel;
 
 	const float		inverse_distance = (1. / vars->ray.perp_wall_dist);
 	const int line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
-	int	*pixel_img;
 
-	pixel_img = ((int *)vars->layer[LAYER_RAYCAST].addr);
 	tex_x = init_pixel_tex_x(&vars->ray, vars) * img->pixels;
 	tex_y = init_pixel_tex_y(current, step);
 	while ((current->y < end->y) & (current->y < vars->layer[LAYER_RAYCAST].h))
@@ -81,7 +80,8 @@ int		print_wall(t_pos *current, t_mlx *vars, float step, t_pos *end, t_data *img
 				pixel.b = (inverse_distance * pixel.b);
 			}
 		}
-		pixel_img[current->y * line_length + current->x] = pixel.x;
+		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
+		  line_length + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);

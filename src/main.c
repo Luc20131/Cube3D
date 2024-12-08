@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/29 15:23:00 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/12/07 00:21:34 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,23 @@ int	tick(t_mlx *vars)
 {
 	if (vars->player_data.movement.forward)
 	{
-		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir_x);
-		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir_y);
+		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.x);
+		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.y);
 	}
 	else if (vars->player_data.movement.backward)
 	{
-		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir_x);
-		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir_y);
+		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir.x);
+		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir.y);
 	}
 	else if (vars->player_data.movement.right)
 	{
-		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir_y);
-		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir_x);
+		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir.y);
+		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.x);
 	}
 	else if (vars->player_data.movement.left)
 	{
-		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir_y);
-		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir_x);
+		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.y);
+		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir.x);
 	}
 	player_pos_update(vars, vars->map);
 	map(vars);
@@ -194,12 +194,12 @@ void	set_starting_direction(t_mlx *vars, const int side)
 	float old_dir_x;
 	float old_plane_x;
 
-	old_dir_x = vars->ray.dir_x;
-	old_plane_x = vars->ray.plane_x;
-	vars->ray.dir_x = vars->ray.dir_x * cos(1.5708 * side) - vars->ray.dir_y * sin(1.5708 * side);
-	vars->ray.dir_y = old_dir_x * sin(1.5708 * side) + vars->ray.dir_y * cos(1.5708 * side);
-	vars->ray.plane_x = vars->ray.plane_x * cos(1.5708 * side) - vars->ray.plane_y * sin(1.5708 * side);
-	vars->ray.plane_y = old_plane_x * sin(1.5708 * side) + vars->ray.plane_y * cos(1.5708 * side);
+	old_dir_x = vars->ray.dir.x;
+	old_plane_x = vars->ray.plane.x;
+	vars->ray.dir.x = vars->ray.dir.x * cos(1.5708 * side) - vars->ray.dir.y * sin(1.5708 * side);
+	vars->ray.dir.y = old_dir_x * sin(1.5708 * side) + vars->ray.dir.y * cos(1.5708 * side);
+	vars->ray.plane.x = vars->ray.plane.x * cos(1.5708 * side) - vars->ray.plane.y * sin(1.5708 * side);
+	vars->ray.plane.y = old_plane_x * sin(1.5708 * side) + vars->ray.plane.y * cos(1.5708 * side);
 }
 
 void	player_pov_on_start(t_mlx *vars)
@@ -233,11 +233,10 @@ void	init_vars(t_mlx *vars)
 	vars->layer[LAYER_ACHANGER] = new_file_img("texture/SusMap.xpm", vars);
 	get_player_pos(vars->map, vars);
 	vars->player_data.movement.rotating = 0;
-	vars->ray.dir_x = 1;
-	vars->ray.dir_y = 0;
-	vars->ray.plane_y = 0.66;
-	vars->ray.plane_x = 0;
-	vars->size_map = size_map(vars->map);
+	vars->ray.dir.x = 1;
+	vars->ray.dir.y = 0;
+	vars->ray.plane.y = 0.66;
+	vars->ray.plane.x = 0;
 }
 
 int	main(const int argc, char **argv)
@@ -253,11 +252,12 @@ int	main(const int argc, char **argv)
 		return (1);
 	else
 	{
-		if (parsing_cube(argv[1], &info, &vars) == 0)
+		if (parsing_cube(argv[1], &info) == 0)
 			return (1);
 		else
 			ft_printf("PARSING ✅\n");
 	}
+	init_data_texture(&info, &vars);
 	gettimeofday(&vars.time, NULL);
 	vars.map = info.map;
 	ft_bzero(&vars.ray, sizeof(vars.ray));

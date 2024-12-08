@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/29 16:12:31 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/07 13:17:15 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,40 +124,24 @@ typedef struct s_player_data
 
 typedef struct s_ray
 {
-	float	dir_x;
-	float	dir_y;
+	t_posf	dir;
 	float	camera_x;
-	float	delta_dist_x;
-	float	delta_dist_y;
-	float	step_x;
-	float	step_y;
-	float	side_dist_x;
-	float	side_dist_y;
-	float	pos_x;
-	float	pos_y;
-	float	plane_x;
-	float	plane_y;
-	float	ray_dir_x;
-	float	ray_dir_y;
+	t_posf	delta_dist;
+	t_posf	w_step;
+	t_posf	side_dist;
+	t_posf	pos;
+	t_posf	plane;
+	t_posf	ray_dir;
 	/*raycast floor ceilling*/
-	float	ray_dir_x_first;
-	float	ray_dir_y_first;
-	float	ray_dir_x_sec;
-	float	ray_dir_y_sec;
-	int		horizon_point;
-	float	pos_z;
 	float	row_distance;
-	float	floor_step_y;
-	float	floor_step_x;
-	float	floor_x;
-	float	floor_y;
+	t_posf	f_step;
+	t_posf	floor;
 
 	float	wall_x;
 	float	dist_wall;
 	float	dist_player;
 	float	current_dist;
-	float	floor_x_wall;
-	float	floor_y_wall;
+	t_posf	floor_wall;
 	/*endif lmao*/
 	int		hit;
 	t_pos	map_pos;

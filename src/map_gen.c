@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_gen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/23 19:36:36 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/06 06:14:25 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,6 @@ void	player_pos_update(t_mlx *vars, char **map)
 		old_pos.y = (int)vars->player_data.float_pos.y;
 		vars->player_data.pixel_pos.x = TILE_SIZE * vars->player_data.float_pos.x;
 		vars->player_data.pixel_pos.y = TILE_SIZE * vars->player_data.float_pos.y;
-		// print_map(vars->map);
 	}
 }
 
