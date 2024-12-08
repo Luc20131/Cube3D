@@ -170,9 +170,12 @@ int	raycast(t_mlx *vars)
 		origin.x += PIX_PER_RAY;
 	}
 	// put_img_to_img(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_RAYCAST]);
-	// upscale_rc_to_screen(vars, &vars->layer[LAYER_SCREEN]);
-	// mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_SCREEN].img, 0, 0);
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_RAYCAST].img, 0, 0);
+	upscale_rc_to_screen(vars, &vars->layer[LAYER_SCREEN]);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_SCREEN].img, 0, 0);
+	// mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_RAYCAST].img, 0, 0);
+	vars->fps++;
+	// if (vars->fps == 100)
+		// exit(2);
 	// print_ray_param(&vars->ray);
 	return (0);
 }
@@ -183,7 +186,7 @@ int	print_floor_ceilling(t_mlx *vars, t_pos *end)
 	t_color	pixel;
 	float	coef;
 	const float	half_height = (vars->layer[LAYER_RAYCAST].h / 2.);
-
+	const int line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
 	y = end->y;
 	while (y < HEIGHT)
 	{
@@ -199,12 +202,9 @@ int	print_floor_ceilling(t_mlx *vars, t_pos *end)
 		{
 			pixel.x = get_pixel_img(&vars->layer[LAYER_FLOOR], floorTexX, floorTexY);
 			coef = ((y - half_height) / half_height);
-			// coef = 1. / pow(vars->ray.current_dist, 5);
-			// printf("%f\n", coef);
 			get_darker_color(coef, &pixel);
-			((int *)vars->layer[LAYER_RAYCAST].addr)[y * (vars->layer[LAYER_RAYCAST].line_length >> 2) + end->x] = pixel.x;
-			// get_darker_color(coef, &pixel);
-			((int *)vars->layer[LAYER_RAYCAST].addr)[(vars->layer[LAYER_RAYCAST].h - y - 1) * (vars->layer[LAYER_RAYCAST].line_length >> 2) + end->x] = pixel.x;
+			((int *)vars->layer[LAYER_RAYCAST].addr)[y * line_length + end->x] = pixel.x;
+			((int *)vars->layer[LAYER_RAYCAST].addr)[(vars->layer[LAYER_RAYCAST].h - y - 1) * line_length + end->x] = pixel.x;
 		}
 		y++;
 	}
