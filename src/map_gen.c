@@ -11,10 +11,8 @@
 /* ************************************************************************** */
 
 #include "cube3d.h"
-#include <math.h>
-#include <stdio.h>
 
-void	put_data_to_img(t_data dst, t_data src, int x, int y);
+void	put_data_to_img(t_data *dst, t_data src, int x, int y);
 
 t_data	new_img(t_mlx *vars, unsigned int width, unsigned int height)
 {
@@ -30,6 +28,7 @@ t_data	new_img(t_mlx *vars, unsigned int width, unsigned int height)
 		&frame.line_length, &frame.endian);
 	frame.h = height;
 	frame.w = width;
+	frame.pixels = frame.bits_per_pixel >> 3;
 	// printf("bits per pixels : %d\n", frame.bits_per_pixel);
 	return (frame);
 }
@@ -41,17 +40,18 @@ int	init_mini_map(t_mlx *vars)
 	t_pos			origin;
 	t_pos			map_size;
 	unsigned int	pixel;
-	t_data			monitoring;
+	t_data			*minimap;
 
+	minimap = &vars->layer[LAYER_MINIMAP];
 	index.x = 0;
 	index.y = 0;
 	size.x = MINIMAP_SIZE * TILE_SIZE;
 	size.y = MINIMAP_SIZE * TILE_SIZE;
+	origin.x = vars->player_data.float_pos.x * TILE_SIZE + (PLAYER_SIZE >> 2) - (size.x >> 1);
+	origin.y = vars->player_data.float_pos.y * TILE_SIZE + (PLAYER_SIZE >> 1) - (size.y >> 1);
+	if (minimap->addr == NULL)
+		*minimap = new_img(vars, size.x, size.y);
 	map_size = size_map(vars->map);
-	origin.x = (vars->ray.pos.x * TILE_SIZE);
-	origin.y = (vars->ray.pos.y * TILE_SIZE);
-	if (vars->layer[LAYER_MINIMAP].img == NULL)
-		vars->layer[LAYER_MINIMAP] = new_img(vars, size.x, size.y);
 	while (index.y < size.y)
 	{
 		index.x = 0;
@@ -64,20 +64,16 @@ int	init_mini_map(t_mlx *vars)
 				pixel = 0x00000000;
 			else
 				pixel = get_pixel_img(&vars->layer[LAYER_MAP], origin.x + index.x, origin.y + index.y);
-			((int *)vars->layer[LAYER_MINIMAP].addr)[index.y * (vars->layer[LAYER_MINIMAP].line_length >> 2) + index.x] = pixel;
+			((int *)minimap->addr)[index.y * (minimap->line_length >> 2) + index.x] = pixel;
 
 			index.x++;
 		}
-		((int *)vars->layer[LAYER_MINIMAP].addr)[index.y * (vars->layer[LAYER_MINIMAP].line_length >> 2) + 0] = 0xFF3F3F3F;
-		((int *)vars->layer[LAYER_MINIMAP].addr)[index.y * (vars->layer[LAYER_MINIMAP].line_length >> 2) + index.x - 1] = 0xFF3F3F3F;
+		((int *)minimap->addr)[index.y * (minimap->line_length >> 2) + 0] = 0xFF3F3F3F;
+		((int *)minimap->addr)[index.y * (minimap->line_length >> 2) + index.x - 1] = 0xFF3F3F3F;
 		index.y++;
 	}
-
-	monitoring = new_file_img("texture/monitoring.xpm", vars);
-	put_data_to_img(vars->layer[LAYER_MINIMAP], monitoring, 0 * TILE_SIZE, 0 * TILE_SIZE);
-	mlx_destroy_image(vars->mlx, monitoring.img);
-	draw_square(&vars->layer[LAYER_MINIMAP], (t_pos){(size.x + PLAYER_SIZE) / 2, (size.y + PLAYER_SIZE) / 2}, PLAYER_SIZE, 0xFF0FFF0F);
-	vars->layer[LAYER_MINIMAP] = vars->layer[LAYER_MINIMAP];
+	put_data_to_img(minimap, vars->layer[LAYER_MONITOR], 0 * TILE_SIZE, 0 * TILE_SIZE);
+	draw_square(minimap, (t_pos){(size.x + PLAYER_SIZE) >> 1, (size.y + PLAYER_SIZE) >> 1}, PLAYER_SIZE, 0xFF0FFF0F);
 	return (1);
 }
 
@@ -115,7 +111,7 @@ t_pos	size_map(char **map)
 unsigned int	get_pixel_img(t_data *img, int x, int y)
 {
 	return (*(unsigned int *)((img->addr + (y * img->line_length) \
-		+ (x * img->bits_per_pixel/ 8))));
+		+ (x * img->pixels))));
 }
 
 void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
@@ -141,26 +137,30 @@ void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
 void	player_pos_update(t_mlx *vars, char **map)
 {
 	static t_pos	old_pos = {0,0};
+	if ((int)vars->player_data.float_pos.y < 0 || (int)vars->player_data.float_pos.y > vars->size_map.y)
+		return;
 	if (old_pos.x == 0 && old_pos.y == 0)
 	{
 		old_pos.x = (int)vars->player_data.float_pos.x;
 		old_pos.y = (int)vars->player_data.float_pos.y;
 	}
-	(void)map;
-	// map[old_pos.y][old_pos.x] = '0';
-	// map[(int)vars->player_data.float_pos.y][(int)vars->player_data.float_pos.x] = 'N';
-	old_pos.x = (int)vars->player_data.float_pos.x;
-	old_pos.y = (int)vars->player_data.float_pos.y;
-	vars->player_data.pixel_pos.x = TILE_SIZE * vars->player_data.float_pos.x;
-	vars->player_data.pixel_pos.y = TILE_SIZE * vars->player_data.float_pos.y;
-
+	if (map[old_pos.y][old_pos.x] != '1'
+		&& map[(int)vars->player_data.float_pos.y][(int)vars->player_data.float_pos.x] != '1')
+	{
+		map[old_pos.y][old_pos.x] = '0';
+		map[(int)vars->player_data.float_pos.y][(int)vars->player_data.float_pos.x] = 'N';
+		old_pos.x = (int)vars->player_data.float_pos.x;
+		old_pos.y = (int)vars->player_data.float_pos.y;
+		vars->player_data.pixel_pos.x = TILE_SIZE * vars->player_data.float_pos.x;
+		vars->player_data.pixel_pos.y = TILE_SIZE * vars->player_data.float_pos.y;
+	}
 }
 
-t_data	new_file_img(char *path, t_mlx *window)
+t_data	new_file_img(char *path, t_mlx *vars)
 {
 	t_data	image;
 
-	image.img = mlx_xpm_file_to_image(window->mlx, path, &image.w, &image.h);
+	image.img = mlx_xpm_file_to_image(vars->mlx, path, &image.w, &image.h);
 	if (!image.img)
 	{
 		write(2, "Error\nFile could not be read\n", 29);
@@ -169,44 +169,41 @@ t_data	new_file_img(char *path, t_mlx *window)
 	else
 		image.addr = mlx_get_data_addr(image.img, &(image.bits_per_pixel), \
 			&(image.line_length), &(image.endian));
+	image.pixels = image.bits_per_pixel >> 3;
 	return (image);
 }
 
-void	pixel_img(t_data img, int x, int y, int color)
+void	pixel_img(t_data *img, int x, int y, int color)
 {
-	char	*dst;
-
-	if (x >= 0 && y >= 0 && x < img.w && y < img.h)
+	if (x >= 0 && y >= 0 && x < img->w && y < img->h)
 	{
-		dst = img.addr + (y * img.line_length + x * (img.bits_per_pixel / 8));
-		*(unsigned int *) dst = color;
+		*(unsigned int *) (img->addr + (y * img->line_length + x * img->pixels)) = color;
 	}
 }
 
-t_data	img_cut(char *path, t_pos pos, t_mlx *g)
+t_data	img_cut(char *path, t_pos pos, t_mlx *vars)
 {
 	t_sprite_slice	slice;
-	t_data			img;
-	t_data			source;
+	// t_data			img;
+	// t_data			source;
 	int				j;
 	int				i;
-
+	(void) path;
 	slice = (t_sprite_slice){pos.y * TILE_SIZE, pos.x * TILE_SIZE,\
 	 TILE_SIZE, TILE_SIZE};
-	img = new_img(g, slice.width, slice.height);
-	source = new_file_img(path, g);
+
 	i = -1;
-	while (++i < slice.width)
+	while (++i < TILE_SIZE)
 	{
 		j = -1;
-		while (++j < slice.height)
+		while (++j < TILE_SIZE)
 		{
-			pixel_img(img, j, i, \
-				get_pixel_img(&source, slice.x + j, slice.y + i));
+			pixel_img(&vars->layer[LAYER_MINIMAP], j, i, \
+				get_pixel_img(&vars->layer[LAYER_ACHANGER], slice.x + j, slice.y + i));
 		}
 	}
-	mlx_destroy_image(g->mlx, source.img);
-	return (img);
+	// mlx_destroy_image(vars->mlx, vars->layer[LAYER_ACHANGER2].img);
+	return (vars->layer[LAYER_ACHANGER]);
 }
 
 static int	put_pixel_valid(t_data img, int x, int y)
@@ -214,14 +211,14 @@ static int	put_pixel_valid(t_data img, int x, int y)
 	if (x >= 0 && y >= 0 && x < img.w && y < img.h)
 	{
 		return (*(unsigned int *)(img.addr + \
-		(y * img.line_length + x * (img.bits_per_pixel / 8))) != 0xFF000000 && \
+		(y * img.line_length + x * img.pixels)) != 0xFF000000 && \
 		*(unsigned int *)(img.addr + \
-		(y * img.line_length + x * (img.bits_per_pixel / 8))) != 0x00000000);
+		(y * img.line_length + x * img.pixels)) != 0x00000000);
 	}
 	return (0);
 }
 
-void	put_data_to_img(t_data dst, t_data src, int x, int y)
+void	put_data_to_img(t_data *dst, t_data src, int x, int y)
 {
 	int	i;
 	int	j;
@@ -260,7 +257,7 @@ void	draw_map(t_mlx *game)
 	int		i;
 	int		j;
 	int		k;
-	t_data	img;
+	// t_data	img;
 	t_pos	pos;
 	t_pos	map_size;
 
@@ -277,10 +274,9 @@ void	draw_map(t_mlx *game)
 		while (++i < map_size.x)
 		{
 			pos = tile_selector(game->tile, &game->stats_tile[++k]);
-			img = img_cut("texture/SusMap.xpm", pos, game);
-			put_data_to_img(game->layer[LAYER_MAP], img, i * TILE_SIZE, \
-				j * TILE_SIZE);
-			mlx_destroy_image(game->mlx, img.img);
+			img_cut("texture/SusMap.xpm", pos, game);
+			// put_data_to_img(&game->layer[LAYER_MAP], img, i * TILE_SIZE,
+			// 	j * TILE_SIZE);
 		}
 	}
 }

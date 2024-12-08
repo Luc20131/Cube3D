@@ -46,6 +46,7 @@ int	key_hook(const int keycode, t_mlx *vars)
 		mlx_destroy_image(vars->mlx, vars->layer[LAYER_MAP].img);
 		mlx_destroy_image(vars->mlx, vars->layer[LAYER_MINIMAP].img);
 		mlx_destroy_image(vars->mlx, vars->layer[LAYER_OVERLAY].img);
+		mlx_destroy_image(vars->mlx, vars->layer[LAYER_MONITOR].img);
 		mlx_destroy_image(vars->mlx, vars->stats->img_texture[0].img);
 		mlx_destroy_image(vars->mlx, vars->stats->img_texture[1].img);
 		mlx_destroy_image(vars->mlx, vars->stats->img_texture[2].img);

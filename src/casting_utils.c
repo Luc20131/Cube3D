@@ -10,15 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <float.h>
-
+#include <limits.h>
 #include "cube3d.h"
-// #define ROT_SPEED 2
 
-	/*ray->dir.x = 0.5;
-	ray->dir.y = 0;
-	ray->plane.y = 0.66;
-	ray->plane.x = 0;*/
 void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 {
 	ray->hit = 0;

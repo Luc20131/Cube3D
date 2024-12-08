@@ -45,29 +45,21 @@ int	tick(t_mlx *vars)
 	{
 		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.x);
 		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.y);
-		// printf("Player Movement: %f\n", vars->player_data.float_pos.x);
-		// printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
 	else if (vars->player_data.movement.backward)
 	{
 		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir.x);
 		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir.y);
-		// printf("Player Movement: %f\n", vars->player_data.float_pos.x);
-		// printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
 	else if (vars->player_data.movement.right)
 	{
 		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir.y);
 		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.x);
-	// 	printf("Player Movement: %f\n", vars->player_data.float_pos.x);
-	// 	printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
 	else if (vars->player_data.movement.left)
 	{
 		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.y);
 		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir.x);
-		// printf("Player Movement: %f\n", vars->player_data.float_pos.x);
-		// printf("Player Movement: %f\n", vars->player_data.float_pos.y);
 	}
 	player_pos_update(vars, vars->map);
 	map(vars);
@@ -157,7 +149,7 @@ void	fps(const t_mlx *vars)
 	total_time.tv_usec = timer.tv_usec - vars->time.tv_usec;
 	fps_string = ft_itoa(1000000 / total_time.tv_usec);
 	fps_string = free_s2_to_join("fps : ", fps_string);
-	mlx_string_put(vars->mlx, vars->win, 5, 10, 0x00444444, fps_string);
+	mlx_string_put(vars->mlx, vars->win, 5, 10, 0x00AAAAAA, fps_string);
 	free(fps_string);
 }
 
@@ -172,10 +164,11 @@ void	map(t_mlx *vars)
 		init_mini_map(vars);
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win, \
-			vars->layer[LAYER_MINIMAP].img, WIDTH - vars->layer[LAYER_MINIMAP].w - 100, 100);
+			vars->layer[LAYER_MINIMAP].img, WIDTH_WIN - vars->layer[LAYER_MINIMAP].w - 100, 100);
 	}
-	if (vars->stats->old_pos.x != vars->player_data.float_pos.x \
-	|| vars->stats->old_pos.y != vars->player_data.float_pos.y || vars->player_data.movement.rotating)
+	// if (vars->stats->old_pos.x != vars->player_data.float_pos.x
+	// || vars->stats->old_pos.y != vars->player_data.float_pos.y || vars->player_data.movement.rotating)
+	else
 	{
 		gettimeofday(&vars->time, NULL);
 		vars->stats->old_angle = vars->player_data.movement.rotating;
@@ -235,6 +228,9 @@ void	init_vars(t_mlx *vars)
 	vars->layer[LAYER_RAYCAST] = new_img(vars, WIDTH, HEIGHT);
 	vars->layer[LAYER_OVERLAY] = new_file_img("texture/Overlay.xpm", vars);
 	vars->layer[LAYER_FLOOR] = new_file_img("texture/Ground.xpm", vars);
+	vars->layer[LAYER_MONITOR] = new_file_img("texture/monitoring.xpm", vars);
+	// vars->layer[LAYER_ACHANGER] = new_img(vars, slice.width, slice.height);
+	vars->layer[LAYER_ACHANGER] = new_file_img("texture/SusMap.xpm", vars);
 	get_player_pos(vars->map, vars);
 	vars->player_data.movement.rotating = 0;
 	vars->ray.dir.x = 1;
@@ -300,7 +296,8 @@ void	print_map(char **map)
 
 	y = 0;
 	i = 0;
-	while (map[i][y])
+	printf("\x1B[H\x1B[J\n");
+	while (map[i])
 	{
 		while (map[i][y])
 		{

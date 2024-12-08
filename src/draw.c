@@ -16,14 +16,14 @@ int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 {
 	t_color	pixel;
 	float	coef;
+	float	half_height;
 
-	(void)current;
-	(void)vars;
+	half_height = (vars->layer[LAYER_RAYCAST].h / 2.);
 	(void)wall_top;
 	while (current->y < wall_top->y)
 	{
 		pixel.x = 0xFF000030;
-		coef = (1 - current->y / (vars->layer[LAYER_RAYCAST].h / 2.));
+		coef = (1 - current->y / half_height);
 		get_darker_color(coef, &pixel);
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
 		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
@@ -36,12 +36,13 @@ int	print_floor(t_pos *current, t_mlx *vars, t_ray *ray)
 {
 	t_color	pixel;
 	float	coef;
+	float	half_height;
 
+	half_height = (1. / vars->layer[LAYER_RAYCAST].h);
 	while (current->y < vars->layer[LAYER_RAYCAST].h)
 	{
 		pixel.x = 0xFF170501;
-		coef = ((current->y - vars->layer[LAYER_RAYCAST].h / 2) / \
-		(1. * (vars->layer[LAYER_RAYCAST].h / 2.)));
+		coef = ((current->y - half_height) / half_height);
 		if (ray->perp_wall_dist > 1)
 			get_darker_color(coef, &pixel);
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
@@ -51,28 +52,36 @@ int	print_floor(t_pos *current, t_mlx *vars, t_ray *ray)
 	return (0);
 }
 
-int	print_wall(t_pos *current, t_mlx *vars, float step, t_pos *end)
+int		print_wall(t_pos *current, t_mlx *vars, float step, t_pos *end, t_data *img)
 {
 	t_posf	tex;
 	t_color	pixel;
 
-	tex.x = init_pixel_tex_x(&vars->ray, vars);
-	tex.y = init_pixel_tex_y(current, step);
-	while (current->y < end->y && current->y < vars->layer[LAYER_RAYCAST].h)
+	const float		inverse_distance = (1. / vars->ray.perp_wall_dist);
+	const int line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
+
+	tex_x = init_pixel_tex_x(&vars->ray, vars) * img->pixels;
+	tex_y = init_pixel_tex_y(current, step);
+	while ((current->y < end->y) & (current->y < vars->layer[LAYER_RAYCAST].h))
 	{
-		tex.y += step;
-		if (vars->ray.perp_wall_dist > 16)
+		tex_y += step;
+
+		if (vars->ray.perp_wall_dist > 13)
 			pixel.x = 0x00000000;
 		else
 		{
-			pixel.x = get_pixel_img(&vars->stats->img_texture[0], tex.x, tex.y);
+			pixel.x = *(unsigned int *)((img->addr + (int)tex_y * img->line_length) + (tex_x));
 			if (vars->ray.side == 1)
 				pixel.x = ((pixel.x >> 1) & 0x007F7F7F);
-			if (vars->ray.perp_wall_dist > 2)
-				get_darker_color(1./(vars->ray.perp_wall_dist / 2.), &pixel);
+			if (vars->ray.perp_wall_dist > 1)
+			{
+				pixel.r = (inverse_distance * pixel.r);
+				pixel.g = (inverse_distance * pixel.g);
+				pixel.b = (inverse_distance * pixel.b);
+			}
 		}
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
-		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
+		  line_length + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);

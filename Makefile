@@ -2,7 +2,7 @@ MAKE = @make --no-print-directory
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -g3 -Werror -Wall -Wextra ${IFLAGS} -fsanitize=address
+CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -g3
 NAME = cub3D
 
 HEADER = ./headers/cube3d.h ./headers/parsing.h
@@ -99,6 +99,6 @@ run :
 	@./$(NAME) 42.cub
 
 debug :
-	$(MAKE) libft.a -C libft FLAG="$(FLAG) -g3"
-	$(MAKE) re FLAG="$(FLAG) -g3"
+	$(MAKE) libft.a -C libft CFLAG="$(CFLAG) -g3"
+	$(MAKE) re CFLAG="$(CFLAG) -g3"
 	@gdb -tui $(NAME)
