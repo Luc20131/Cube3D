@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/06 06:14:25 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/09 19:30:57 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,11 +181,9 @@ void	pixel_img(t_data *img, int x, int y, int color)
 	}
 }
 
-t_data	img_cut(char *path, t_pos pos, t_mlx *vars)
+t_data	img_cut(char *path, t_pos pos, t_mlx *vars, t_pos pos_)
 {
 	t_sprite_slice	slice;
-	// t_data			img;
-	// t_data			source;
 	int				j;
 	int				i;
 	(void) path;
@@ -193,16 +191,15 @@ t_data	img_cut(char *path, t_pos pos, t_mlx *vars)
 	 TILE_SIZE, TILE_SIZE};
 
 	i = -1;
-	while (++i < TILE_SIZE)
+	while (++i < slice.width)
 	{
 		j = -1;
-		while (++j < TILE_SIZE)
+		while (++j < slice.height)
 		{
-			pixel_img(&vars->layer[LAYER_MINIMAP], j, i, \
-				get_pixel_img(&vars->layer[LAYER_ACHANGER], slice.x + j, slice.y + i));
+			pixel_img(&vars->layer[LAYER_MAP], pos_.x + j, pos_.y + i, \
+		get_pixel_img(&vars->layer[LAYER_ACHANGER], slice.x + j, slice.y + i));
 		}
 	}
-	// mlx_destroy_image(vars->mlx, vars->layer[LAYER_ACHANGER2].img);
 	return (vars->layer[LAYER_ACHANGER]);
 }
 
@@ -252,31 +249,31 @@ t_pos	tile_selector(t_tile tile[49], int *stats)
 	return (tile[47].pos);
 }
 
-void	draw_map(t_mlx *game)
+void    draw_map(t_mlx *game)
 {
-	int		i;
-	int		j;
-	int		k;
-	// t_data	img;
-	t_pos	pos;
-	t_pos	map_size;
+	int        i;
+	int        j;
+	int        k;
+	t_pos    pos;
+	t_pos    pos_;
 
 	j = -1;
 	k = -1;
+	pos_ = (t_pos){0, 0};
 	start_tiles_init(game);
 	autotile_generator(game->map, game);
-	map_size = size_map(game->map);
-	game->layer[LAYER_MAP] = new_img(game, map_size.x * TILE_SIZE, \
-		map_size.y * TILE_SIZE);
-	while (++j < map_size.y)
+	game->layer[LAYER_MAP] = new_img(game, game->size_map.x * TILE_SIZE, \
+		game->size_map.y * TILE_SIZE);
+	while (++j < game->size_map.y)
 	{
 		i = -1;
-		while (++i < map_size.x)
+		while (++i < game->size_map.x)
 		{
+			pos_ = (t_pos){i * TILE_SIZE, j * TILE_SIZE};
 			pos = tile_selector(game->tile, &game->stats_tile[++k]);
-			img_cut("texture/SusMap.xpm", pos, game);
+			img_cut("texture/SusMap.xpm", pos, game, pos_);
 			// put_data_to_img(&game->layer[LAYER_MAP], img, i * TILE_SIZE,
-			// 	j * TILE_SIZE);
+			//     j * TILE_SIZE);
 		}
 	}
 }
