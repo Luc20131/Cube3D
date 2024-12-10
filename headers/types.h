@@ -98,6 +98,7 @@ typedef struct s_data
 	int		h;
 	int		w;
 	int		pixels;
+	int		bits_per_line;
 }	t_data;
 
 typedef struct s_player_data

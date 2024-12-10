@@ -35,6 +35,13 @@
 t_tab_size		char_tab_len(char **tab);
 void			wall(t_data *img, float distance);
 
+// ------------ INIT ---------------
+
+void			init_vars(t_mlx *vars);
+void			init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin);
+int				init_mini_map(t_mlx *vars);
+void			player_pov_on_start(t_mlx *vars);
+
 // ------------ PLAYER -------------
 
 int				is_player(char c);
@@ -51,7 +58,6 @@ int				key_released(int keycode, t_mlx *vars);
 
 // ------------ MINIMAP -------------
 
-int				init_mini_map(t_mlx *vars);
 t_pos			size_map(char **map);
 void			draw_map(t_mlx *game);
 int				map_gen(t_mlx *vars, char **map_tab);
@@ -60,7 +66,6 @@ void			autotile_generator(char **map, t_mlx *g);
 
 // ------------ RAYCAST -------------
 
-void			init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin);
 int				raycast(t_mlx *vars);
 
 // ------------ IMG UTILS -------------
@@ -85,6 +90,8 @@ int				*x_dir(int *c, t_pos pos, t_mlx g, t_pos map_size);
 void			draw_square(t_data *img, t_pos origin, int size, int color);
 // void			my_mlx_pixel_put(const t_data *data, const int x, const int y, const int color);
 void			upscale_rc_to_screen(t_mlx *vars, t_data *screen);
+void			my_destroy_img(void *mlx, void *img);
+
 // ------------ UTILS -------------
 
 int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
@@ -99,7 +106,7 @@ void			nfree(void *pointer);
 void			print_ray_param(t_ray *ray);
 void			print_map(char *map[]);
 void			exit_game(t_mlx *vars);
-
+int				tick(t_mlx *vars);
 void			fps(const t_mlx *vars);
 
 #endif
