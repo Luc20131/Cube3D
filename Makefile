@@ -2,7 +2,7 @@ MAKE = @make --no-print-directory
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -O3
+CFLAGS = -Werror -Wall -Wextra ${IFLAGS}
 NAME = cub3D
 NAME_BONUS = $(NAME)_bonus
 

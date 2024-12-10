@@ -51,3 +51,18 @@ void	print_ray_param(t_ray *ray)
 		ray->ray_dir.y, ray->hit, ray->side, ray->map_pos.x, ray->map_pos.y, \
 		ray->camera_x, ray->perp_wall_dist, ray->end_ray.x, ray->end_ray.y);
 }
+
+t_pos	tile_selector(t_tile tile[49], int *stats)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 50)
+	{
+		if (*stats == tile[i].dir)
+		{
+			return (tile[i].pos);
+		}
+	}
+	return (tile[47].pos);
+}

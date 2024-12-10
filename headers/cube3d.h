@@ -91,6 +91,10 @@ void			draw_square(t_data *img, t_pos origin, int size, int color);
 // void			my_mlx_pixel_put(const t_data *data, const int x, const int y, const int color);
 void			upscale_rc_to_screen(t_mlx *vars, t_data *screen);
 void			my_destroy_img(void *mlx, void *img);
+void			put_pixel_img(t_data *img, int x, int y, int color);
+void			put_data_to_img(t_data *dst, t_data src, int x, int y);
+t_pos			tile_selector(t_tile tile[49], int *stats);
+t_data			img_cut(t_pos pos, t_mlx *vars);
 
 // ------------ UTILS -------------
 

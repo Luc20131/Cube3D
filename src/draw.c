@@ -80,3 +80,34 @@ int	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 	}
 	return (0);
 }
+
+void	put_pixel_img(t_data *img, int x, int y, int color)
+{
+	if (x >= 0 && y >= 0 && x < img->w && y < img->h)
+	{
+		*(unsigned int *)(img->addr \
+			+ (y * img->line_length + x * img->pixels)) = color;
+	}
+}
+
+t_data	img_cut(t_pos pos, t_mlx *vars)
+{
+	t_sprite_slice	slice;
+	int				j;
+	int				i;
+
+	slice = (t_sprite_slice){pos.y * TILE_SIZE, pos.x * TILE_SIZE, \
+		TILE_SIZE, TILE_SIZE};
+	i = -1;
+	while (++i < TILE_SIZE)
+	{
+		j = -1;
+		while (++j < TILE_SIZE)
+		{
+			put_pixel_img(&vars->layer[LAYER_MINIMAP], j, i, \
+				get_pixel_img(&vars->layer[LAYER_ACHANGER], \
+					slice.x + j, slice.y + i));
+		}
+	}
+	return (vars->layer[LAYER_ACHANGER]);
+}

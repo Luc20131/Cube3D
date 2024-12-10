@@ -66,3 +66,9 @@ float	init_pixel_tex_y(t_pos *current, float step)
 	}
 	return (tex_y);
 }
+
+unsigned int	get_pixel_img(t_data *img, int x, int y)
+{
+	return (*(unsigned int *)((img->addr + (y * img->line_length) \
+		+ (x * img->pixels))));
+}
