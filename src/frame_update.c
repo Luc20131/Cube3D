@@ -11,47 +11,32 @@
 /* ************************************************************************** */
 
 #include "cube3d.h"
-#include <math.h>
-#include <stdio.h>
 
-int	get_t(const int trgb)
+void	map(t_mlx *vars)
 {
-	return ((trgb >> 24) & 0xFF);
-}
+	const int	minimap_offset = WIDTH_WIN - vars->layer[LAYER_MINIMAP].w - 100;
 
-int	get_r(const int trgb)
-{
-	return ((trgb >> 16) & 0xFF);
-}
-
-int	get_g(const int trgb)
-{
-	return ((trgb >> 8) & 0xFF);
-}
-
-int	get_b(const int trgb)
-{
-	return (trgb & 0xFF);
-}
-
-void	put_img_to_img(t_data *src, t_data *dst)
-{
-	int		x;
-	int		y;
-	t_posf	ratio;
-	t_color	pixel;
-
-	ratio.x = (float)src->w / dst->w;
-	ratio.y = (float)src->h / dst->h;
-	y = -1;
-	while (++y < dst->h)
+	if (vars->stats->map_is_create == 0)
 	{
-		x = -1;
-		while (++x < dst->w)
-		{
-			pixel.x = get_pixel_img(src, x * ratio.x, y * ratio.y);
-			if (pixel.r + pixel.g + pixel.b != 0)
-				((int *)dst->addr)[y * (dst->line_length >> 2) + x] = pixel.x;
-		}
+		vars->stats->map_is_create = 1;
+		vars->stats->old_pos = vars->player_data.float_pos;
+		draw_map(vars);
+		nfree(vars->stats_tile);
+		init_mini_map(vars);
+		raycast(vars);
+		mlx_put_image_to_window(vars->mlx, vars->win, \
+			vars->layer[LAYER_MINIMAP].img, minimap_offset, 100);
+	}
+	else if (vars->stats->old_pos.x != vars->player_data.float_pos.x
+		|| vars->stats->old_pos.y != vars->player_data.float_pos.y \
+		|| vars->player_data.movement.rotating)
+	{
+		gettimeofday(&vars->time, NULL);
+		vars->stats->old_angle = vars->player_data.movement.rotating;
+		vars->stats->old_pos = vars->player_data.float_pos;
+		init_mini_map(vars);
+		raycast(vars);
+		mlx_put_image_to_window(vars->mlx, vars->win,
+			vars->layer[LAYER_MINIMAP].img, minimap_offset, 100);
 	}
 }

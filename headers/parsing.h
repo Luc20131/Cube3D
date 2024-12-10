@@ -14,6 +14,7 @@
 # define PARSING_H
 # include <fcntl.h>
 # include "cube3d.h"
+# include "types.h"
 
 typedef enum e_key
 {
@@ -80,4 +81,6 @@ int		key_finder(char *line);
 int		skip_key_word(char *key_v);
 int		get_color(char *key_v, t_key key, t_info *info);
 int		parsing_cube(char *arg, t_info *info);
+void	map(t_mlx *vars);
+
 #endif

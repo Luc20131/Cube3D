@@ -14,20 +14,23 @@
 
 void	get_and_display_pixel(t_data *layer, t_pos floor_tex, t_pos end, int y)
 {
-	t_color	pixel;
-	float	coef;
+	t_color			pixel;
+	float			coef;
+	static float	half_img;
+	static int		line_length;
 
+	line_length = layer[LAYER_RAYCAST].line_length >> 2;
+	half_img = layer[LAYER_RAYCAST].h / 2;
 	if ((floor_tex.x < layer[LAYER_FLOOR].w && floor_tex.x > 0) || \
 		(floor_tex.y < layer[LAYER_FLOOR].h && floor_tex.y > 0))
 	{
 		pixel.x = get_pixel_img(&layer[LAYER_FLOOR], floor_tex.x, floor_tex.y);
-		coef = ((y - layer[LAYER_RAYCAST].h / 2) / \
-			(1. * (layer[LAYER_RAYCAST].h / 2.)));
+		coef = ((y - half_img) / half_img);
 		get_darker_color(coef, &pixel);
 		((int *)layer[LAYER_RAYCAST].addr) \
-			[y * (layer[LAYER_RAYCAST].line_length >> 2) + end.x] = pixel.x;
+			[y * (line_length) + end.x] = pixel.x;
 		((int *)layer[LAYER_RAYCAST].addr)[(layer[LAYER_RAYCAST].h - y - 1) * \
-			(layer[LAYER_RAYCAST].line_length >> 2) + end.x] = pixel.x;
+			line_length + end.x] = pixel.x;
 	}
 }
 

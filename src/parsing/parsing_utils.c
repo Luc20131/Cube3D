@@ -103,5 +103,4 @@ void	show_map(char **map)
 		}
 		ft_printf("\n");
 	}
-	usleep(10000);
 }

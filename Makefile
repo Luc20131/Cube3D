@@ -2,17 +2,21 @@ MAKE = @make --no-print-directory
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -g3
+CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -O3
 NAME = cub3D
+NAME_BONUS = $(NAME)_bonus
 
-HEADER = ./headers/cube3d.h ./headers/parsing.h
+HEADER = ./headers/cube3d.h ./headers/parsing.h ./headers/types.h
 SRC_DIR=src/
 
-SRC_LIST= upscaling.c keyboard.c casting_utils.c main.c map_gen.c sprite.c raycast.c draw.c draw_utils.c floor_ceilling_ray.c
+SRC_LIST= frame_update.c upscaling.c keyboard.c casting_utils.c main.c map_gen.c sprite.c raycast.c draw.c draw_utils.c floor_ceilling_ray.c
 SRC_LIST_P = parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c map_autotile.c map_autotile_utils.c map_inits.c
+SRC_LIST_BONUS = bonus.c
+SRC_BONUS = $(addprefix $(SRC_DIR),$(SRC_LIST_BONUS))
 SRC=$(addprefix $(SRC_DIR),$(SRC_LIST)) \
 	$(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))
 OBJ_DIR=obj/
+OBJ_BONUS=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_BONUS))
 OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
 
 INCLUDE = -L libft -l ft -Lminilibx-linux -lmlx_Linux -lX11 -lXext -lm
@@ -24,6 +28,8 @@ LIBFT = $(LIBFT_DIR)libft.a
 MINILIBX = minilibx-linux/libmlx_Linux.a
 
 NB_FILES=$(words $(OBJ))
+
+NB_FILES_BONUS=$(words $(OBJ_BONUS))
 
 GREEN="\033[0;32m"
 RED="\033[0;31m"
@@ -53,12 +59,16 @@ define gitignore_gen
 	fi ;
 endef
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re debug run bonus
 
 all :
 	$(call normitest)
 	$(call prompt,$(BLUE),"Creating $(NAME)")
 	$(MAKE) $(NAME)
+
+bonus :
+	$(call prompt,$(BLUE),"Creating $(NAME_BONUS)")
+	$(MAKE) $(NAME_BONUS)
 
 $(OBJ_DIR)%.o:  $(SRC_DIR)%.c Makefile $(HEADER)
 	$(call percent)
@@ -70,6 +80,17 @@ $(NAME) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $(OBJ) $(INCLUDE)
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
+
+$(OBJ_DIR)%.o:  $(SRC_BONUS)%.c Makefile $(HEADER)
+	$(call percent)
+	$(CC) $(CFLAGS) -c $< -o $@
+	@echo -n $(END_COLOUR)
+
+$(NAME_BONUS) : $(MINILIBX) $(LIBFT) $(OBJ_BONUS) $(OBJ)
+	$(call percent)
+	$(CC) $(CFLAGS) -o $@ $(OBJ) $(OBJ_BONUS) $(INCLUDE)
+	@echo -n $(END_COLOUR)
+	$(call prompt,$(GREEN),"$(NAME_BONUS) compiled")
 
 $(LIBFT) : $(LIBFT_SRC_FULL) libft/libft.h
 	$(MAKE) libft.a -C libft
@@ -87,7 +108,7 @@ clean :
 	@rm -rf $(OBJ_DIR)
 
 fclean : clean
-	@rm -f $(NAME)
+	@rm -f $(NAME) $(NAME_BONUS)
 	$(call prompt,$(GREEN),"$(NAME) cleared")
 
 re :

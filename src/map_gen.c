@@ -20,16 +20,12 @@ t_data	new_img(t_mlx *vars, unsigned int width, unsigned int height)
 
 	frame.img = mlx_new_image(vars->mlx, width, height);
 	if (!frame.img)
-	{
-		frame.addr = NULL;
-		return (frame);
-	}
+		exit_game(vars);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, \
 		&frame.line_length, &frame.endian);
 	frame.h = height;
 	frame.w = width;
 	frame.pixels = frame.bits_per_pixel >> 3;
-	// printf("bits per pixels : %d\n", frame.bits_per_pixel);
 	return (frame);
 }
 
@@ -129,7 +125,9 @@ void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
 		x = -1;
 		while (++x < tile_size)
 
-			((int *)img->addr)[(((tile_y - sup) * tile_size) + y) * (img->line_length >> 2) + (((tile_x - sup) * tile_size) + x)] = get_pixel_img(img, x, y);
+			((int *)img->addr)[(((tile_y - sup) * tile_size) + y) * \
+				(img->line_length >> 2) + (((tile_x - sup) * tile_size) \
+					+ x)] = get_pixel_img(img, x, y);
 		y++;
 	}
 }
@@ -137,22 +135,23 @@ void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
 void	player_pos_update(t_mlx *vars, char **map)
 {
 	static t_pos	old_pos = {0,0};
-	if ((int)vars->player_data.float_pos.y < 0 || (int)vars->player_data.float_pos.y > vars->size_map.y)
-		return;
+	t_posf	posf_player;
+
+	posf_player = vars->player_data.float_pos;
 	if (old_pos.x == 0 && old_pos.y == 0)
 	{
-		old_pos.x = (int)vars->player_data.float_pos.x;
-		old_pos.y = (int)vars->player_data.float_pos.y;
+		old_pos.x = (int)posf_player.x;
+		old_pos.y = (int)posf_player.y;
 	}
 	if (map[old_pos.y][old_pos.x] != '1'
-		&& map[(int)vars->player_data.float_pos.y][(int)vars->player_data.float_pos.x] != '1')
+		&& map[(int)posf_player.y][(int)posf_player.x] != '1')
 	{
 		map[old_pos.y][old_pos.x] = '0';
-		map[(int)vars->player_data.float_pos.y][(int)vars->player_data.float_pos.x] = 'N';
-		old_pos.x = (int)vars->player_data.float_pos.x;
-		old_pos.y = (int)vars->player_data.float_pos.y;
-		vars->player_data.pixel_pos.x = TILE_SIZE * vars->player_data.float_pos.x;
-		vars->player_data.pixel_pos.y = TILE_SIZE * vars->player_data.float_pos.y;
+		map[(int)posf_player.y][(int)posf_player.x] = 'N';
+		old_pos.x = (int)posf_player.x;
+		old_pos.y = (int)posf_player.y;
+		vars->player_data.pixel_pos.x = TILE_SIZE * posf_player.x;
+		vars->player_data.pixel_pos.y = TILE_SIZE * posf_player.y;
 	}
 }
 
@@ -163,7 +162,7 @@ t_data	new_file_img(char *path, t_mlx *vars)
 	image.img = mlx_xpm_file_to_image(vars->mlx, path, &image.w, &image.h);
 	if (!image.img)
 	{
-		write(2, "Error\nFile could not be read\n", 29);
+		printf("Error\nFile could not be read\n");
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -181,14 +180,12 @@ void	pixel_img(t_data *img, int x, int y, int color)
 	}
 }
 
-t_data	img_cut(char *path, t_pos pos, t_mlx *vars)
+t_data	img_cut(t_pos pos, t_mlx *vars)
 {
 	t_sprite_slice	slice;
-	// t_data			img;
-	// t_data			source;
 	int				j;
 	int				i;
-	(void) path;
+
 	slice = (t_sprite_slice){pos.y * TILE_SIZE, pos.x * TILE_SIZE,\
 	 TILE_SIZE, TILE_SIZE};
 
@@ -202,7 +199,6 @@ t_data	img_cut(char *path, t_pos pos, t_mlx *vars)
 				get_pixel_img(&vars->layer[LAYER_ACHANGER], slice.x + j, slice.y + i));
 		}
 	}
-	// mlx_destroy_image(vars->mlx, vars->layer[LAYER_ACHANGER2].img);
 	return (vars->layer[LAYER_ACHANGER]);
 }
 
@@ -257,7 +253,6 @@ void	draw_map(t_mlx *game)
 	int		i;
 	int		j;
 	int		k;
-	// t_data	img;
 	t_pos	pos;
 	t_pos	map_size;
 
@@ -274,9 +269,7 @@ void	draw_map(t_mlx *game)
 		while (++i < map_size.x)
 		{
 			pos = tile_selector(game->tile, &game->stats_tile[++k]);
-			img_cut("texture/SusMap.xpm", pos, game);
-			// put_data_to_img(&game->layer[LAYER_MAP], img, i * TILE_SIZE,
-			// 	j * TILE_SIZE);
+			img_cut(pos, game);
 		}
 	}
 }
