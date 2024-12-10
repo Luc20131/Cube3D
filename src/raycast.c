@@ -52,7 +52,6 @@ int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
 	if (current.y >= wall_top->y)
 		current.y = wall_top->y;
 	img_wall = select_texture(vars->stats->img_texture, vars);
-
 	current.y = wall_top->y;
 	print_wall(&current, vars, end, &img_wall);
 	vertical_raycast(vars, end);

@@ -9,7 +9,7 @@ NAME_BONUS = $(NAME)_bonus
 HEADER = ./headers/cube3d.h ./headers/parsing.h ./headers/types.h
 SRC_DIR=src/
 
-SRC_LIST= frame_update.c upscaling.c keyboard.c casting_utils.c main.c map_gen.c sprite.c raycast.c draw.c draw_utils.c floor_ceilling_ray.c
+SRC_LIST= init.c frame_update.c upscaling.c keyboard.c casting_utils.c main.c map_gen.c sprite.c raycast.c draw.c draw_utils.c floor_ceilling_ray.c
 SRC_LIST_P = parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c map_autotile.c map_autotile_utils.c map_inits.c
 SRC_LIST_BONUS = bonus.c
 SRC_BONUS = $(addprefix $(SRC_DIR),$(SRC_LIST_BONUS))

@@ -54,11 +54,11 @@ int	print_floor(t_pos *current, t_mlx *vars, t_ray *ray)
 
 int	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 {
-	t_posf	tex;
-	t_color	pixel;
-	const float		inverse_distance = (1. / vars->ray.perp_wall_dist);
-	const int line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
-	const float step = ((float)img->h / (end->y - current->y));
+	t_posf		tex;
+	t_color		pixel;
+	const float	inverse_distance = (1. / vars->ray.perp_wall_dist);
+	const int	line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
+	const float	step = ((float)img->h / (end->y - current->y));
 
 	tex.x = init_pixel_tex_x(&vars->ray, vars) * img->pixels;
 	tex.y = init_pixel_tex_y(current, step);
@@ -71,13 +71,11 @@ int	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 		{
 			pixel.x = *(unsigned int *)((img->addr + (int)tex.y * \
 				img->line_length) + ((int)tex.x));
-			if (vars->ray.side == 1)
-				pixel.x = ((pixel.x >> 1) & 0x007F7F7F);
 			if (vars->ray.perp_wall_dist > 1)
 				get_darker_color(inverse_distance, &pixel);
 		}
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
-		  line_length + current->x] = pixel.x;
+			line_length + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);

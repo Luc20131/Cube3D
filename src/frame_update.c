@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3d.h"
+#include "../headers/cube3d.h"
 
 void	map(t_mlx *vars)
 {
-	const int	minimap_offset = WIDTH_WIN - vars->layer[LAYER_MINIMAP].w - 100;
+	const int	minimap_offset = WIDTH_WIN - (TILE_SIZE * MINIMAP_SIZE) - 100;
 
 	if (vars->stats->map_is_create == 0)
 	{
@@ -39,4 +39,31 @@ void	map(t_mlx *vars)
 		mlx_put_image_to_window(vars->mlx, vars->win,
 			vars->layer[LAYER_MINIMAP].img, minimap_offset, 100);
 	}
+}
+
+int	tick(t_mlx *vars)
+{
+	if (vars->player_data.movement.forward)
+	{
+		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.x);
+		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.y);
+	}
+	else if (vars->player_data.movement.backward)
+	{
+		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir.x);
+		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir.y);
+	}
+	else if (vars->player_data.movement.right)
+	{
+		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir.y);
+		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.x);
+	}
+	else if (vars->player_data.movement.left)
+	{
+		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.y);
+		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir.x);
+	}
+	player_pos_update(vars, vars->map);
+	map(vars);
+	return (1);
 }

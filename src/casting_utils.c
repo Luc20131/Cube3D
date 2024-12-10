@@ -31,6 +31,11 @@ void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 		ray->delta_dist.y = fabs(1.f / ray->ray_dir.y);
 }
 
+int	is_player(const char c)
+{
+	return (c == 'N' || c == 'E' || c == 'S' || c == 'W');
+}
+
 void	print_ray_param(t_ray *ray)
 {
 	printf("\x1B[H\x1B[Jdir_x : %lf\ndir_y : %lf\ndeltadir_x : %lf\n" \
