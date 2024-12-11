@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sprite.c                                           :+:      :+:    :+:   */
+/*   frame_update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -27,9 +27,10 @@ void	map(t_mlx *vars)
 		mlx_put_image_to_window(vars->mlx, vars->win, \
 			vars->layer[LAYER_MINIMAP].img, minimap_offset, 100);
 	}
-	else if (vars->stats->old_pos.x != vars->player_data.float_pos.x
-		|| vars->stats->old_pos.y != vars->player_data.float_pos.y \
-		|| vars->player_data.movement.rotating)
+	// else if (vars->stats->old_pos.x != vars->player_data.float_pos.x
+	// 	|| vars->stats->old_pos.y != vars->player_data.float_pos.y
+	// 	|| vars->player_data.movement.rotating)
+	else
 	{
 		gettimeofday(&vars->time, NULL);
 		vars->stats->old_angle = vars->player_data.movement.rotating;
@@ -64,7 +65,9 @@ int	tick(t_mlx *vars)
 		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir.x);
 	}
 	player_pos_update(vars, vars->map);
+	mouse_move(vars);
 	map(vars);
+	fps(vars);
 	return (1);
 }
 

@@ -47,12 +47,14 @@ int	key_hook(const int keycode, t_mlx *vars)
 		vars->player_data.movement.rotating = -1;
 	else if (keycode == 65361)
 		vars->player_data.movement.rotating = 1;
+	else if (keycode == 't')
+		vars->light = !(vars->light);
 	else
 		printf("%i\n", keycode);
 	return (0);
 }
 
-void	rotate_right(t_mlx *vars)
+void	rotate_left(t_mlx *vars)
 {
 	float	old_dir_x;
 	float	old_plane_x;
@@ -69,7 +71,7 @@ void	rotate_right(t_mlx *vars)
 	+ vars->ray.plane.y * cos(-ROT_SPEED);
 }
 
-void	rotate_left(t_mlx *vars)
+void	rotate_right(t_mlx *vars)
 {
 	float	old_plane_x;
 	float	old_dir_x;

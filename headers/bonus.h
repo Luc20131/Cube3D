@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus.c                                             :+:      :+:    :+:   */
+/*   bonus.h                                             :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42.fr>                +#+  +:+       +#+  */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,32 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
+#ifndef BONUS_H
+# define BONUS_H
 
-// void	init_bonus(t_mlx* vars)
+# include "cube3d.h"
+
+void	mouse_move(t_mlx *vars);
+void	mouse_bonus(t_mlx *vars);
+void	init_bonus(t_mlx *vars);
+
+// typedef struct s_mlx
 // {
-//
-// }
+// 	void			*mlx;
+// 	void			*win;
+// 	t_data			floor;
+// 	t_data			layer[10];
+// 	t_tile			tile[50];
+// 	int				*stats_tile;
+// 	t_pos			size_map;
+// 	t_posf			offset;
+// 	char			**map;
+// 	t_player_data	player_data;
+// 	struct timeval	time;
+// 	struct s_info	*stats;
+// 	size_t			fps;
+// 	t_ray			ray;
+// 	int				light;
+// }	t_mlx;
 
-char	*free_s2_to_join(const char *s1, char *s2)
-{
-	char	*temp;
-
-	temp = ft_strjoin(s1, s2);
-	free(s2);
-	return (temp);
-}
-
-void	fps(const t_mlx *vars)
-{
-	struct timeval	timer;
-	struct timeval	total_time;
-	char			*fps_string;
-
-	gettimeofday(&timer, NULL);
-	total_time.tv_usec = timer.tv_usec - vars->time.tv_usec;
-	fps_string = ft_itoa(1000000 / total_time.tv_usec);
-	fps_string = free_s2_to_join("fps : ", fps_string);
-	mlx_string_put(vars->mlx, vars->win, 5, 10, 0x00AAAAAA, fps_string);
-	free(fps_string);
-}
+#endif //BONUS_H

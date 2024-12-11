@@ -41,7 +41,7 @@ void	side_dist_and_stepper(t_ray	*ray)
 	}
 }
 
-int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
+int		print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
 {
 	t_pos	current;
 	t_data	img_wall;
@@ -77,6 +77,7 @@ int	one_cast(t_ray *ray, t_mlx *vars)
 			ray->map_pos.y += ray->w_step.y;
 			ray->side = 1;
 		}
+	// exit(1);
 		if (vars->map[ray->map_pos.y][ray->map_pos.x] > '0')
 			ray->hit = 1;
 	}
@@ -121,9 +122,9 @@ int	raycast(t_mlx *vars)
 	vars->ray.initial_pos = vars->ray.map_pos;
 	origin.x = 0;
 	if (vars->player_data.movement.rotating == 1)
-		rotate_right(vars);
-	else if (vars->player_data.movement.rotating == -1)
 		rotate_left(vars);
+	else if (vars->player_data.movement.rotating == -1)
+		rotate_right(vars);
 	while (origin.x < vars->layer[LAYER_RAYCAST].w)
 	{
 		init_value_for_cast(&vars->ray, vars, &origin);

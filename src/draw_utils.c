@@ -30,9 +30,9 @@ t_data	select_texture(t_data img[4], t_mlx *vars)
 
 void	get_darker_color(float coef, t_color *color)
 {
-	color->r *= coef;
-	color->g *= coef;
-	color->b *= coef;
+	color->r *= (coef / 3);
+	color->g *= (coef / 3);
+	color->b *= (coef / 3);
 }
 
 int	init_pixel_tex_x(t_ray *ray, t_mlx *vars)

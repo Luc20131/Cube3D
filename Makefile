@@ -2,7 +2,7 @@ MAKE = @make --no-print-directory
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -Werror -Wall -Wextra ${IFLAGS}
+CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -O3
 NAME = cub3D
 NAME_BONUS = $(NAME)_bonus
 
@@ -11,7 +11,7 @@ SRC_DIR=src/
 
 SRC_LIST= init.c frame_update.c upscaling.c keyboard.c casting_utils.c main.c map_gen.c sprite.c raycast.c draw.c draw_utils.c floor_ceilling_ray.c
 SRC_LIST_P = parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c map_autotile.c map_autotile_utils.c map_inits.c
-SRC_LIST_BONUS = bonus.c
+SRC_LIST_BONUS = bonus.c mouse_bonus.c
 SRC_BONUS = $(addprefix $(SRC_DIR),$(SRC_LIST_BONUS))
 SRC=$(addprefix $(SRC_DIR),$(SRC_LIST)) \
 	$(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))
@@ -81,12 +81,12 @@ $(NAME) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ)
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
 
-$(OBJ_DIR)%.o:  $(SRC_BONUS)%.c Makefile $(HEADER)
+$(OBJ_DIR)%.o:  $(SRC_BONUS)%.c Makefile $(HEADER) ./headers/bonus.h
 	$(call percent)
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo -n $(END_COLOUR)
 
-$(NAME_BONUS) : $(MINILIBX) $(LIBFT) $(OBJ_BONUS) $(OBJ)
+$(NAME_BONUS) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ) $(OBJ_BONUS)
 	$(call percent)
 	$(CC) $(CFLAGS) -o $@ $(OBJ) $(OBJ_BONUS) $(INCLUDE)
 	@echo -n $(END_COLOUR)

@@ -31,6 +31,7 @@
 # include <stdio.h>
 # include <sys/types.h>
 
+# include "bonus.h"
 
 t_tab_size		char_tab_len(char **tab);
 void			wall(t_data *img, float distance);
@@ -88,7 +89,6 @@ int				*face_corner_v(int *c, t_pos pos, t_mlx g, char **map);
 int				*face_corner_h(int *c, t_pos pos, t_mlx g, char **map);
 int				*x_dir(int *c, t_pos pos, t_mlx g, t_pos map_size);
 void			draw_square(t_data *img, t_pos origin, int size, int color);
-// void			my_mlx_pixel_put(const t_data *data, const int x, const int y, const int color);
 void			upscale_rc_to_screen(t_mlx *vars, t_data *screen);
 void			my_destroy_img(void *mlx, void *img);
 void			put_pixel_img(t_data *img, int x, int y, int color);
@@ -112,5 +112,6 @@ void			print_map(char *map[]);
 void			exit_game(t_mlx *vars);
 int				tick(t_mlx *vars);
 void			fps(const t_mlx *vars);
+void			flashlight(t_pos pixel_pos, t_color *color);
 
 #endif

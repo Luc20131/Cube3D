@@ -52,11 +52,42 @@ int	print_floor(t_pos *current, t_mlx *vars, t_ray *ray)
 	return (0);
 }
 
+void	flashlight(t_pos pixel_pos, t_color *color)
+{
+	unsigned int distance_sqrt;
+	t_color old_color;
+
+	old_color = *color;
+	distance_sqrt = ((unsigned int)(pixel_pos.y - (HEIGHT >> 1)) * ((unsigned int)(pixel_pos.y - (HEIGHT >> 1))) \
+		+ (((unsigned int)(pixel_pos.x - (WIDTH >> 1)))) * ((unsigned int)(pixel_pos.x - (WIDTH >> 1))));
+	if (distance_sqrt < 200000)
+	{
+		if (distance_sqrt > 130000)
+		{
+			color->r += (color->r * (200000. - distance_sqrt) / 50000);
+			color->g += (color->g * (200000. - distance_sqrt) / 50000);
+			color->b += (color->b * (200000. - distance_sqrt) / 50000);
+		}
+		else
+		{
+			color->r += (color->r * (200000. - 130000) / 50000);
+			color->g += (color->g * (200000. - 130000) / 50000);
+			color->b += (color->b * (200000. - 130000) / 50000);
+			if (color->r < old_color.r)
+				color->r = 255;
+			if (color->g < old_color.g)
+				color->g = 255;
+			if (color->b < old_color.b)
+				color->b = 255;
+		}
+	}
+}
+
 int	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 {
 	t_posf		tex;
 	t_color		pixel;
-	const float	inverse_distance = (1. / vars->ray.perp_wall_dist);
+	const float	inverse_distance = (1. / (vars->ray.perp_wall_dist ));
 	const int	line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
 	const float	step = ((float)img->h / (end->y - current->y));
 
@@ -71,7 +102,9 @@ int	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 		{
 			pixel.x = *(unsigned int *)((img->addr + (int)tex.y * \
 				img->line_length) + ((int)tex.x));
-			if (vars->ray.perp_wall_dist > 1)
+			if (vars->light)
+				flashlight(*current, &pixel);
+			if (vars->ray.perp_wall_dist > 0.1)
 				get_darker_color(inverse_distance, &pixel);
 		}
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \

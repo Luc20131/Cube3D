@@ -84,6 +84,7 @@ int	main(const int argc, char **argv)
 	map(&vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
+	mouse_bonus(&vars);
 	mlx_do_key_autorepeatoff(vars.mlx);
 	mlx_loop_hook(vars.mlx, tick, &vars);
 	mlx_loop(vars.mlx);

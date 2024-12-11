@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   types.h                                             :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42.fr>                +#+  +:+       +#+  */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #ifndef TYPES_H
-#define TYPES_H
+# define TYPES_H
 
 # define SKY_COLOR 0xFF5EACFF
 # define GROUND_COLOR 0xFF170501
@@ -42,16 +42,17 @@ union u_color
 {
 	t_uchar			tab[4];
 	struct s_argb	argb;
-	struct {
-		t_uchar b;
-		t_uchar g;
-		t_uchar r;
-		t_uchar a;
+	struct
+	{
+		t_uchar	b;
+		t_uchar	g;
+		t_uchar	r;
+		t_uchar	a;
 	};
-	t_uint x;
+	t_uint			x;
 };
 
-typedef union u_color t_color;
+typedef union u_color	t_color;
 
 typedef struct s_pos
 {
@@ -71,7 +72,7 @@ typedef struct s_direction
 	int		backward;
 	int		right;
 	int		left;
-    int		rotating;
+	int		rotating;
 }	t_direction;
 
 typedef struct s_tile
@@ -167,6 +168,7 @@ typedef struct s_mlx
 	struct s_info	*stats;
 	size_t			fps;
 	t_ray			ray;
+	unsigned int	light;
 }	t_mlx;
 
 typedef struct s_tab_size
@@ -195,7 +197,7 @@ typedef struct s_info
 	t_mlx	*display;
 	t_pos	player;
 	t_posf	old_pos;
-    float	old_angle;
+	float	old_angle;
 	int		map_is_create;
 	char	**map;
 }	t_info;
@@ -211,7 +213,7 @@ typedef struct s_upscale
 	float			ratio_h;
 	int				i;
 	int				j;
-	char            *dst;
+	char			*dst;
 	int				nb_lines_rc;
 	float			ratio_w;
 }	t_upscale;
