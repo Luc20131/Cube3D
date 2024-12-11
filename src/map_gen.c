@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/11 01:18:25 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/11 02:57:29 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	init_mini_map(t_mlx *vars)
 		index.y++;
 	}
 	put_data_to_img(minimap, vars->layer[LAYER_MONITOR], 0 * TILE_SIZE, 0 * TILE_SIZE);
-	draw_square(minimap, (t_pos){(size.x) >> 1, (size.y) >> 1}, PLAYER_SIZE, 0xFF0FFF0F);
+	draw_square(minimap, (t_pos){(size.x - 4) >> 1, (size.y - 8) >> 1}, PLAYER_SIZE, 0xFF0FFF0F);
 	return (1);
 }
 
