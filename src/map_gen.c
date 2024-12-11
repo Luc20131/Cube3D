@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_gen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/10 19:34:21 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/11 01:18:25 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ t_data	new_file_img(char *path, t_mlx *vars)
 	image.img = mlx_xpm_file_to_image(vars->mlx, path, &image.w, &image.h);
 	if (!image.img)
 	{
-		write(2, "Error\nFile could not be read\n", 29);
+		// write(2, "Error\nFile could not be read\n", 29);
 		exit(EXIT_FAILURE);
 	}
 	else

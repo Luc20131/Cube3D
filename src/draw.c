@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:31:17 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/09 19:49:16 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/11 01:50:02 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		print_wall(t_pos *current, t_mlx *vars, float step, t_pos *end, t_data *img
 	{
 		tex.y += step;
 
-		if (vars->ray.perp_wall_dist > 13)
+		if (vars->ray.perp_wall_dist > 25)
 			pixel.x = 0x00000000;
 		else
 		{

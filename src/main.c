@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/10 20:02:42 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/11 01:18:17 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void collision(t_mlx *vars, t_posf pos, int x, int y, int axe)
 			vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.x) * x;
 		if (vars->map[(int)(pos.y + (PLAYER_SPEED * vars->ray.dir.y) * y)]\
 		[(int)pos.x] != '1')
-			vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.y) * y;	
+			vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.y) * y;
 	}
 	else if (axe == 1)
 	{
@@ -320,10 +320,10 @@ void	print_map(char **map)
 	{
 		while (map[i][y])
 		{
-			write(1, &map[i][y], 1);
+			// write(1, &map[i][y], 1);
 			y++;
 		}
-		write(1, "\n", 1);
+		// write(1, "\n", 1);
 		i++;
 		y = 0;
 	}
