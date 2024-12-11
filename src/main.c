@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/07 00:21:34 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/10 20:02:42 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,45 @@ int	is_player(const char c)
 	return (c == 'N' || c == 'E' || c == 'S' || c == 'W');
 }
 
+void collision(t_mlx *vars, t_posf pos, int x, int y, int axe)
+{
+	if (axe == 0)
+	{
+		if (vars->map[(int)pos.y]
+		[(int)(pos.x + (PLAYER_SPEED * vars->ray.dir.x) * x)] != '1')
+			vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.x) * x;
+		if (vars->map[(int)(pos.y + (PLAYER_SPEED * vars->ray.dir.y) * y)]\
+		[(int)pos.x] != '1')
+			vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.y) * y;	
+	}
+	else if (axe == 1)
+	{
+		if (vars->map[(int)pos.y]
+		[(int)(pos.x + (PLAYER_SPEED * vars->ray.dir.y) * x)] != '1')
+			vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.y) * x;
+		if (vars->map[(int)(pos.y + (PLAYER_SPEED * vars->ray.dir.x) * y)]\
+		[(int)pos.x] != '1')
+			vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.x) * y;
+	}
+}
+
 int	tick(t_mlx *vars)
 {
 	if (vars->player_data.movement.forward)
 	{
-		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.x);
-		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.y);
+		collision(vars, vars->player_data.float_pos, 1, 1, 0);
 	}
-	else if (vars->player_data.movement.backward)
+	if (vars->player_data.movement.backward)
 	{
-		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir.x);
-		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir.y);
+		collision(vars, vars->player_data.float_pos, -1, -1, 0);
 	}
-	else if (vars->player_data.movement.right)
+	if (vars->player_data.movement.right)
 	{
-		vars->player_data.float_pos.x -= (PLAYER_SPEED * vars->ray.dir.y);
-		vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.x);
+		collision(vars, vars->player_data.float_pos, -1, 1, 1);
 	}
-	else if (vars->player_data.movement.left)
+	if (vars->player_data.movement.left)
 	{
-		vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.y);
-		vars->player_data.float_pos.y -= (PLAYER_SPEED * vars->ray.dir.x);
+		collision(vars, vars->player_data.float_pos, 1, -1, 1);
 	}
 	player_pos_update(vars, vars->map);
 	map(vars);
@@ -237,6 +255,7 @@ void	init_vars(t_mlx *vars)
 	vars->ray.dir.y = 0;
 	vars->ray.plane.y = 0.66;
 	vars->ray.plane.x = 0;
+	vars->size_map = size_map(vars->map);
 }
 
 int	main(const int argc, char **argv)

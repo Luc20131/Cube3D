@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_gen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/09 19:30:57 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/10 19:34:21 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	init_mini_map(t_mlx *vars)
 		index.y++;
 	}
 	put_data_to_img(minimap, vars->layer[LAYER_MONITOR], 0 * TILE_SIZE, 0 * TILE_SIZE);
-	draw_square(minimap, (t_pos){(size.x + PLAYER_SIZE) >> 1, (size.y + PLAYER_SIZE) >> 1}, PLAYER_SIZE, 0xFF0FFF0F);
+	draw_square(minimap, (t_pos){(size.x) >> 1, (size.y) >> 1}, PLAYER_SIZE, 0xFF0FFF0F);
 	return (1);
 }
 
@@ -259,7 +259,6 @@ void    draw_map(t_mlx *game)
 
 	j = -1;
 	k = -1;
-	pos_ = (t_pos){0, 0};
 	start_tiles_init(game);
 	autotile_generator(game->map, game);
 	game->layer[LAYER_MAP] = new_img(game, game->size_map.x * TILE_SIZE, \

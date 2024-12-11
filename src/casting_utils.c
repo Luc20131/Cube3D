@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   casting_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 02:06:05 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/07 00:28:50 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/09 19:46:07 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 	ray->ray_dir.x = ray->dir.x + ray->plane.x * ray->camera_x;
 	ray->ray_dir.y = ray->dir.y + ray->plane.y * ray->camera_x;
 	if (ray->ray_dir.x == 0)
-		ray->delta_dist.x = FLT_MAX;
+		ray->delta_dist.x = __FLT_MAX__;
 	else
 		ray->delta_dist.x = fabs(1.f / ray->ray_dir.x);
 	if (ray->ray_dir.y == 0)
-		ray->delta_dist.y = FLT_MAX;
+		ray->delta_dist.y = __FLT_MAX__;
 	else
 		ray->delta_dist.y = fabs(1.f / ray->ray_dir.y);
 }

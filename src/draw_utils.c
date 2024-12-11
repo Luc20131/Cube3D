@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:34:16 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/06 06:17:28 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/09 19:49:35 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_data	select_texture(t_data img[4], t_mlx *vars)
 	{
 		if (vars->ray.ray_dir.y > 0)
 			return (img[NO]);
-		if (vars->ray.ray_dir_y < 0)
+		if (vars->ray.ray_dir.y < 0)
 			return (img[SO]);
 	}
 	else if (vars->ray.ray_dir.x < 0)

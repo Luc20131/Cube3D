@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:31:17 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/05 16:16:45 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/09 19:49:16 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,17 @@ int		print_wall(t_pos *current, t_mlx *vars, float step, t_pos *end, t_data *img
 	const float		inverse_distance = (1. / vars->ray.perp_wall_dist);
 	const int line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
 
-	tex_x = init_pixel_tex_x(&vars->ray, vars) * img->pixels;
-	tex_y = init_pixel_tex_y(current, step);
+	tex.x = init_pixel_tex_x(&vars->ray, vars) * img->pixels;
+	tex.y = init_pixel_tex_y(current, step);
 	while ((current->y < end->y) & (current->y < vars->layer[LAYER_RAYCAST].h))
 	{
-		tex_y += step;
+		tex.y += step;
 
 		if (vars->ray.perp_wall_dist > 13)
 			pixel.x = 0x00000000;
 		else
 		{
-			pixel.x = *(unsigned int *)((img->addr + (int)tex_y * img->line_length) + (tex_x));
+			pixel.x = *(unsigned int *)((img->addr + (int)tex.y * img->line_length) + (int)tex.x);
 			if (vars->ray.side == 1)
 				pixel.x = ((pixel.x >> 1) & 0x007F7F7F);
 			if (vars->ray.perp_wall_dist > 1)
