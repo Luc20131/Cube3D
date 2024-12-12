@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/06 06:14:25 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/09 19:30:57 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	player_pos_update(t_mlx *vars, char **map)
 	}
 }
 
-void	draw_map(t_mlx *game)
+void    draw_map(t_mlx *game)
 {
 	int		i;
 	int		j;
@@ -99,16 +99,17 @@ void	draw_map(t_mlx *game)
 
 	j = -1;
 	k = -1;
+	pos_ = (t_pos){0, 0};
 	start_tiles_init(game);
 	autotile_generator(game->map, game);
-	map_size = size_map(game->map);
-	game->layer[LAYER_MAP] = new_img(game, map_size.x * TILE_SIZE, \
-		map_size.y * TILE_SIZE);
-	while (++j < map_size.y)
+	game->layer[LAYER_MAP] = new_img(game, game->size_map.x * TILE_SIZE, \
+		game->size_map.y * TILE_SIZE);
+	while (++j < game->size_map.y)
 	{
 		i = -1;
-		while (++i < map_size.x)
+		while (++i < game->size_map.x)
 		{
+			pos_ = (t_pos){i * TILE_SIZE, j * TILE_SIZE};
 			pos = tile_selector(game->tile, &game->stats_tile[++k]);
 			img_cut(pos, game);
 		}
