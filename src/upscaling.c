@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycast.c                                          :+:      :+:    :+:   */
+/*   upscaling.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>            +#+  +:+       +#+  */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -40,30 +40,29 @@ void	upscaling_first_line(t_mlx *vars, t_data *screen, t_upscale *scale)
 void	upscale_next_lines(t_mlx *vars, t_data *screen, t_upscale *scale)
 {
 	int	j;
-	int i;
+	int	i;
 
-	i = 0;
-	while (i < scale->ratio_h)
+	i = -1;
+	while (++i < scale->ratio_h)
 	{
 		scale->screen_pos.x = 0;
-		scale->rc_pos.x = 0;
+		scale->rc_pos.x = -1;
 		scale->nb_lines = scale->screen_pos.y * screen->line_length;
-		while (scale->rc_pos.x < vars->layer[LAYER_RAYCAST].w)
+		while (++scale->rc_pos.x < vars->layer[LAYER_RAYCAST].w)
 		{
 			scale->nb_px_in_lines = scale->screen_pos.x * scale->nb_pixels;
-			scale->dst = screen->addr + (scale->nb_lines + scale->nb_px_in_lines);
-			j = 0;
-			while (j < scale->ratio_w)
+			scale->dst = screen->addr + \
+				(scale->nb_lines + scale->nb_px_in_lines);
+			j = -1;
+			while (++j < scale->ratio_w)
 			{
-				*(unsigned int *) scale->dst = scale->pixel_color[scale->rc_pos.x];
+				*(unsigned int *) scale->dst = \
+					scale->pixel_color[scale->rc_pos.x];
 				scale->dst += scale->nb_pixels;
-				j++;
 			}
-			scale->rc_pos.x++;
 			scale->screen_pos.x += scale->ratio_w;
 		}
 		scale->screen_pos.y++;
-		i++;
 	}
 }
 

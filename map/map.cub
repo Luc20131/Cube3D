@@ -1,0 +1,17 @@
+NO texture/Wall.xpm
+        SO texture/Wall.xpm
+        WE texture/Wall.xpm
+        EA texture/Wall.xpm
+        C 0,0,255
+        F 23,5,1
+
+1111111111
+1001010001
+1100000001
+1001001001
+1010100001
+1001110001
+1000000001
+1010N01101
+1000000001
+1111111111

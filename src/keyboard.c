@@ -22,40 +22,18 @@ int	key_released(const int keycode, t_mlx *vars)
 		vars->player_data.movement.forward = 0;
 	else if (keycode == 's')
 		vars->player_data.movement.backward = 0;
-  else if (keycode == 65363)
-      vars->player_data.movement.rotating = 0;
-  else if (keycode == 65361)
-      vars->player_data.movement.rotating = 0;
-  return (0);
+	else if (keycode == 65363)
+		vars->player_data.movement.rotating = 0;
+	else if (keycode == 65361)
+		vars->player_data.movement.rotating = 0;
+	return (0);
 }
 
 int	key_hook(const int keycode, t_mlx *vars)
 {
-	int	i;
-
-	i = 0;
 	if (keycode == 65307)
 	{
-		fps(vars);
-		mlx_do_key_autorepeaton(vars->mlx);
-		while (vars->map[i])
-			nfree(vars->map[i++]);
-		nfree(vars->map);
-		mlx_destroy_image(vars->mlx, vars->layer[LAYER_RAYCAST].img);
-		mlx_destroy_image(vars->mlx, vars->layer[LAYER_SCREEN].img);
-		mlx_destroy_image(vars->mlx, vars->layer[LAYER_MAP].img);
-		mlx_destroy_image(vars->mlx, vars->layer[LAYER_MINIMAP].img);
-		mlx_destroy_image(vars->mlx, vars->layer[LAYER_OVERLAY].img);
-		mlx_destroy_image(vars->mlx, vars->layer[LAYER_MONITOR].img);
-		mlx_destroy_image(vars->mlx, vars->stats->img_texture[0].img);
-		mlx_destroy_image(vars->mlx, vars->stats->img_texture[1].img);
-		mlx_destroy_image(vars->mlx, vars->stats->img_texture[2].img);
-		mlx_destroy_image(vars->mlx, vars->stats->img_texture[3].img);
-		// mlx_destroy_image(vars->mlx, vars->layer[LAYER_TILE_MAP].img);
-		mlx_destroy_window(vars->mlx, vars->win);
-		mlx_destroy_display(vars->mlx);
-		nfree(vars->mlx);
-		exit(1);
+		exit_game(vars);
 	}
 	else if (keycode == 'd')
 		vars->player_data.movement.right = 1;
@@ -65,11 +43,47 @@ int	key_hook(const int keycode, t_mlx *vars)
 		vars->player_data.movement.backward = -1;
 	else if (keycode == 'w')
 		vars->player_data.movement.forward = 1;
-  else if (keycode == 65363)
-      vars->player_data.movement.rotating = -1;
-  else if (keycode == 65361)
-      vars->player_data.movement.rotating = 1;
-  else
-    printf("%i\n", keycode);
+	else if (keycode == 65363)
+		vars->player_data.movement.rotating = -1;
+	else if (keycode == 65361)
+		vars->player_data.movement.rotating = 1;
+	else if (keycode == 't')
+		vars->light = !(vars->light);
+	else
+		printf("%i\n", keycode);
 	return (0);
+}
+
+void	rotate_left(t_mlx *vars)
+{
+	float	old_dir_x;
+	float	old_plane_x;
+
+	old_dir_x = vars->ray.dir.x;
+	vars->ray.dir.x = vars->ray.dir.x * cos(-ROT_SPEED) \
+	- vars->ray.dir.y * sin(-ROT_SPEED);
+	vars->ray.dir.y = old_dir_x * sin(-ROT_SPEED) \
+	+ vars->ray.dir.y * cos(-ROT_SPEED);
+	old_plane_x = vars->ray.plane.x;
+	vars->ray.plane.x = vars->ray.plane.x * cos(-ROT_SPEED) \
+	- vars->ray.plane.y * sin(-ROT_SPEED);
+	vars->ray.plane.y = old_plane_x * sin(-ROT_SPEED) \
+	+ vars->ray.plane.y * cos(-ROT_SPEED);
+}
+
+void	rotate_right(t_mlx *vars)
+{
+	float	old_plane_x;
+	float	old_dir_x;
+
+	old_dir_x = vars->ray.dir.x;
+	vars->ray.dir.x = vars->ray.dir.x * cos(ROT_SPEED) \
+		- vars->ray.dir.y * sin(ROT_SPEED);
+	vars->ray.dir.y = old_dir_x * sin(ROT_SPEED) \
+		+ vars->ray.dir.y * cos(ROT_SPEED);
+	old_plane_x = vars->ray.plane.x;
+	vars->ray.plane.x = vars->ray.plane.x * cos(ROT_SPEED) \
+		- vars->ray.plane.y * sin(ROT_SPEED);
+	vars->ray.plane.y = old_plane_x * sin(ROT_SPEED) \
+		+ vars->ray.plane.y * cos(ROT_SPEED);
 }

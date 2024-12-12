@@ -17,17 +17,23 @@ void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 {
 	ray->hit = 0;
 	ray->map_pos = ray->initial_pos;
-	ray->camera_x = ((2 * origin->x) / (float) vars->layer[LAYER_RAYCAST].w) - 1;
+	ray->camera_x = ((2 * origin->x) / (float) \
+		vars->layer[LAYER_RAYCAST].w) - 1;
 	ray->ray_dir.x = ray->dir.x + ray->plane.x * ray->camera_x;
 	ray->ray_dir.y = ray->dir.y + ray->plane.y * ray->camera_x;
 	if (ray->ray_dir.x == 0)
-		ray->delta_dist.x = FLT_MAX;
+		ray->delta_dist.x = __FLT_MAX__;
 	else
 		ray->delta_dist.x = fabs(1.f / ray->ray_dir.x);
 	if (ray->ray_dir.y == 0)
-		ray->delta_dist.y = FLT_MAX;
+		ray->delta_dist.y = __FLT_MAX__;
 	else
 		ray->delta_dist.y = fabs(1.f / ray->ray_dir.y);
+}
+
+int	is_player(const char c)
+{
+	return (c == 'N' || c == 'E' || c == 'S' || c == 'W');
 }
 
 void	print_ray_param(t_ray *ray)
@@ -44,4 +50,19 @@ void	print_ray_param(t_ray *ray)
 		ray->pos.x, ray->pos.y, ray->plane.x, ray->plane.y, ray->ray_dir.x, \
 		ray->ray_dir.y, ray->hit, ray->side, ray->map_pos.x, ray->map_pos.y, \
 		ray->camera_x, ray->perp_wall_dist, ray->end_ray.x, ray->end_ray.y);
+}
+
+t_pos	tile_selector(t_tile tile[49], int *stats)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 50)
+	{
+		if (*stats == tile[i].dir)
+		{
+			return (tile[i].pos);
+		}
+	}
+	return (tile[47].pos);
 }

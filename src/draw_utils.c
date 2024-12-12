@@ -18,7 +18,7 @@ t_data	select_texture(t_data img[4], t_mlx *vars)
 	{
 		if (vars->ray.ray_dir.y > 0)
 			return (img[NO]);
-		if (vars->ray.ray_dir_y < 0)
+		if (vars->ray.ray_dir.y < 0)
 			return (img[SO]);
 	}
 	else if (vars->ray.ray_dir.x < 0)
@@ -30,9 +30,9 @@ t_data	select_texture(t_data img[4], t_mlx *vars)
 
 void	get_darker_color(float coef, t_color *color)
 {
-	color->r *= coef;
-	color->g *= coef;
-	color->b *= coef;
+	color->r *= (coef / 3);
+	color->g *= (coef / 3);
+	color->b *= (coef / 3);
 }
 
 int	init_pixel_tex_x(t_ray *ray, t_mlx *vars)
@@ -65,4 +65,10 @@ float	init_pixel_tex_y(t_pos *current, float step)
 		current->y = 0;
 	}
 	return (tex_y);
+}
+
+unsigned int	get_pixel_img(t_data *img, int x, int y)
+{
+	return (*(unsigned int *)((img->addr + (y * img->line_length) \
+		+ (x * img->pixels))));
 }
