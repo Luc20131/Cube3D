@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/09 19:30:57 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/13 14:16:47 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,10 @@ void    draw_map(t_mlx *game)
 	int		j;
 	int		k;
 	t_pos	pos;
-	t_pos	map_size;
+	t_pos	pos_;
 
 	j = -1;
 	k = -1;
-	pos_ = (t_pos){0, 0};
 	start_tiles_init(game);
 	autotile_generator(game->map, game);
 	game->layer[LAYER_MAP] = new_img(game, game->size_map.x * TILE_SIZE, \
@@ -111,7 +110,7 @@ void    draw_map(t_mlx *game)
 		{
 			pos_ = (t_pos){i * TILE_SIZE, j * TILE_SIZE};
 			pos = tile_selector(game->tile, &game->stats_tile[++k]);
-			img_cut(pos, game);
+			img_cut(pos, game, pos_);
 		}
 	}
 }

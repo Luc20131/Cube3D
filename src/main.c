@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/07 00:21:34 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/13 14:15:11 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(const int argc, char **argv)
 	map(&vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
-	mouse_bonus(&vars);
+	// mouse_bonus(&vars);
 	mlx_do_key_autorepeatoff(vars.mlx);
 	mlx_loop_hook(vars.mlx, tick, &vars);
 	mlx_loop(vars.mlx);

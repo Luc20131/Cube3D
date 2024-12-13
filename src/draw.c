@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:31:17 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/05 16:16:45 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/13 14:38:27 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,23 +123,22 @@ void	put_pixel_img(t_data *img, int x, int y, int color)
 	}
 }
 
-t_data	img_cut(t_pos pos, t_mlx *vars)
+t_data	img_cut(t_pos pos, t_mlx *vars, t_pos pos_)
 {
 	t_sprite_slice	slice;
 	int				j;
 	int				i;
 
-	slice = (t_sprite_slice){pos.y * TILE_SIZE, pos.x * TILE_SIZE, \
-		TILE_SIZE, TILE_SIZE};
+	slice = (t_sprite_slice){pos.y * TILE_SIZE, pos.x * TILE_SIZE,\
+	 TILE_SIZE, TILE_SIZE};
 	i = -1;
-	while (++i < TILE_SIZE)
+	while (++i < slice.width)
 	{
 		j = -1;
-		while (++j < TILE_SIZE)
+		while (++j < slice.height)
 		{
-			put_pixel_img(&vars->layer[LAYER_MINIMAP], j, i, \
-				get_pixel_img(&vars->layer[LAYER_ACHANGER], \
-					slice.x + j, slice.y + i));
+			put_pixel_img(&vars->layer[LAYER_MAP], pos_.x + j, pos_.y + i, \
+		get_pixel_img(&vars->layer[LAYER_ACHANGER], slice.x + j, slice.y + i));
 		}
 	}
 	return (vars->layer[LAYER_ACHANGER]);

@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/06 06:11:59 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/13 15:08:42 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int	raycast(t_mlx *vars)
 		wall_printer_from_cast(&vars->ray, vars, &origin);
 		origin.x += PIX_PER_RAY;
 	}
+	put_img_to_img(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_RAYCAST]);
 	mlx_put_image_to_window(vars->mlx, vars->win, \
 		vars->layer[LAYER_RAYCAST].img, 0, 0);
 	return (0);

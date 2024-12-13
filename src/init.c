@@ -56,6 +56,7 @@ void	init_vars(t_mlx *vars)
 	vars->ray.dir.y = 0;
 	vars->ray.plane.y = 0.66;
 	vars->ray.plane.x = 0;
+	vars->size_map = size_map(vars->map);
 }
 
 void	set_starting_direction(t_mlx *vars, const int side)
