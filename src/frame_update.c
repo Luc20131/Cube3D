@@ -94,10 +94,10 @@ u_int	find_pixel_color(t_pos *index, t_pos *size, t_pos *origin, t_mlx *vars)
 	t_pos			map_size;
 	unsigned int	color;
 
-	map_size = size_map(vars->map);
+	map_size = vars->size_map;
 	if (index->y == 0 || index->y == size->y - 1)
 		color = 0x003F3F3F;
-	else if (index->x < origin->x || index->y < origin->y \
+	else if (origin->x + index->x < 0 || origin->y + index->y < 0 \
 		|| origin->x + index->x >= map_size.x * TILE_SIZE \
 		|| origin->y + index->y >= map_size.y * TILE_SIZE)
 		color = 0x00000000;
