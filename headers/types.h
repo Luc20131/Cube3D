@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   types.h                                             :+:      :+:    :+:  */
+/*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42.fr>                +#+  +:+       +#+  */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/09 06:32:34 by lrichaud            ###   ########.fr    */
+/*   Updated: 2024/12/14 19:22:37 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ typedef struct s_player_data
 	t_pos		pixel_pos;
 	t_posf		float_pos;
 	t_direction	movement;
+	int			is_moving;
 }	t_player_data;
 
 typedef struct s_ray
@@ -168,6 +169,8 @@ typedef struct s_mlx
 	struct s_info	*stats;
 	size_t			fps;
 	t_ray			ray;
+	t_data			animation[4];
+	
 	unsigned int	light;
 }	t_mlx;
 
