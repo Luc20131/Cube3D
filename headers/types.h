@@ -169,6 +169,7 @@ typedef struct s_mlx
 	size_t			fps;
 	t_ray			ray;
 	unsigned int	light;
+	int				mouse;
 }	t_mlx;
 
 typedef struct s_tab_size

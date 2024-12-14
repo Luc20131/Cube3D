@@ -46,7 +46,7 @@ void	init_vars(t_mlx *vars)
 	vars->win = mlx_new_window(vars->mlx, WIDTH_WIN, HEIGHT_WIN, "Cub3D");
 	vars->layer[LAYER_SCREEN] = new_img(vars, WIDTH_WIN, HEIGHT_WIN);
 	vars->layer[LAYER_RAYCAST] = new_img(vars, WIDTH, HEIGHT);
-	vars->layer[LAYER_OVERLAY] = new_file_img("texture/Overlay.xpm", vars);
+	vars->layer[LAYER_OVERLAY] = new_file_img("texture/Overlay2.xpm", vars);
 	vars->layer[LAYER_FLOOR] = new_file_img("texture/Ground.xpm", vars);
 	vars->layer[LAYER_MONITOR] = new_file_img("texture/monitoring.xpm", vars);
 	vars->layer[LAYER_ACHANGER] = new_file_img("texture/SusMap.xpm", vars);

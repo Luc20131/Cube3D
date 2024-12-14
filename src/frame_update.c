@@ -83,9 +83,7 @@ int	tick(t_mlx *vars)
 		collision(vars, vars->player_data.float_pos, 1, -1, 1);
 	}
 	player_pos_update(vars, vars->map);
-	// mouse_move(vars);
-	map(vars);
-	// fps(vars);
+	raycast(vars);
 	return (1);
 }
 

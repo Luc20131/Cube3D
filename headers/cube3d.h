@@ -31,8 +31,6 @@
 # include <stdio.h>
 # include <sys/types.h>
 
-# include "bonus.h"
-
 t_tab_size		char_tab_len(char **tab);
 void			wall(t_data *img, float distance);
 
@@ -100,7 +98,7 @@ t_data			img_cut(t_pos pos, t_mlx *vars, t_pos pos_);
 // ------------ UTILS -------------
 
 int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
-int				print_floor(t_pos *current, t_mlx *vars, t_ray *ray);
+int				print_floor(t_pos *current, t_mlx *vars);
 int				print_wall(t_pos *current, t_mlx *vars, \
 				t_pos *end, t_data *img);
 

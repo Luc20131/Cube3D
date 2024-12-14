@@ -81,7 +81,7 @@ int	main(const int argc, char **argv)
 	vars.map = info.map;
 	init_vars(&vars);
 	player_pov_on_start(&vars);
-	map(&vars);
+	// map(&vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
 	// mouse_bonus(&vars);

@@ -15,20 +15,13 @@
 void	get_and_display_pixel(t_mlx *vars, t_pos floor_tex, t_pos end, int y)
 {
 	t_color			pixel;
-	float			coef;
-	static float	half_img;
 	static int		line_length;
 
 	line_length = vars->layer[LAYER_RAYCAST].line_length >> 2;
-	half_img = vars->layer[LAYER_RAYCAST].h >> 1;
 	if ((floor_tex.x < vars->layer[LAYER_FLOOR].w && floor_tex.x > 0) || \
 		(floor_tex.y < vars->layer[LAYER_FLOOR].h && floor_tex.y > 0))
 	{
 		pixel.x = get_pixel_img(&vars->layer[LAYER_FLOOR], floor_tex.x, floor_tex.y);
-		coef = ((y - half_img) / (half_img));
-		if (vars->light)
-			flashlight((t_pos){end.x, y}, &pixel);
-		get_darker_color(coef, &pixel);
 		((int *)vars->layer[LAYER_RAYCAST].addr) \
 			[y * (line_length) + end.x] = pixel.x;
 		((int *)vars->layer[LAYER_RAYCAST].addr)[(vars->layer[LAYER_RAYCAST].h - y - 1) * \

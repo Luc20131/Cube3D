@@ -49,21 +49,20 @@ int		print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray
 	(void)ray;
 	current.x = wall_top->x;
 	current.y = 0;
+	print_ceilling(&current, vars, wall_top);
 	if (current.y >= wall_top->y)
 		current.y = wall_top->y;
 	img_wall = select_texture(vars->stats->img_texture, vars);
 	current.y = wall_top->y;
 	print_wall(&current, vars, end, &img_wall);
-	vertical_raycast(vars, end);
+	print_floor(&current, vars);
+	// vertical_raycast(vars, end);
 	return (0);
 }
 
 int	one_cast(t_ray *ray, t_mlx *vars)
 {
-	int		len;
-
-	len = -1;
-	while (ray->hit == 0 && ++len != 30)
+	while (ray->hit == 0)
 	{
 		if (ray->side_dist.x < ray->side_dist.y)
 		{
@@ -77,7 +76,6 @@ int	one_cast(t_ray *ray, t_mlx *vars)
 			ray->map_pos.y += ray->w_step.y;
 			ray->side = 1;
 		}
-	// exit(1);
 		if (vars->map[ray->map_pos.y][ray->map_pos.x] > '0')
 			ray->hit = 1;
 	}
@@ -133,8 +131,12 @@ int	raycast(t_mlx *vars)
 		wall_printer_from_cast(&vars->ray, vars, &origin);
 		origin.x += PIX_PER_RAY;
 	}
+<<<<<<< Updated upstream
 	put_img_to_img(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_RAYCAST]);
 	mlx_put_image_to_window(vars->mlx, vars->win, \
 		vars->layer[LAYER_RAYCAST].img, 0, 0);
+=======
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_RAYCAST].img, 0, 0);
+>>>>>>> Stashed changes
 	return (0);
 }
