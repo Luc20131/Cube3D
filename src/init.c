@@ -90,3 +90,29 @@ void	player_pov_on_start(t_mlx *vars)
 	else if (pov_direction == 'W')
 		set_starting_direction(vars, WEST);
 }
+
+void	player_pos_update(t_mlx *vars, char **map)
+{
+	static t_pos	old_pos = {0, 0};
+	t_posf			posf_player;
+
+	posf_player = vars->player_data.float_pos;
+	if (posf_player.x >= vars->size_map.x || posf_player.y >= vars->size_map.y
+		|| posf_player.x < 0 || posf_player.y < 0)
+		return;
+	if (old_pos.x == 0 && old_pos.y == 0)
+	{
+		old_pos.x = (int)posf_player.x;
+		old_pos.y = (int)posf_player.y;
+	}
+	if (map[old_pos.y][old_pos.x] != '1'
+		&& map[(int)posf_player.y][(int)posf_player.x] != '1')
+	{
+		map[old_pos.y][old_pos.x] = '0';
+		map[(int)posf_player.y][(int)posf_player.x] = 'N';
+		old_pos.x = (int)posf_player.x;
+		old_pos.y = (int)posf_player.y;
+		vars->player_data.pixel_pos.x = TILE_SIZE * posf_player.x;
+		vars->player_data.pixel_pos.y = TILE_SIZE * posf_player.y;
+	}
+}

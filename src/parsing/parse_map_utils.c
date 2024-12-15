@@ -86,3 +86,17 @@ int	cmp_n_elt(char c, char *cmp)
 			return (1);
 	return (0);
 }
+
+
+t_pos	size_map(char **map)
+{
+	t_pos	size;
+	size_t	i;
+
+	i = 0;
+	while (map[i])
+		i++;
+	size.y = i;
+	size.x = (ft_strlen(map[0]));
+	return (size);
+}

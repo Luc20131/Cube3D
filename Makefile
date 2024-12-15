@@ -9,15 +9,20 @@ NAME_BONUS = $(NAME)_bonus
 HEADER = ./headers/cube3d.h ./headers/parsing.h ./headers/types.h
 SRC_DIR=src/
 
-SRC_LIST= init.c frame_update.c upscaling.c keyboard.c casting_utils.c main.c map_gen.c sprite.c raycast.c draw.c draw_utils.c floor_ceilling_ray.c
+SRC_LIST_COMMON= init.c upscaling.c keyboard.c casting_utils.c main.c sprite.c draw_utils.c
+SRC_LIST= frame_update.c raycast.c draw.c floor_ceilling_ray.c
 SRC_LIST_P = parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c map_autotile.c map_autotile_utils.c map_inits.c
-SRC_LIST_BONUS = bonus.c mouse_bonus.c
-SRC_BONUS = $(addprefix $(SRC_DIR),$(SRC_LIST_BONUS))
-SRC=$(addprefix $(SRC_DIR),$(SRC_LIST)) \
+SRC_LIST_BONUS = bonus.c mouse_bonus.c draw_bonus.c floor_ceilling_ray_bonus.c frame_update_bonus.c raycast_bonus.c map_gen.c
+SRC_BONUS = $(addprefix $(SRC_DIR)bonus/,$(SRC_LIST_BONUS))
+
+SRC_COMMON=$(addprefix $(SRC_DIR),$(SRC_LIST_COMMON)) \
 	$(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))
+SRC_MANDATORY= $(addprefix $(SRC_DIR),$(SRC_LIST)) $(SRC_COMMON)
+
 OBJ_DIR=obj/
+OBJ_MANDATORY=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_MANDATORY))
+OBJ_COMMON=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_COMMON))
 OBJ_BONUS=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_BONUS))
-OBJ=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
 
 INCLUDE = -L libft -l ft -Lminilibx-linux -lmlx_Linux -lX11 -lXext -lm
 LIBFT_DIR=libft/
@@ -27,7 +32,7 @@ LIBFT = $(LIBFT_DIR)libft.a
 
 MINILIBX = minilibx-linux/libmlx_Linux.a
 
-NB_FILES=$(words $(OBJ))
+NB_FILES=$(words $(OBJ_COMMON) $(OBJ_MANDATORY))
 
 NB_FILES_BONUS=$(words $(OBJ_BONUS))
 
@@ -75,20 +80,20 @@ $(OBJ_DIR)%.o:  $(SRC_DIR)%.c Makefile $(HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo -n $(END_COLOUR)
 
-$(NAME) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ)
+$(NAME) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ_MANDATORY)
 	$(call percent)
-	$(CC) $(CFLAGS) -o $@ $(OBJ) $(INCLUDE)
+	$(CC) $(CFLAGS) -o $@ $(OBJ_MANDATORY) $(INCLUDE)
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
 
-$(OBJ_DIR)%.o:  $(SRC_BONUS)%.c Makefile $(HEADER) ./headers/bonus.h
+$(OBJ_DIR)bonus/%.o:  $(SRC_BONUS)%.c Makefile $(HEADER) ./headers/bonus.h
 	$(call percent)
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo -n $(END_COLOUR)
 
-$(NAME_BONUS) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ) $(OBJ_BONUS)
+$(NAME_BONUS) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) bonus_dir $(OBJ_BONUS)
 	$(call percent)
-	$(CC) $(CFLAGS) -o $@ $(OBJ) $(OBJ_BONUS) $(INCLUDE)
+	$(CC) $(CFLAGS) -o $@ $(OBJ_BONUS) $(INCLUDE)
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME_BONUS) compiled")
 
@@ -100,6 +105,9 @@ $(MINILIBX) :
 
 $(OBJ_DIR):
 	@mkdir -p $(sort $(dir ${OBJ}))
+
+bonus_dir : $(OBJ_DIR)
+	@mkdir -p ./obj/bonus
 
 clean :
 	@echo -e $(BLUE)Cleaning...$(END_COLOUR)

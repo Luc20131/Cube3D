@@ -19,7 +19,7 @@ void	mouse_move(t_mlx *vars);
 void	mouse_bonus(t_mlx *vars);
 void	init_bonus(t_mlx *vars);
 void	flashlight(t_pos pixel_pos, t_color *color);
-int				print_floor(t_pos *current, t_mlx *vars, t_ray *ray);
+int		print_floor(t_pos *current, t_mlx *vars, t_ray *ray);
 
 // typedef struct s_mlx
 // {

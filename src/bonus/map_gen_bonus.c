@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_gen.c                                          :+:      :+:    :+:   */
+/*   map_gen_bonus.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include <strings.h>
 
-#include "cube3d.h"
+#include "../../headers/cube3d.h"
 
 void	draw_square(t_data *img, t_pos origin, int size, int color)
 {
@@ -95,17 +95,10 @@ void    draw_map(t_mlx *game)
 	int		j;
 	int		k;
 	t_pos	pos;
-<<<<<<< Updated upstream
 	t_pos	pos_;
 
 	j = -1;
 	k = -1;
-=======
-
-	j = -1;
-	k = -1;
-	pos = (t_pos){0, 0};
->>>>>>> Stashed changes
 	start_tiles_init(game);
 	autotile_generator(game->map, game);
 	game->layer[LAYER_MAP] = new_img(game, game->size_map.x * TILE_SIZE, \
@@ -115,7 +108,7 @@ void    draw_map(t_mlx *game)
 		i = -1;
 		while (++i < game->size_map.x)
 		{
-			pos = (t_pos){i * TILE_SIZE, j * TILE_SIZE};
+			pos_ = (t_pos){i * TILE_SIZE, j * TILE_SIZE};
 			pos = tile_selector(game->tile, &game->stats_tile[++k]);
 			img_cut(pos, game, pos_);
 		}

@@ -18,7 +18,7 @@ int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 
 	while (current->y < wall_top->y)
 	{
-		pixel.x = 0xFF000030;
+		pixel.x = SKY_COLOR;
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
 		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
@@ -32,7 +32,7 @@ int	print_floor(t_pos *current, t_mlx *vars)
 
 	while (current->y < vars->layer[LAYER_RAYCAST].h)
 	{
-		pixel.x = 0xFF170501;
+		pixel.x = GROUND_COLOR;
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
 		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
