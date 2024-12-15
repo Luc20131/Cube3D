@@ -68,18 +68,22 @@ int	tick(t_mlx *vars)
 {
 	if (vars->player_data.movement.forward)
 	{
+		vars->player_data.is_moving = 1;
 		collision(vars, vars->player_data.float_pos, 1, 1, 0);
 	}
 	if (vars->player_data.movement.backward)
 	{
+		vars->player_data.is_moving = 1;
 		collision(vars, vars->player_data.float_pos, -1, -1, 0);
 	}
 	if (vars->player_data.movement.right)
 	{
+		vars->player_data.is_moving = 1;
 		collision(vars, vars->player_data.float_pos, -1, 1, 1);
 	}
 	if (vars->player_data.movement.left)
 	{
+		vars->player_data.is_moving = 1;
 		collision(vars, vars->player_data.float_pos, 1, -1, 1);
 	}
 	player_pos_update(vars, vars->map);

@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 13:24:21 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/28 12:27:57 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/15 20:32:56 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ int	key_released(const int keycode, t_mlx *vars)
 int	key_hook(const int keycode, t_mlx *vars)
 {
 	if (keycode == 65307)
-	{
 		exit_game(vars);
-	}
-	else if (keycode == 'd')
+	if (keycode == 'd')
 		vars->player_data.movement.right = 1;
 	else if (keycode == 'a')
 		vars->player_data.movement.left = -1;

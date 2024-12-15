@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/13 15:07:49 by sjean            ###   ########.fr       */
+/*   Updated: 2024/12/15 20:22:38 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void			put_data_to_img(t_data *dst, t_data src, int x, int y);
 void			put_img_to_img(t_data *src, t_data *dst);
 t_pos			tile_selector(t_tile tile[49], int *stats);
 t_data			img_cut(t_pos pos, t_mlx *vars, t_pos pos_);
+t_data			*get_img_frame(t_mlx	*vars);
 
 // ------------ UTILS -------------
 
