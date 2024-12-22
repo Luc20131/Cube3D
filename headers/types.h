@@ -16,8 +16,12 @@
 # define SKY_COLOR 0xFF5EACFF
 # define GROUND_COLOR 0xFF170501
 
-# define HEIGHT 1080
-# define WIDTH 1920
+# ifndef HEIGHT
+#  define HEIGHT 1080
+# endif
+# ifndef WIDTH
+#  define WIDTH 1920
+# endif
 # define HEIGHT_WIN 1080
 # define WIDTH_WIN 1920
 

@@ -12,6 +12,11 @@
 
 #include "cube3d.h"
 
+inline void put_pixel_value(t_data *img, int x, int y, unsigned int color)
+{
+	((int *)img->addr)[(img->h - y - 1) * img->bits_per_line + x] = color;
+}
+
 void	get_and_display_pixel(t_mlx *vars, t_pos floor_tex, t_pos end, int y)
 {
 	t_color			pixel;
@@ -26,6 +31,7 @@ void	get_and_display_pixel(t_mlx *vars, t_pos floor_tex, t_pos end, int y)
 			[y * (line_length) + end.x] = pixel.x;
 		((int *)vars->layer[LAYER_RAYCAST].addr)[(vars->layer[LAYER_RAYCAST].h - y - 1) * \
 			line_length + end.x] = pixel.x;
+		put_pixel_value(&vars->layer[LAYER_RAYCAST], end.x, y , pixel.x);
 	}
 }
 

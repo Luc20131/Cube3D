@@ -12,7 +12,7 @@
 
 #include <strings.h>
 
-#include "../../headers/cube3d.h"
+#include "../../headers/bonus.h"
 
 void	draw_square(t_data *img, t_pos origin, int size, int color)
 {
@@ -32,18 +32,18 @@ void	draw_square(t_data *img, t_pos origin, int size, int color)
 	}
 }
 
-t_pos	size_map(char **map)
-{
-	t_pos	size;
-	size_t	i;
-
-	i = 0;
-	while (map[i])
-		i++;
-	size.y = i;
-	size.x = (ft_strlen(map[0]));
-	return (size);
-}
+// t_pos	size_map(char **map)
+// {
+// 	t_pos	size;
+// 	size_t	i;
+//
+// 	i = 0;
+// 	while (map[i])
+// 		i++;
+// 	size.y = i;
+// 	size.x = (ft_strlen(map[0]));
+// 	return (size);
+// }
 
 void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
 {
@@ -66,28 +66,28 @@ void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
 	}
 }
 
-void	player_pos_update(t_mlx *vars, char **map)
-{
-	static t_pos	old_pos = {0, 0};
-	t_posf			posf_player;
-
-	posf_player = vars->player_data.float_pos;
-	if (old_pos.x == 0 && old_pos.y == 0)
-	{
-		old_pos.x = (int)posf_player.x;
-		old_pos.y = (int)posf_player.y;
-	}
-	if (map[old_pos.y][old_pos.x] != '1'
-		&& map[(int)posf_player.y][(int)posf_player.x] != '1')
-	{
-		map[old_pos.y][old_pos.x] = '0';
-		map[(int)posf_player.y][(int)posf_player.x] = 'N';
-		old_pos.x = (int)posf_player.x;
-		old_pos.y = (int)posf_player.y;
-		vars->player_data.pixel_pos.x = TILE_SIZE * posf_player.x;
-		vars->player_data.pixel_pos.y = TILE_SIZE * posf_player.y;
-	}
-}
+// void	player_pos_update(t_mlx *vars, char **map)
+// {
+// 	static t_pos	old_pos = {0, 0};
+// 	t_posf			posf_player;
+//
+// 	posf_player = vars->player_data.float_pos;
+// 	if (old_pos.x == 0 && old_pos.y == 0)
+// 	{
+// 		old_pos.x = (int)posf_player.x;
+// 		old_pos.y = (int)posf_player.y;
+// 	}
+// 	if (map[old_pos.y][old_pos.x] != '1'
+// 		&& map[(int)posf_player.y][(int)posf_player.x] != '1')
+// 	{
+// 		map[old_pos.y][old_pos.x] = '0';
+// 		map[(int)posf_player.y][(int)posf_player.x] = 'N';
+// 		old_pos.x = (int)posf_player.x;
+// 		old_pos.y = (int)posf_player.y;
+// 		vars->player_data.pixel_pos.x = TILE_SIZE * posf_player.x;
+// 		vars->player_data.pixel_pos.y = TILE_SIZE * posf_player.y;
+// 	}
+// }
 
 void    draw_map(t_mlx *game)
 {

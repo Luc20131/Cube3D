@@ -93,7 +93,6 @@ void			put_pixel_img(t_data *img, int x, int y, int color);
 void			put_data_to_img(t_data *dst, t_data src, int x, int y);
 void			put_img_to_img(t_data *src, t_data *dst);
 t_pos			tile_selector(t_tile tile[49], int *stats);
-t_data			img_cut(t_pos pos, t_mlx *vars, t_pos pos_);
 
 // ------------ UTILS -------------
 

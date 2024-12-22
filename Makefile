@@ -2,26 +2,26 @@ MAKE = @make --no-print-directory
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -O3 -g3
+CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -O2
 NAME = cub3D
 NAME_BONUS = $(NAME)_bonus
 
 HEADER = ./headers/cube3d.h ./headers/parsing.h ./headers/types.h
 SRC_DIR=src/
 
-SRC_LIST_COMMON= init.c upscaling.c keyboard.c casting_utils.c main.c sprite.c draw_utils.c
-SRC_LIST= frame_update.c raycast.c draw.c floor_ceilling_ray.c
-SRC_LIST_P = parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c map_autotile.c map_autotile_utils.c map_inits.c
-SRC_LIST_BONUS = bonus.c mouse_bonus.c draw_bonus.c floor_ceilling_ray_bonus.c frame_update_bonus.c raycast_bonus.c map_gen.c
-SRC_BONUS = $(addprefix $(SRC_DIR)bonus/,$(SRC_LIST_BONUS))
+SRC_LIST_COMMON:= init.c upscaling.c keyboard.c casting_utils.c main.c sprite.c draw_utils.c
+SRC_LIST_MANDATORY:= frame_update.c raycast.c draw.c floor_ceilling_ray.c
+SRC_LIST_P:= parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c
+SRC_LIST_BONUS:= map_autotile_bonus.c map_autotile_utils_bonus.c bonus.c mouse_bonus.c draw_bonus.c floor_ceilling_ray_bonus.c frame_update_bonus.c raycast_bonus.c map_gen_bonus.c map_inits_bonus.c
 
-SRC_COMMON=$(addprefix $(SRC_DIR),$(SRC_LIST_COMMON)) \
-	$(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))
-SRC_MANDATORY= $(addprefix $(SRC_DIR),$(SRC_LIST)) $(SRC_COMMON)
+SRC_COMMON=$(addprefix $(SRC_DIR),$(SRC_LIST_COMMON)) $(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))
+SRC_MANDATORY= $(addprefix $(SRC_DIR),$(SRC_LIST_MANDATORY)) $(SRC_COMMON)
+SRC_BONUS:= $(addprefix $(SRC_DIR)bonus/,$(SRC_LIST_BONUS)) $(SRC_COMMON)
 
 OBJ_DIR=obj/
 OBJ_MANDATORY=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_MANDATORY))
 OBJ_COMMON=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_COMMON))
+OBJ_DIR_BONUS=$(OBJ_DIR)bonus
 OBJ_BONUS=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_BONUS))
 
 INCLUDE = -L libft -l ft -Lminilibx-linux -lmlx_Linux -lX11 -lXext -lm
@@ -86,12 +86,12 @@ $(NAME) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ_MANDATORY)
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
 
-$(OBJ_DIR)bonus/%.o:  $(SRC_BONUS)%.c Makefile $(HEADER) ./headers/bonus.h
+$(OBJ_DIR_BONUS)%.o:  $(SRC_BONUS)%.c Makefile $(HEADER) ./headers/bonus.h
 	$(call percent)
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo -n $(END_COLOUR)
 
-$(NAME_BONUS) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) bonus_dir $(OBJ_BONUS)
+$(NAME_BONUS) : $(MINILIBX) $(LIBFT) $(OBJ_DIR_BONUS) $(OBJ_BONUS)
 	$(call percent)
 	$(CC) $(CFLAGS) -o $@ $(OBJ_BONUS) $(INCLUDE)
 	@echo -n $(END_COLOUR)
@@ -104,10 +104,10 @@ $(MINILIBX) :
 	$(MAKE) -C minilibx-linux
 
 $(OBJ_DIR):
-	@mkdir -p $(sort $(dir ${OBJ}))
+	@mkdir -p $(sort $(dir ${OBJ_COMMON}))
 
-bonus_dir : $(OBJ_DIR)
-	@mkdir -p ./obj/bonus
+$(OBJ_DIR_BONUS) : $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR_BONUS)
 
 clean :
 	@echo -e $(BLUE)Cleaning...$(END_COLOUR)

@@ -12,10 +12,10 @@
 
 #include "../../headers/cube3d.h"
 
-// void	init_bonus(t_mlx* vars)
-// {
-//
-// }
+/*
+ min(a,b) = a * (a < b) + b * (a >= b)
+
+ */
 
 char	*free_s2_to_join(const char *s1, char *s2)
 {
@@ -43,35 +43,25 @@ void	fps(const t_mlx *vars)
 void	flashlight(t_pos pixel_pos, t_color *color)
 {
 	unsigned int	distance_sqrt;
-	unsigned int	color_overflow;
-	const float		limit = HEIGHT * 185;
+	// unsigned int	color_overflow;
+	const unsigned int		limit = HEIGHT * 185;
+	float			coef_limit = (1./(limit >> 2));
 	distance_sqrt = ((unsigned int)(pixel_pos.y - (HEIGHT >> 1)) * ((unsigned int)(pixel_pos.y - (HEIGHT >> 1))) \
 		+ (((unsigned int)(pixel_pos.x - (WIDTH >> 1)))) * ((unsigned int)(pixel_pos.x - (WIDTH >> 1))));
 	if (distance_sqrt < limit)
 	{
 		if (distance_sqrt > (limit * 0.65))
 		{
-			color_overflow = color->b + (color->b * (limit - distance_sqrt) * (1./(limit * 0.25)));
-			if (color_overflow < 200)
-				color->b = color_overflow;
-			color_overflow = color->g + (color->g * (limit - distance_sqrt) * (1./(limit * 0.25)) );
-			if (color_overflow < 200)
-				color->g = color_overflow;
-			color_overflow = color->r + (color->r * (limit - distance_sqrt) * (1./(limit * 0.25)) );
-			if (color_overflow < 200)
-				color->r = color_overflow;
+			color->b = fmin(255, color->b + (color->b * (limit - distance_sqrt) * coef_limit));
+			color->g = fmin(255, color->g + (color->g * (limit - distance_sqrt) * coef_limit));
+			color->r = fmin(255, color->r + (color->r * (limit - distance_sqrt) * coef_limit));
 		}
 		else
 		{
-			color_overflow = color->b + (color->b * (1./(limit * 0.25) * (limit * 0.35)));
-			if (color_overflow < 200)
-				color->b = color_overflow;
-			color_overflow = color->g + (color->g * (1./(limit * 0.25) * (limit * 0.35)));
-			if (color_overflow < 200)
-				color->g = color_overflow;
-			color_overflow = color->r + (color->r * (1./(limit * 0.25) * (limit * 0.35)));
-			if (color_overflow < 200)
-				color->r = color_overflow;
+			coef_limit = coef_limit * (limit * 0.35);
+			color->b = fmin(255, color->b + (color->b * coef_limit));
+			color->g = fmin(255, color->g + (color->g * coef_limit));
+			color->r = fmin(255, color->r + (color->r * coef_limit));
 		}
 
 	}

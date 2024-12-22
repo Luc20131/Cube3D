@@ -70,23 +70,3 @@ void	put_pixel_img(t_data *img, int x, int y, int color)
 	}
 }
 
-t_data	img_cut(t_pos pos, t_mlx *vars, t_pos pos_)
-{
-	t_sprite_slice	slice;
-	int				j;
-	int				i;
-
-	slice = (t_sprite_slice){pos.y * TILE_SIZE, pos.x * TILE_SIZE,\
-	 TILE_SIZE, TILE_SIZE};
-	i = -1;
-	while (++i < slice.width)
-	{
-		j = -1;
-		while (++j < slice.height)
-		{
-			put_pixel_img(&vars->layer[LAYER_MAP], pos_.x + j, pos_.y + i, \
-		get_pixel_img(&vars->layer[LAYER_ACHANGER], slice.x + j, slice.y + i));
-		}
-	}
-	return (vars->layer[LAYER_ACHANGER]);
-}

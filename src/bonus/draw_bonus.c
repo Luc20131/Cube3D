@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3d.h"
+#include "bonus.h"
 
 int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 {
@@ -32,7 +32,7 @@ int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 	return (0);
 }
 
-int	print_floor(t_pos *current, t_mlx *vars, t_ray *ray)
+int	print_floor_bonus(t_pos *current, t_mlx *vars, t_ray *ray)
 {
 	t_color	pixel;
 	float	coef;
@@ -92,23 +92,22 @@ void	put_pixel_img(t_data *img, int x, int y, int color)
 	}
 }
 
-t_data	img_cut(t_pos pos, t_mlx *vars)
+t_data	img_cut(t_pos pos, t_mlx *vars, t_pos pos_)
 {
 	t_sprite_slice	slice;
 	int				j;
 	int				i;
 
-	slice = (t_sprite_slice){pos.y * TILE_SIZE, pos.x * TILE_SIZE, \
-		TILE_SIZE, TILE_SIZE};
+	slice = (t_sprite_slice){pos.y * TILE_SIZE, pos.x * TILE_SIZE,\
+	 TILE_SIZE, TILE_SIZE};
 	i = -1;
-	while (++i < TILE_SIZE)
+	while (++i < slice.width)
 	{
 		j = -1;
-		while (++j < TILE_SIZE)
+		while (++j < slice.height)
 		{
-			put_pixel_img(&vars->layer[LAYER_MINIMAP], j, i, \
-				get_pixel_img(&vars->layer[LAYER_ACHANGER], \
-					slice.x + j, slice.y + i));
+			put_pixel_img(&vars->layer[LAYER_MAP], pos_.x + j, pos_.y + i, \
+		get_pixel_img(&vars->layer[LAYER_ACHANGER], slice.x + j, slice.y + i));
 		}
 	}
 	return (vars->layer[LAYER_ACHANGER]);
