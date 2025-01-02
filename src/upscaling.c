@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
+#include "../headers/bonus.h"
 
 void	upscaling_first_line(t_mlx *vars, t_data *screen, t_upscale *scale)
 {

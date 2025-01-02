@@ -12,26 +12,26 @@
 
 #include "cube3d.h"
 
-inline void put_pixel_value(t_data *img, int x, int y, unsigned int color)
+inline void	put_pixel_value(t_data *img, int x, int y, unsigned int color)
 {
 	((int *)img->addr)[(img->h - y - 1) * img->bits_per_line + x] = color;
 }
 
-void	get_and_display_pixel(t_mlx *vars, t_pos floor_tex, t_pos end, int y)
+void	get_and_display_pixel(t_data *layers, t_pos floor_tex, t_pos end, int y)
 {
 	t_color			pixel;
 	static int		line_length;
 
-	line_length = vars->layer[LAYER_RAYCAST].line_length >> 2;
-	if ((floor_tex.x < vars->layer[LAYER_FLOOR].w && floor_tex.x > 0) || \
-		(floor_tex.y < vars->layer[LAYER_FLOOR].h && floor_tex.y > 0))
+	line_length = layers[LAYER_RAYCAST].line_length >> 2;
+	if ((floor_tex.x < layers[LAYER_FLOOR].w && floor_tex.x > 0) || \
+		(floor_tex.y < layers[LAYER_FLOOR].h && floor_tex.y > 0))
 	{
-		pixel.x = get_pixel_img(&vars->layer[LAYER_FLOOR], floor_tex.x, floor_tex.y);
-		((int *)vars->layer[LAYER_RAYCAST].addr) \
+		pixel.x = get_pixel_img(&layers[LAYER_FLOOR], floor_tex.x, floor_tex.y);
+		((int *)layers[LAYER_RAYCAST].addr) \
 			[y * (line_length) + end.x] = pixel.x;
-		((int *)vars->layer[LAYER_RAYCAST].addr)[(vars->layer[LAYER_RAYCAST].h - y - 1) * \
+		((int *)layers[LAYER_RAYCAST].addr)[(layers[LAYER_RAYCAST].h - y - 1) * \
 			line_length + end.x] = pixel.x;
-		put_pixel_value(&vars->layer[LAYER_RAYCAST], end.x, y , pixel.x);
+		put_pixel_value(&layers[LAYER_RAYCAST], end.x, y, pixel.x);
 	}
 }
 
@@ -58,7 +58,7 @@ int	print_floor_ceilling(t_mlx *vars, t_ray *ray, t_pos *end)
 										% vars->layer[LAYER_FLOOR].w;
 		floor_tex.y = (int)(current_floor.y * vars->layer[LAYER_FLOOR].h) \
 										% vars->layer[LAYER_FLOOR].h;
-		get_and_display_pixel(vars, floor_tex, *end, y);
+		get_and_display_pixel(vars->layer, floor_tex, *end, y);
 	}
 	return (0);
 }

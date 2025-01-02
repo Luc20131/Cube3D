@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mouse_bonus.c                                           :+:      :+:    :+:   */
+/*   mouse_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,6 +15,7 @@
 int	event_mouse(int button, int x, int y, void *param)
 {
 	t_mlx	*vars;
+
 	(void) x;
 	(void) y;
 	vars = param;
@@ -57,4 +58,3 @@ void	mouse_bonus(t_mlx *vars)
 {
 	mlx_mouse_hook(vars->win, event_mouse, vars);
 }
-

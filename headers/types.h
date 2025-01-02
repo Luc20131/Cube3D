@@ -16,10 +16,11 @@
 # define SKY_COLOR 0xFF5EACFF
 # define GROUND_COLOR 0xFF170501
 
-# ifndef HEIGHT
+# if BONUS == 0
+#  define HEIGHT 540
+#  define WIDTH 960
+# else
 #  define HEIGHT 1080
-# endif
-# ifndef WIDTH
 #  define WIDTH 1920
 # endif
 # define HEIGHT_WIN 1080
@@ -134,7 +135,6 @@ typedef struct s_ray
 	float	dist_player;
 	float	current_dist;
 	t_posf	floor_wall;
-	/*endif lmao*/
 	int		hit;
 	t_pos	map_pos;
 	float	perp_wall_dist;
@@ -206,22 +206,6 @@ typedef struct s_info
 	int		map_is_create;
 	char	**map;
 }	t_info;
-
-typedef struct s_upscale
-{
-	t_pos			screen_pos;
-	t_pos			rc_pos;
-	unsigned int	pixel_color[WIDTH];
-	int				nb_pixels;
-	int				nb_lines;
-	int				nb_px_in_lines;
-	float			ratio_h;
-	int				i;
-	int				j;
-	char			*dst;
-	int				nb_lines_rc;
-	float			ratio_w;
-}	t_upscale;
 
 enum
 {

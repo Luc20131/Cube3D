@@ -41,12 +41,11 @@ void	side_dist_and_stepper(t_ray	*ray)
 	}
 }
 
-int		print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
+int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars)
 {
 	t_pos	current;
 	t_data	img_wall;
 
-	(void)ray;
 	current.x = wall_top->x;
 	current.y = 0;
 	print_ceilling(&current, vars, wall_top);
@@ -56,7 +55,6 @@ int		print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray
 	current.y = wall_top->y;
 	print_wall(&current, vars, end, &img_wall);
 	print_floor(&current, vars);
-	// vertical_raycast(vars, end);
 	return (0);
 }
 
@@ -76,7 +74,9 @@ int	one_cast(t_ray *ray, t_mlx *vars)
 			ray->map_pos.y += ray->w_step.y;
 			ray->side = 1;
 		}
-		if (ray->map_pos.x < 0 || ray->map_pos.y < 0 || ray->map_pos.x >= vars->size_map.x || ray->map_pos.y >= vars->size_map.y)
+		if (ray->map_pos.x < 0 || ray->map_pos.y < 0 \
+			|| ray->map_pos.x >= vars->size_map.x \
+			|| ray->map_pos.y >= vars->size_map.y)
 		{
 			ray->side_dist.x = ray->delta_dist.x + 1;
 			ray->side_dist.y = ray->delta_dist.y + 1;
@@ -107,7 +107,7 @@ void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *wall_top)
 	end.y = line_height + (vars->layer[LAYER_RAYCAST].h >> 1);
 	while (i < PIX_PER_RAY)
 	{
-		print_display_from_ray(wall_top, &end, vars, ray);
+		print_display_from_ray(wall_top, &end, vars);
 		i++;
 		wall_top->x++;
 	}

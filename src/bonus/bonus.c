@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus.c                                             :+:      :+:    :+:   */
+/*   bonus.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42.fr>                +#+  +:+       +#+  */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,11 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../headers/cube3d.h"
-
-/*
- min(a,b) = a * (a < b) + b * (a >= b)
-
- */
 
 char	*free_s2_to_join(const char *s1, char *s2)
 {
@@ -43,9 +38,9 @@ void	fps(const t_mlx *vars)
 void	flashlight(t_pos pixel_pos, t_color *color)
 {
 	unsigned int	distance_sqrt;
-	// unsigned int	color_overflow;
 	const unsigned int		limit = HEIGHT * 185;
 	float			coef_limit = (1./(limit >> 2));
+
 	distance_sqrt = ((unsigned int)(pixel_pos.y - (HEIGHT >> 1)) * ((unsigned int)(pixel_pos.y - (HEIGHT >> 1))) \
 		+ (((unsigned int)(pixel_pos.x - (WIDTH >> 1)))) * ((unsigned int)(pixel_pos.x - (WIDTH >> 1))));
 	if (distance_sqrt < limit)
@@ -63,6 +58,5 @@ void	flashlight(t_pos pixel_pos, t_color *color)
 			color->g = fmin(255, color->g + (color->g * coef_limit));
 			color->r = fmin(255, color->r + (color->r * coef_limit));
 		}
-
 	}
 }

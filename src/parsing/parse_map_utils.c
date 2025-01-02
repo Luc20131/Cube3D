@@ -87,7 +87,6 @@ int	cmp_n_elt(char c, char *cmp)
 	return (0);
 }
 
-
 t_pos	size_map(char **map)
 {
 	t_pos	size;

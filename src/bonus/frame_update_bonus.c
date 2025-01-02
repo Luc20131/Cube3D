@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   frame_update_bonus.c                                           :+:      :+:    :+:   */
+/*   frame_update_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -40,15 +40,15 @@ void	map(t_mlx *vars)
 	}
 }
 
-void collision(t_mlx *vars, t_posf pos, int x, int y, int axe)
+void	collision(t_mlx *vars, t_posf pos, int x, int y, int axe)
 {
 	if (axe == 0)
 	{
 		if (vars->map[(int)pos.y]
-		[(int)(pos.x + (PLAYER_SPEED * vars->ray.dir.x) * x)] != '1')
+			[(int)(pos.x + (PLAYER_SPEED * vars->ray.dir.x) * x)] != '1')
 			vars->player_data.float_pos.x += (PLAYER_SPEED * vars->ray.dir.x) * x;
-		if (vars->map[(int)(pos.y + (PLAYER_SPEED * vars->ray.dir.y) * y)]\
-		[(int)pos.x] != '1')
+		if (vars->map[(int)(pos.y + (PLAYER_SPEED * vars->ray.dir.y) * y)] \
+			[(int)pos.x] != '1')
 			vars->player_data.float_pos.y += (PLAYER_SPEED * vars->ray.dir.y) * y;
 	}
 	else if (axe == 1)

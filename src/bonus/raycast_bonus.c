@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../headers/cube3d.h"
-
 #define PIX_PER_RAY 1
 
 void	side_dist_and_stepper(t_ray	*ray)
@@ -76,7 +75,6 @@ int	one_cast(t_ray *ray, t_mlx *vars)
 			ray->map_pos.y += ray->w_step.y;
 			ray->side = 1;
 		}
-	// exit(1);
 		if (vars->map[ray->map_pos.y][ray->map_pos.x] > '0')
 			ray->hit = 1;
 	}
@@ -137,7 +135,7 @@ int	raycast(t_mlx *vars)
 	upscale_rc_to_screen(vars, &vars->layer[LAYER_SCREEN]);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_SCREEN].img, 0, 0);
 	fps(vars);
-	// // mlx_put_image_to_window(vars->mlx, vars->win,
+	// mlx_put_image_to_window(vars->mlx, vars->win,
 	// 	vars->layer[LAYER_RAYCAST].img, 0, 0);
 	return (0);
 }

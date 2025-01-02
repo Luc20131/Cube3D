@@ -98,7 +98,7 @@ t_pos			tile_selector(t_tile tile[49], int *stats);
 
 int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
 int				print_floor(t_pos *current, t_mlx *vars);
-int				print_wall(t_pos *current, t_mlx *vars, \
+void			print_wall(t_pos *current, t_mlx *vars, \
 				t_pos *end, t_data *img);
 
 t_data			select_texture(t_data img[4], t_mlx *vars);

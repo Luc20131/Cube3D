@@ -40,7 +40,7 @@ int	print_floor(t_pos *current, t_mlx *vars)
 	return (0);
 }
 
-int	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
+void	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 {
 	t_posf		tex;
 	t_color		pixel;
@@ -58,7 +58,6 @@ int	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 			line_length + current->x] = pixel.x;
 		current->y++;
 	}
-	return (0);
 }
 
 void	put_pixel_img(t_data *img, int x, int y, int color)
@@ -69,4 +68,3 @@ void	put_pixel_img(t_data *img, int x, int y, int color)
 			+ (y * img->line_length + x * img->pixels)) = color;
 	}
 }
-

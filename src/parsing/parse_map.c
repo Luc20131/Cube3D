@@ -112,8 +112,3 @@ int	parse_map(char **map, t_pos pos)
 	}
 	return (show_map(map), clean_map(map, &stats), SUCCESS);
 }
-
-		// int i;
-		// i = -1;
-		// while (map[++i])
-		// ft_printf("%s\n", map[i]);

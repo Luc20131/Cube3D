@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_bonus.c                                             :+:      :+:    :+:   */
+/*   draw_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bonus.h"
+#include "../../headers/bonus.h"
 
 int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 {
@@ -36,13 +36,13 @@ int	print_floor_bonus(t_pos *current, t_mlx *vars, t_ray *ray)
 {
 	t_color	pixel;
 	float	coef;
-	float	half_height;
+	float	inverse_heigth;
 
-	half_height = (1. / vars->layer[LAYER_RAYCAST].h);
+	inverse_heigth = (1. / vars->layer[LAYER_RAYCAST].h);
 	while (current->y < vars->layer[LAYER_RAYCAST].h)
 	{
 		pixel.x = 0xFF170501;
-		coef = ((current->y - half_height) / half_height);
+		coef = ((current->y - inverse_heigth) / inverse_heigth);
 		if (ray->perp_wall_dist > 1)
 			get_darker_color(coef, &pixel);
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
@@ -52,11 +52,11 @@ int	print_floor_bonus(t_pos *current, t_mlx *vars, t_ray *ray)
 	return (0);
 }
 
-int	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
+void	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 {
 	t_posf		tex;
 	t_color		pixel;
-	const float	inverse_distance = (1. / (vars->ray.perp_wall_dist ));
+	const float	inverse_distance = (1. / (vars->ray.perp_wall_dist));
 	const int	line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
 	const float	step = ((float)img->h / (end->y - current->y));
 
@@ -80,7 +80,6 @@ int	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 			line_length + current->x] = pixel.x;
 		current->y++;
 	}
-	return (0);
 }
 
 void	put_pixel_img(t_data *img, int x, int y, int color)
@@ -98,8 +97,8 @@ t_data	img_cut(t_pos pos, t_mlx *vars, t_pos pos_)
 	int				j;
 	int				i;
 
-	slice = (t_sprite_slice){pos.y * TILE_SIZE, pos.x * TILE_SIZE,\
-	 TILE_SIZE, TILE_SIZE};
+	slice = (t_sprite_slice){pos.y * TILE_SIZE, pos.x * TILE_SIZE, \
+		TILE_SIZE, TILE_SIZE};
 	i = -1;
 	while (++i < slice.width)
 	{

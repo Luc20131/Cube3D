@@ -77,23 +77,23 @@ bonus :
 
 $(OBJ_DIR)%.o:  $(SRC_DIR)%.c Makefile $(HEADER)
 	$(call percent)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ -D BONUS=0
 	@echo -n $(END_COLOUR)
 
 $(NAME) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ_MANDATORY)
 	$(call percent)
-	$(CC) $(CFLAGS) -o $@ $(OBJ_MANDATORY) $(INCLUDE)
+	$(CC) $(CFLAGS) -o $@ $(OBJ_MANDATORY) $(INCLUDE) -D BONUS=0
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
 
 $(OBJ_DIR_BONUS)%.o:  $(SRC_BONUS)%.c Makefile $(HEADER) ./headers/bonus.h
 	$(call percent)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ -D BONUS=1
 	@echo -n $(END_COLOUR)
 
 $(NAME_BONUS) : $(MINILIBX) $(LIBFT) $(OBJ_DIR_BONUS) $(OBJ_BONUS)
 	$(call percent)
-	$(CC) $(CFLAGS) -o $@ $(OBJ_BONUS) $(INCLUDE)
+	$(CC) $(CFLAGS) -o $@ $(OBJ_BONUS) $(INCLUDE) -D BONUS=1
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME_BONUS) compiled")
 
