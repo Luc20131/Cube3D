@@ -126,7 +126,7 @@ int	get_map(t_info *info)
 			tab = tab->next;
 		}
 		else
-			nfree (line);
+			nfree(line);
 		line = get_next_line(info->map_fd);
 	}
 	return (close(info->map_fd), check_map(info, &head));

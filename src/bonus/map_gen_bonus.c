@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <strings.h>
-
-#include "../../headers/bonus.h"
+#include "cube3d.h"
 
 void	draw_square(t_data *img, t_pos origin, int size, int color)
 {

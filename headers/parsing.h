@@ -14,7 +14,6 @@
 # define PARSING_H
 # include <fcntl.h>
 # include "cube3d.h"
-# include "types.h"
 
 typedef enum e_key
 {

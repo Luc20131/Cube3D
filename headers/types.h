@@ -16,16 +16,23 @@
 # define SKY_COLOR 0xFF5EACFF
 # define GROUND_COLOR 0xFF170501
 
-# if BONUS == 0
-#  define HEIGHT 540
-#  define WIDTH 960
-# else
-#  define HEIGHT 1080
-#  define WIDTH 1920
-# endif
-# define HEIGHT_WIN 1080
-# define WIDTH_WIN 1920
+# include <stddef.h>
+# include <math.h>
+# include "../minilibx-linux/mlx.h"
+# include "../libft/libft.h"
+# include <X11/X.h>
+# include <X11/keysym.h>
+# include <stdint.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <sys/types.h>
+# include <linux/limits.h>
 
+# ifdef BONUS
+#  include <sys/time.h>
+#  include <bits/types/struct_timeval.h>
+# endif
 # define TILE_SIZE 64
 # define PLAYER_SPEED 0.08
 # define PLAYER_SIZE 8

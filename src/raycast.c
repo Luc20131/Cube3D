@@ -13,6 +13,8 @@
 #include "../headers/cube3d.h"
 #include <math.h>
 
+#include "bonus.h"
+
 #define PIX_PER_RAY 1
 
 void	side_dist_and_stepper(t_ray	*ray)
@@ -48,14 +50,27 @@ int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars)
 
 	current.x = wall_top->x;
 	current.y = 0;
-	print_ceilling(&current, vars, wall_top);
 	if (current.y >= wall_top->y)
 		current.y = wall_top->y;
 	img_wall = select_texture(vars->stats->img_texture, vars);
-	current.y = wall_top->y;
+	print_ceilling(&current, vars, wall_top);
 	print_wall(&current, vars, end, &img_wall);
 	print_floor(&current, vars);
 	return (0);
+}
+
+void	stop_casting(t_ray *ray, char **map, t_pos size_map)
+{
+	if (ray->map_pos.x < 0 || ray->map_pos.y < 0 \
+			|| ray->map_pos.x >= size_map.x \
+			|| ray->map_pos.y >= size_map.y)
+	{
+		ray->side_dist.x = ray->delta_dist.x + 1;
+		ray->side_dist.y = ray->delta_dist.y + 1;
+		ray->hit = 1;
+	}
+	else if (map[ray->map_pos.y][ray->map_pos.x] > '0')
+		ray->hit = 1;
 }
 
 int	one_cast(t_ray *ray, t_mlx *vars)
@@ -74,16 +89,7 @@ int	one_cast(t_ray *ray, t_mlx *vars)
 			ray->map_pos.y += ray->w_step.y;
 			ray->side = 1;
 		}
-		if (ray->map_pos.x < 0 || ray->map_pos.y < 0 \
-			|| ray->map_pos.x >= vars->size_map.x \
-			|| ray->map_pos.y >= vars->size_map.y)
-		{
-			ray->side_dist.x = ray->delta_dist.x + 1;
-			ray->side_dist.y = ray->delta_dist.y + 1;
-			ray->hit = 1;
-		}
-		else if (vars->map[ray->map_pos.y][ray->map_pos.x] > '0')
-			ray->hit = 1;
+		stop_casting(ray, vars->map, vars->size_map);
 	}
 	if (ray->side == 0)
 		ray->perp_wall_dist = ray->side_dist.x - ray->delta_dist.x;
@@ -139,5 +145,6 @@ int	raycast(t_mlx *vars)
 	}
 	mlx_put_image_to_window(vars->mlx, vars->win, \
 		vars->layer[LAYER_RAYCAST].img, 0, 0);
+
 	return (0);
 }

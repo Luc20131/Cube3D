@@ -107,7 +107,7 @@ int	parse_map(char **map, t_pos pos)
 		if (choose_dir(&stats, map, stats->pos) == E_MALLOC)
 			return (free_stats(&stats), E_MALLOC);
 		if (cmp_n_elt(map[stats->pos.y][stats->pos.x], "NESW") && !stats->next)
-			return (show_map(map), clean_map(map, &stats), SUCCESS);
+			return (clean_map(map, &stats), SUCCESS);
 		stats = stats->next;
 	}
 	return (show_map(map), clean_map(map, &stats), SUCCESS);
