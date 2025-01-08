@@ -3,7 +3,7 @@ ECHO = echo -e
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -O2 -DHEIGHT_WIN=$(SCREEN_HEIGHT) -DWIDTH_WIN=$(SCREEN_WIDTH)
+CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -O2 -DHEIGHT_WIN=$(SCREEN_HEIGHT) -DWIDTH_WIN=$(SCREEN_WIDTH) -g3
 NAME = cub3D
 NAME_BONUS = $(NAME)_bonus
 HEADER = ./headers/cube3d.h ./headers/parsing.h ./headers/types.h
@@ -11,7 +11,7 @@ SRC_DIR=src/
 
 SRC_LIST_COMMON:= init.c keyboard.c casting_utils.c main.c sprite.c draw_utils.c
 SRC_LIST_MANDATORY:= frame_update.c raycast.c draw.c
-SRC_LIST_P:= parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c
+SRC_LIST_P:= parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c valide_key.c
 SRC_LIST_BONUS:= upscaling.c map_autotile_bonus.c map_autotile_utils_bonus.c bonus.c mouse_bonus.c draw_bonus.c floor_ceilling_ray_bonus.c frame_update_bonus.c raycast_bonus.c map_gen_bonus.c map_inits_bonus.c animation_bonus.c
 
 SRC_COMMON=$(addprefix $(SRC_DIR),$(SRC_LIST_COMMON)) $(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))

@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/08 16:48:32 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/08 20:52:23 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,8 +195,8 @@ enum e_dir
 {
 	NO,
 	SO,
-	WE,
-	EA
+	EA,
+	WE
 };
 
 typedef struct s_info
@@ -206,7 +206,7 @@ typedef struct s_info
 	int		ceiling[3];
 	int		floor[3];
 	int		texture_valid[4];
-	/*0 NO + 1 SO + 2 WE + 3 EA*/
+	/*0 NO + 1 SO + 2 EA + 3 WE*/
 	t_data	img_texture[4];
 	t_mlx	*display;
 	t_pos	player;

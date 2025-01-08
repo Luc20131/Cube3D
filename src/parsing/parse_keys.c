@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_keys.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:00:05 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/08 20:14:53 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	get_key_value(char *key_v, t_key key, t_info *info)
 	}
 	ft_strlcpy(str, &key_v[start], (end + 1) - start);
 	assing_key_value(str, key, info);
-	if (valid_key(info))
+	if (valid_key(info, 0))
 		return (E_NO_MORE_KEY);
 	return (1);
 }

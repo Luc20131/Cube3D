@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:19:00 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/08 20:58:01 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,49 +22,24 @@ void	freetab(char **tab)
 	nfree(tab);
 }
 
-int	valid_key(t_info *info)
-{
-	int	i;
-	int	fd;
-
-	i = -1;
-	while (++i < 4)
-	{
-		if (!info->texture_path[i][0])
-			return (0);
-		if (check_format(info->texture_path[i], ".xpm") == E_FORMAT)
-			return (0);
-		fd = open(info->texture_path[i], O_RDONLY);
-		if (fd == -1)
-			return (0);
-		close (fd);
-	}
-	i = -1;
-	while (++i < 3)
-	{
-		if (info->ceiling[i] == -1)
-			return (0);
-		if (info->floor[i] == -1)
-			return (0);
-	}
-	return (1);
-}
-
-void	error_msg(int error)
+void	error_msg(int error, char *content)
 {
 	ft_printf("Error\n");
 	if (error == E_MALLOC)
 		ft_printf("Malloc failed\n");
 	if (error == E_WRONG_COLOR)
-		ft_printf("Wrong color\n");
+		ft_printf("%s color is wrong\n", content);
 	if (error == E_WRONG_KEY)
-		ft_printf("Texture invalid\n");
+		ft_printf("%s doesn't exist\n", content);
 	if (error == E_INVALID_MAP)
 		ft_printf("Invalid map\n");
 	if (error == E_FORMAT)
 		ft_printf("Invalid extension\n");
 	if (error == E_CANT_OPEN)
-		ft_printf("Can't open file\n");
+		ft_printf("%s can not be open\n", content);
+	if (error == E_NOT_XPM)
+		ft_printf("%s is not a xpm file\n", content);
+		
 }
 
 int	check_map(t_info *info, t_list **head)
