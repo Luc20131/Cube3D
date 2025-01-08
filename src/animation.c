@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   animation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/16 03:14:11 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/08 14:09:01 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
 #include <wait.h>
 /* 1/8 s */
-#define TAMAMAN	125
+#define ANIME_TIME	125
 
 t_data	*get_img_frame(t_mlx	*vars)
 {
@@ -30,7 +30,7 @@ t_data	*get_img_frame(t_mlx	*vars)
 	else
 	{
 		time = tv.tv_usec / 1000;
-		frame = (time / TAMAMAN) % 4;
+		frame = (time / ANIME_TIME) % 4;
 		return (&vars->animation[frame]);
 	}
 }
