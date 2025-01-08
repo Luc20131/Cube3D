@@ -135,8 +135,10 @@ int	raycast(t_mlx *vars)
 		origin.x += PIX_PER_RAY;
 	}
 	// put_data_to_img(&vars->layer[LAYER_RAYCAST], vars->layer[LAYER_OVERLAY], 0, 0); 	
-		// upscale_rc_to_screen(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_SCREEN]);
+	// 	upscale_rc_to_screen(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_SCREEN]);
 	upscale_rc_to_screen(&vars->layer[LAYER_RAYCAST], &vars->layer[LAYER_SCREEN]);
+	put_img_to_img(get_img_frame(vars), &vars->layer[LAYER_SCREEN]);
+	put_img_to_img(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_SCREEN]);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_SCREEN].img, 0, 0);
 	// mlx_put_image_to_window(vars->mlx, vars->mlx, vars->layer[LAYER_ACHANGER].img, 100, 100);
 	fps(vars);

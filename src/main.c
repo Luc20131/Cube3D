@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/13 14:15:11 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/08 16:47:48 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ void	exit_game(t_mlx *vars)
 	my_destroy_img(vars->mlx, vars->stats->img_texture[1].img);
 	my_destroy_img(vars->mlx, vars->stats->img_texture[2].img);
 	my_destroy_img(vars->mlx, vars->stats->img_texture[3].img);
+	my_destroy_img(vars->mlx, vars->animation[0].img);
+	my_destroy_img(vars->mlx, vars->animation[1].img);
+	my_destroy_img(vars->mlx, vars->animation[2].img);
+	my_destroy_img(vars->mlx, vars->animation[3].img);
 	mlx_destroy_window(vars->mlx, vars->win);
 	mlx_destroy_display(vars->mlx);
 	nfree(vars->mlx);

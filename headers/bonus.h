@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus.h                                             :+:      :+:    :+:  */
+/*   bonus.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42.fr>                +#+  +:+       +#+  */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/09 06:32:34 by lrichaud            ###   ########.fr    */
+/*   Updated: 2025/01/08 16:50:16 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 void	mouse_move(t_mlx *vars);
 void	mouse_bonus(t_mlx *vars);
 void	init_bonus(t_mlx *vars);
+t_data	*get_img_frame(t_mlx *vars);
 int		print_floor_bonus(t_pos *current, t_mlx *vars, t_ray *ray);
 t_data	img_cut(t_pos pos, t_mlx *vars, t_pos pos_);
 void	upscale_rc_to_screen(t_data *raycast, t_data *screen);
