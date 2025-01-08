@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/cube3d.h"
+#include "../../headers/bonus.h"
 
 char	*free_s2_to_join(const char *s1, char *s2)
 {

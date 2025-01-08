@@ -12,14 +12,20 @@
 
 #ifndef BONUS_H
 # define BONUS_H
-# include "cube3d.h"
+# include "types.h"
+# include <sys/time.h>
 
 void	mouse_move(t_mlx *vars);
 void	mouse_bonus(t_mlx *vars);
 void	init_bonus(t_mlx *vars);
-void	flashlight(t_pos pixel_pos, t_color *color);
 int		print_floor_bonus(t_pos *current, t_mlx *vars, t_ray *ray);
 t_data	img_cut(t_pos pos, t_mlx *vars, t_pos pos_);
+void	upscale_rc_to_screen(t_data *raycast, t_data *screen);
+int		vertical_raycast(t_mlx *vars, t_pos *end);
+void	flashlight(t_pos pixel_pos, t_color *color);
+int		print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
+int		print_floor(t_pos *current, t_mlx *vars);
+void	fps(const t_mlx *vars);
 
 typedef struct s_upscale
 {
@@ -36,24 +42,5 @@ typedef struct s_upscale
 	int				nb_lines_rc;
 	float			ratio_w;
 }	t_upscale;
-
-// typedef struct s_mlx
-// {
-// 	void			*mlx;
-// 	void			*win;
-// 	t_data			floor;
-// 	t_data			layer[10];
-// 	t_tile			tile[50];
-// 	int				*stats_tile;
-// 	t_pos			size_map;
-// 	t_posf			offset;
-// 	char			**map;
-// 	t_player_data	player_data;
-// 	struct timeval	time;
-// 	struct s_info	*stats;
-// 	size_t			fps;
-// 	t_ray			ray;
-// 	int				light;
-// }	t_mlx;
 
 #endif //BONUS_H

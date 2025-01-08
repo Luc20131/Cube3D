@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cube3d.h"
+#include "parsing.h"
 
 void	exit_game(t_mlx *vars)
 {
@@ -77,14 +78,13 @@ int	main(const int argc, char **argv)
 		return (1);
 	ft_printf("PARSING ✅\n");
 	init_data_texture(&info, &vars);
-	gettimeofday(&vars.time, NULL);
 	vars.map = info.map;
 	init_vars(&vars);
 	player_pov_on_start(&vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
-	mlx_do_key_autorepeatoff(vars.mlx);
 	mlx_loop_hook(vars.mlx, tick, &vars);
+	mlx_do_key_autorepeatoff(vars.mlx);
 	mlx_loop(vars.mlx);
 	return (0);
 }

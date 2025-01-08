@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/cube3d.h"
+#include "cube3d.h"
 
-void	get_and_display_pixel(t_mlx *vars, t_pos floor_tex, t_pos end, int y)
+void	get_and_display_pixel(t_mlx *vars, t_pos tex, t_pos end, int y)
 {
 	t_color			pixel;
 	float			coef;
@@ -21,10 +21,10 @@ void	get_and_display_pixel(t_mlx *vars, t_pos floor_tex, t_pos end, int y)
 
 	line_length = vars->layer[LAYER_RAYCAST].line_length >> 2;
 	half_img = vars->layer[LAYER_RAYCAST].h >> 1;
-	if ((floor_tex.x < vars->layer[LAYER_FLOOR].w && floor_tex.x > 0) || \
-		(floor_tex.y < vars->layer[LAYER_FLOOR].h && floor_tex.y > 0))
+	if ((tex.x < vars->layer[LAYER_FLOOR].w && tex.x > 0) || \
+		(tex.y < vars->layer[LAYER_FLOOR].h && tex.y > 0))
 	{
-		pixel.x = get_pixel_img(&vars->layer[LAYER_FLOOR], floor_tex.x, floor_tex.y);
+		pixel.x = get_pixel_img(&vars->layer[LAYER_FLOOR], tex.x, tex.y);
 		coef = ((y - half_img) / (half_img)) / 3;
 		if (vars->light)
 			flashlight((t_pos){end.x, y}, &pixel);

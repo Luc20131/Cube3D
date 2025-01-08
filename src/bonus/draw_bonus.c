@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/bonus.h"
+#include "cube3d.h"
 
 int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 {
@@ -56,7 +56,7 @@ void	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 {
 	t_posf		tex;
 	t_color		pixel;
-	const float	inverse_distance = (1. / (vars->ray.perp_wall_dist));
+	const float	inverse_distance = (1. / (vars->ray.perp_wall_dist * 2));
 	const int	line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
 	const float	step = ((float)img->h / (end->y - current->y));
 
@@ -73,7 +73,7 @@ void	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 				img->line_length) + ((int)tex.x));
 			if (vars->light)
 				flashlight(*current, &pixel);
-			if (vars->ray.perp_wall_dist > 1)
+			if (vars->ray.perp_wall_dist > 0.5)
 				get_darker_color(inverse_distance, &pixel);
 		}
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/cube3d.h"
+#include "cube3d.h"
 
 int	event_mouse(int button, int x, int y, void *param)
 {
@@ -39,19 +39,19 @@ void	mouse_move(t_mlx *vars)
 	if (!vars->mouse)
 		return ;
 	mlx_mouse_get_pos(vars->mlx, vars->win, &mouse_pos.x, &mouse_pos.y);
-	if (mouse_pos.x > WIDTH_WIN >> 1)
+	if (mouse_pos.x > WIDTH)
 	{
 		rotate_right(vars);
-		mlx_mouse_move(vars->mlx, vars->win, WIDTH_WIN >> 1, HEIGHT_WIN >> 1);
-		map(vars);
+		mlx_mouse_move(vars->mlx, vars->win, WIDTH, HEIGHT);
+		raycast(vars);
 	}
-	else if (mouse_pos.x < WIDTH_WIN >> 1)
+	else if (mouse_pos.x < WIDTH)
 	{
 		rotate_left(vars);
-		mlx_mouse_move(vars->mlx, vars->win, WIDTH_WIN >> 1, HEIGHT_WIN >> 1);
-		map(vars);
+		mlx_mouse_move(vars->mlx, vars->win, WIDTH, HEIGHT);
+		raycast(vars);
 	}
-	mlx_mouse_move(vars->mlx, vars->win, WIDTH_WIN >> 1, HEIGHT_WIN >> 1);
+	mlx_mouse_move(vars->mlx, vars->win, WIDTH, HEIGHT);
 }
 
 void	mouse_bonus(t_mlx *vars)

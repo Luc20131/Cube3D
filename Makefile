@@ -1,18 +1,18 @@
 MAKE = @make --no-print-directory
+ECHO = echo -e
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -O2
+CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -O2 -DHEIGHT_WIN=$(SCREEN_HEIGHT) -DWIDTH_WIN=$(SCREEN_WIDTH)
 NAME = cub3D
 NAME_BONUS = $(NAME)_bonus
-
 HEADER = ./headers/cube3d.h ./headers/parsing.h ./headers/types.h
 SRC_DIR=src/
 
-SRC_LIST_COMMON:= init.c upscaling.c keyboard.c casting_utils.c main.c sprite.c draw_utils.c
-SRC_LIST_MANDATORY:= frame_update.c raycast.c draw.c floor_ceilling_ray.c
+SRC_LIST_COMMON:= init.c keyboard.c casting_utils.c main.c sprite.c draw_utils.c
+SRC_LIST_MANDATORY:= frame_update.c raycast.c draw.c
 SRC_LIST_P:= parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c
-SRC_LIST_BONUS:= map_autotile_bonus.c map_autotile_utils_bonus.c bonus.c mouse_bonus.c draw_bonus.c floor_ceilling_ray_bonus.c frame_update_bonus.c raycast_bonus.c map_gen_bonus.c map_inits_bonus.c
+SRC_LIST_BONUS:= upscaling.c map_autotile_bonus.c map_autotile_utils_bonus.c bonus.c mouse_bonus.c draw_bonus.c floor_ceilling_ray_bonus.c frame_update_bonus.c raycast_bonus.c map_gen_bonus.c map_inits_bonus.c
 
 SRC_COMMON=$(addprefix $(SRC_DIR),$(SRC_LIST_COMMON)) $(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))
 SRC_MANDATORY= $(addprefix $(SRC_DIR),$(SRC_LIST_MANDATORY)) $(SRC_COMMON)
@@ -35,6 +35,13 @@ MINILIBX = minilibx-linux/libmlx_Linux.a
 NB_FILES=$(words $(OBJ_COMMON) $(OBJ_MANDATORY))
 
 NB_FILES_BONUS=$(words $(OBJ_BONUS))
+NB_OBJ := $(words $(wildcard obj/*.o obj/parsing/*.o obj/bonus/*.o))
+
+SCREEN_HEIGHT := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2))
+SCREEN_WIDTH := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1))
+
+RAYCAST_HEIGHT := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)) / 4)
+RAYCAST_WIDTH := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)) / 4)
 
 GREEN="\033[0;32m"
 RED="\033[0;31m"
@@ -46,54 +53,50 @@ define percent
 endef
 
 define prompt
-	@echo -e $1"\n================ $2 ================\n"$(END_COLOUR)
+	@$(ECHO) $1"\n================ $2 ================\n"$(END_COLOUR)
 endef
 
 define normitest
-	@echo -e $(BLUE)"Test norminette..."$(END_COLOUR)
+	@$(ECHO) $(BLUE)"Test norminette..."$(END_COLOUR)
 	@if norminette $(SRC_DIR) $(HEADER) $(LIBFT_SRC_FULL) | grep Error; then \
-		echo -e $(RED)"\n================ Norminette KO ================"$(END_COLOUR); \
+		$(ECHO) $(RED)"\n================ Norminette KO ================"$(END_COLOUR); \
 	else \
-		echo -e $(GREEN)"\n================ Norminette OK ================"$(END_COLOUR); \
+		$(ECHO) $(GREEN)"\n================ Norminette OK ================"$(END_COLOUR); \
 	fi
 endef
 
 define gitignore_gen
 	@if test .gitignore ; then\
-		echo -e "*.o\n$(NAME)" > .gitignore; \
+		$(ECHO) "*.o\n$(NAME)" > .gitignore; \
 	fi ;
 endef
 
 .PHONY: all clean fclean re debug run bonus
 
-all :
+all : $(MINILIBX)
 	$(call normitest)
 	$(call prompt,$(BLUE),"Creating $(NAME)")
 	$(MAKE) $(NAME)
 
-bonus :
+bonus : $(MINILIBX)
 	$(call prompt,$(BLUE),"Creating $(NAME_BONUS)")
-	$(MAKE) $(NAME_BONUS)
+	
+	$(MAKE) $(NAME_BONUS) CFLAGS="$(CFLAGS) -DBONUS -DHEIGHT=$(RAYCAST_HEIGHT) -DWIDTH=$(RAYCAST_WIDTH)"
 
 $(OBJ_DIR)%.o:  $(SRC_DIR)%.c Makefile $(HEADER)
 	$(call percent)
-	$(CC) $(CFLAGS) -c $< -o $@ -D BONUS=0
+	$(CC) $(CFLAGS) -c $< -o $@
 	@echo -n $(END_COLOUR)
 
-$(NAME) : $(MINILIBX) $(LIBFT) $(OBJ_DIR) $(OBJ_MANDATORY)
+$(NAME) : $(LIBFT) $(OBJ_DIR) $(OBJ_MANDATORY) $(OBJ_COMMON)
 	$(call percent)
-	$(CC) $(CFLAGS) -o $@ $(OBJ_MANDATORY) $(INCLUDE) -D BONUS=0
+	$(CC) $(CFLAGS) -o $@ $(OBJ_MANDATORY) $(INCLUDE)
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
 
-$(OBJ_DIR_BONUS)%.o:  $(SRC_BONUS)%.c Makefile $(HEADER) ./headers/bonus.h
+$(NAME_BONUS) : $(LIBFT) $(OBJ_DIR) $(OBJ_COMMON) $(OBJ_DIR_BONUS) $(OBJ_BONUS) $(OBJ_MANDATORY) ./headers/bonus.h
 	$(call percent)
-	$(CC) $(CFLAGS) -c $< -o $@ -D BONUS=1
-	@echo -n $(END_COLOUR)
-
-$(NAME_BONUS) : $(MINILIBX) $(LIBFT) $(OBJ_DIR_BONUS) $(OBJ_BONUS)
-	$(call percent)
-	$(CC) $(CFLAGS) -o $@ $(OBJ_BONUS) $(INCLUDE) -D BONUS=1
+	$(CC) $(CFLAGS) -o $@ $(OBJ_BONUS) $(INCLUDE)
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME_BONUS) compiled")
 
@@ -110,7 +113,7 @@ $(OBJ_DIR_BONUS) : $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR_BONUS)
 
 clean :
-	@echo -e $(BLUE)Cleaning...$(END_COLOUR)
+	@$(ECHO) $(BLUE)Cleaning...$(END_COLOUR)
 	@$(MAKE) fclean -C libft
 	@$(MAKE) clean -C minilibx-linux
 	@rm -rf $(OBJ_DIR)
@@ -125,9 +128,8 @@ re :
 
 run :
 	$(MAKE) all
-	@./$(NAME) 42.cub
+	@./$(NAME) map/42.cub
 
 debug :
 	$(MAKE) libft.a -C libft CFLAG="$(CFLAG) -g3"
 	$(MAKE) re CFLAG="$(CFLAG) -g3"
-	@gdb -tui $(NAME)

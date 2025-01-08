@@ -29,14 +29,12 @@ void	map(t_mlx *vars)
 	}
 	else
 	{
-		gettimeofday(&vars->time, NULL);
 		vars->stats->old_angle = vars->player_data.movement.rotating;
 		vars->stats->old_pos = vars->player_data.float_pos;
 		init_mini_map(vars);
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win,
 			vars->layer[LAYER_MINIMAP].img, minimap_offset, 100);
-		fps(vars);
 	}
 }
 

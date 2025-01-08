@@ -3,33 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/13 15:07:49 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/07 20:53:18 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE3D_H
 # define CUBE3D_H
 
-# include "../minilibx-linux/mlx.h"
-# include "../libft/libft.h"
-# include <linux/limits.h>
-# include "types.h"
-# include "parsing.h"
-# include <sys/time.h>
-# include <bits/types/struct_timeval.h>
-# include <X11/X.h>
-# include <X11/keysym.h>
-# include <stddef.h>
-# include <stdint.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <math.h>
-# include <stdio.h>
-# include <sys/types.h>
+# ifdef BONUS
+#  include "bonus.h"
+# else
+	#  define WIDTH WIDTH_WIN
+	#  define HEIGHT HEIGHT_WIN
+#  include "types.h"
+# endif
 
 t_tab_size		char_tab_len(char **tab);
 void			wall(t_data *img, float distance);
@@ -87,7 +77,6 @@ int				*face_corner_v(int *c, t_pos pos, t_mlx g, char **map);
 int				*face_corner_h(int *c, t_pos pos, t_mlx g, char **map);
 int				*x_dir(int *c, t_pos pos, t_mlx g, t_pos map_size);
 void			draw_square(t_data *img, t_pos origin, int size, int color);
-void			upscale_rc_to_screen(t_mlx *vars, t_data *screen);
 void			my_destroy_img(void *mlx, void *img);
 void			put_pixel_img(t_data *img, int x, int y, int color);
 void			put_data_to_img(t_data *dst, t_data src, int x, int y);
@@ -96,20 +85,15 @@ t_pos			tile_selector(t_tile tile[49], int *stats);
 
 // ------------ UTILS -------------
 
-int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
-int				print_floor(t_pos *current, t_mlx *vars);
 void			print_wall(t_pos *current, t_mlx *vars, \
 				t_pos *end, t_data *img);
-
 t_data			select_texture(t_data img[4], t_mlx *vars);
-int				vertical_raycast(t_mlx *vars, t_pos *end);
-void			fps(const t_mlx *vars);
-void			nfree(void *pointer);
 void			print_ray_param(t_ray *ray);
 void			print_map(char *map[]);
 void			exit_game(t_mlx *vars);
 int				tick(t_mlx *vars);
-void			fps(const t_mlx *vars);
-void			flashlight(t_pos pixel_pos, t_color *color);
+void			nfree(void *pointer);
+int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
+int	print_floor(t_pos *current, t_mlx *vars);
 
 #endif
