@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/13 15:07:49 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/07 20:53:18 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,7 @@ void			print_map(char *map[]);
 void			exit_game(t_mlx *vars);
 int				tick(t_mlx *vars);
 void			nfree(void *pointer);
+int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
+int	print_floor(t_pos *current, t_mlx *vars);
 
 #endif

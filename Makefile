@@ -39,8 +39,9 @@ NB_OBJ := $(words $(wildcard obj/*.o obj/parsing/*.o obj/bonus/*.o))
 
 SCREEN_HEIGHT := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2))
 SCREEN_WIDTH := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1))
-RAYCAST_HEIGHT := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)) / 2)
-RAYCAST_WIDTH := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)) / 2)
+
+RAYCAST_HEIGHT := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)) / 4)
+RAYCAST_WIDTH := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)) / 4)
 
 GREEN="\033[0;32m"
 RED="\033[0;31m"
@@ -79,6 +80,7 @@ all : $(MINILIBX)
 
 bonus : $(MINILIBX)
 	$(call prompt,$(BLUE),"Creating $(NAME_BONUS)")
+	
 	$(MAKE) $(NAME_BONUS) CFLAGS="$(CFLAGS) -DBONUS -DHEIGHT=$(RAYCAST_HEIGHT) -DWIDTH=$(RAYCAST_WIDTH)"
 
 $(OBJ_DIR)%.o:  $(SRC_DIR)%.c Makefile $(HEADER)
@@ -126,9 +128,8 @@ re :
 
 run :
 	$(MAKE) all
-	@./$(NAME) 42.cub
+	@./$(NAME) map/42.cub
 
 debug :
 	$(MAKE) libft.a -C libft CFLAG="$(CFLAG) -g3"
 	$(MAKE) re CFLAG="$(CFLAG) -g3"
-	@gdb -tui $(NAME)
