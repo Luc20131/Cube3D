@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/08 20:52:23 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/09 14:48:29 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <stdint.h>
-# include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <sys/types.h>
