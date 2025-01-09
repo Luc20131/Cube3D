@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/08 20:52:34 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/09 19:25:10 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,13 @@ typedef struct s_stats
 
 int		get_map(t_info *info);
 int		cmp_n_elt(char c, char *cmp);
-void	clean_map(char **map, t_stats **stats);
-int		parse_map(char **map, t_pos pos);
+// void	clean_map(char **map, t_stats **stats);
+// int		parse_map(char **map, t_pos pos);
+int		parse_map(char **map);
 int		stats_add_back(t_stats **stats, t_pos pos);
 int		init_first(t_stats **stats, char **map, t_pos pos);
 int		get_dir(t_stats **stats, char **map, t_pos pos);
-int		check_holes(t_stats **stats, char **map, t_pos pos);
+// int		check_holes(t_stats **stats, char **map, t_pos pos);
 int		choose_dir(t_stats **stats, char **map, t_pos pos);
 int		init_map(t_info *info, t_list *list);
 void	free_stats(t_stats **stats);

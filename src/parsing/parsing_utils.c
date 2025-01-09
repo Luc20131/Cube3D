@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:19:00 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/08 20:58:01 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/09 19:23:24 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	error_msg(int error, char *content)
 		ft_printf("%s can not be open\n", content);
 	if (error == E_NOT_XPM)
 		ft_printf("%s is not a xpm file\n", content);
-		
+
 }
 
 int	check_map(t_info *info, t_list **head)
@@ -50,7 +50,8 @@ int	check_map(t_info *info, t_list **head)
 		return (ft_lstclear(head, nfree), E_MALLOC);
 	if (!check_valid_chr_map(info->map))
 		return (ft_lstclear(head, nfree), E_INVALID_MAP);
-	result = parse_map(info->map, info->player);
+	result = parse_map(info->map);
+	// result = parse_map(info->map, info->player);
 	if (result == E_HOLE)
 		return (ft_lstclear(head, nfree), E_HOLE);
 	if (result == E_MALLOC)
