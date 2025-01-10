@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:19:00 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/09 19:23:24 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/10 15:41:05 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,14 @@ void	error_msg(int error, char *content)
 		ft_printf("%s can not be open\n", content);
 	if (error == E_NOT_XPM)
 		ft_printf("%s is not a xpm file\n", content);
-
+	if (error == E_TO_MANY_PLAYER)
+		ft_printf("Invalid map\nTo nany player on the map\n");
+	if (error == E_NO_PLAYER)
+		ft_printf("Invalid map\nNo player on the map\n", content);
+	if (error == E_INVALID_CHARACTER)
+		ft_printf("Invalid map\n%c is not a valid character\n", content[0]);
+	if (error == E_HOLE)
+		ft_printf("Invalid map\nThe map is not surrounded by walls\n");
 }
 
 int	check_map(t_info *info, t_list **head)
@@ -51,7 +58,6 @@ int	check_map(t_info *info, t_list **head)
 	if (!check_valid_chr_map(info->map))
 		return (ft_lstclear(head, nfree), E_INVALID_MAP);
 	result = parse_map(info->map);
-	// result = parse_map(info->map, info->player);
 	if (result == E_HOLE)
 		return (ft_lstclear(head, nfree), E_HOLE);
 	if (result == E_MALLOC)

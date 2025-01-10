@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:52:36 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/09 19:36:51 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/10 15:05:13 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	check_holes(char **map, t_pos pos)
 
 int	parse_map(char **map)
 {
-	t_pos pos;
+	t_pos	pos;
 
 	pos.y = -1;
 	while (map[++pos.y])
@@ -56,7 +56,7 @@ int	parse_map(char **map)
 		while (map[pos.y][++pos.x])
 		{
 			if (cmp_n_elt(map[pos.y][pos.x], "NESW0") && !check_holes(map, pos))
-				return (show_map(map), E_HOLE);
+				return (show_map(map), error_msg(E_HOLE, NULL), E_HOLE);
 			else if (cmp_n_elt(map[pos.y][pos.x], "0"))
 				map[pos.y][pos.x] = 'V';
 		}

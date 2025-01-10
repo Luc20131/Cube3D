@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:35:14 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/09 19:27:41 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/10 15:40:36 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,22 @@ int	get_dir(t_stats **stats, char **map, t_pos pos)
 		(*stats)->dir++;
 	return (SUCCESS);
 }
-
-// int	check_holes(t_stats **stats, char **map, t_pos pos)
-// {
-// 	(void)stats;
-// 	if (pos.y - 1 < 0 || !map[pos.y - 1] || map[pos.y - 1][pos.x] == ' ' ||
-// 		pos.x - 1 < 0 || !map[pos.y][pos.x + 1] ||
-// 		map[pos.y][pos.x + 1] == ' ' ||
-// 		!map[pos.y + 1] || map[pos.y + 1][pos.x] == ' ' ||
-// 		!map[pos.y][pos.x - 1] || map[pos.y][pos.x - 1] == ' ')
-// 	{
-// 		map[pos.y][pos.x] = 'X';
-// 		return (E_HOLE);
-// 	}
-// 	return (SUCCESS);
-// }
+/*
+int	check_holes(t_stats **stats, char **map, t_pos pos)
+{
+	(void)stats;
+	if (pos.y - 1 < 0 || !map[pos.y - 1] || map[pos.y - 1][pos.x] == ' ' ||
+		pos.x - 1 < 0 || !map[pos.y][pos.x + 1] ||
+		map[pos.y][pos.x + 1] == ' ' ||
+		!map[pos.y + 1] || map[pos.y + 1][pos.x] == ' ' ||
+		!map[pos.y][pos.x - 1] || map[pos.y][pos.x - 1] == ' ')
+	{
+		map[pos.y][pos.x] = 'X';
+		return (E_HOLE);
+	}
+	return (SUCCESS);
+}
+*/
 
 int	choose_dir(t_stats **stats, char **map, t_pos pos)
 {

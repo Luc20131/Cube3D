@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   valide_key.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:46:06 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/08 20:43:18 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/10 14:08:13 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-char *get_key_name(int key)
+char	*get_key_name(int key)
 {
 	if (key == KEY_NO)
 		return ("NO");
@@ -25,7 +25,7 @@ char *get_key_name(int key)
 	return ("");
 }
 
-int valid_texture(t_info *info, int i)
+int	valid_texture(t_info *info, int i)
 {
 	int	fd;
 
@@ -40,7 +40,7 @@ int valid_texture(t_info *info, int i)
 	return (SUCCESS);
 }
 
-int valid_color(t_info *info, int print)
+int	valid_color(t_info *info, int print)
 {
 	int	i;
 
@@ -66,8 +66,8 @@ int valid_color(t_info *info, int print)
 int	valid_key(t_info *info, int print)
 {
 	int	i;
-	int result;
-	
+	int	result;
+
 	i = -1;
 	while (++i < 4)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/08 20:43:06 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/10 14:50:59 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ int	parsing_cube(char *arg, t_info *info)
 			return (0);
 		else
 			if (get_map(info) != SUCCESS)
-				return (error_msg(E_INVALID_MAP, NULL), \
-				freetab((info)->map), 0);
+				return (freetab((info)->map), 0);
 	}
 	else if (result == E_CANT_OPEN)
 		return (error_msg(E_CANT_OPEN, arg), 0);

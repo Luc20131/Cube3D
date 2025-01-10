@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:37:41 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/10 14:40:54 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,15 @@ int	check_valid_chr_map(char **map)
 		while (map[y][++x])
 		{
 			if (!cmp_n_elt(map[y][x], "NESW01 "))
-				return (0);
+				return (error_msg(E_INVALID_CHARACTER, &map[y][x]), 0);
 			if (cmp_n_elt(map[y][x], "NESW"))
 				player++;
 		}
 	}
-	if (player != 1)
-		return (0);
+	if (player > 1)
+		return (error_msg(E_TO_MANY_PLAYER, NULL),0);
+	else if (player < 1)
+		return (error_msg(E_NO_PLAYER, NULL),0);
 	return (1);
 }
 

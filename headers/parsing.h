@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/09 19:25:10 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/10 14:29:22 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ typedef enum e_statut
 	E_WRONG_COLOR,
 	E_NO_MORE_KEY,
 	E_INVALID_MAP,
+	E_INVALID_CHARACTER,
 	E_NO_PLAYER,
+	E_TO_MANY_PLAYER,
 	E_HOLE,
 	E_NOT_XPM,
 	SUCCESS,
