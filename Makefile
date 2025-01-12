@@ -76,11 +76,16 @@ endef
 all : $(MINILIBX)
 	$(call normitest)
 	$(call prompt,$(BLUE),"Creating $(NAME)")
+ifneq ("$(wildcard ${NAME_BONUS})", "")
+	rm -rf $(OBJ_COMMON)
+endif
 	$(MAKE) $(NAME)
-
+ 
 bonus : $(MINILIBX)
 	$(call prompt,$(BLUE),"Creating $(NAME_BONUS)")
-	
+ifneq ("$(wildcard ${NAME})", "")
+	rm -rf $(OBJ_COMMON)
+endif
 	$(MAKE) $(NAME_BONUS) CFLAGS="$(CFLAGS) -DBONUS -DHEIGHT=$(RAYCAST_HEIGHT) -DWIDTH=$(RAYCAST_WIDTH)"
 
 $(OBJ_DIR)%.o:  $(SRC_DIR)%.c Makefile $(HEADER)
