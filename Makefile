@@ -80,7 +80,7 @@ ifneq ("$(wildcard ${NAME_BONUS})", "")
 	rm -rf $(OBJ_COMMON)
 endif
 	$(MAKE) $(NAME)
- 
+
 bonus : $(MINILIBX)
 	$(call prompt,$(BLUE),"Creating $(NAME_BONUS)")
 ifneq ("$(wildcard ${NAME})", "")
