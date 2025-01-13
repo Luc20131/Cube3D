@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:19:00 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/10 15:41:05 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/13 16:36:52 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,14 @@ void	error_msg(int error, char *content)
 		ft_printf("Malloc failed\n");
 	if (error == E_WRONG_COLOR)
 		ft_printf("%s color is wrong\n", content);
+	if (error == E_NO_COLOR)
+		ft_printf("%s doesn't exist\n", content);
 	if (error == E_WRONG_KEY)
 		ft_printf("%s doesn't exist\n", content);
 	if (error == E_INVALID_MAP)
 		ft_printf("Invalid map\n");
 	if (error == E_FORMAT)
-		ft_printf("Invalid extension\n");
+		ft_printf("%s\nInvalid extension\n", content);
 	if (error == E_CANT_OPEN)
 		ft_printf("%s can not be open\n", content);
 	if (error == E_NOT_XPM)
@@ -45,8 +47,12 @@ void	error_msg(int error, char *content)
 		ft_printf("Invalid map\nNo player on the map\n", content);
 	if (error == E_INVALID_CHARACTER)
 		ft_printf("Invalid map\n%c is not a valid character\n", content[0]);
+	if (error == E_DUPLICATE_KEY)
+		ft_printf("%s is already assigned\n", content);
 	if (error == E_HOLE)
 		ft_printf("Invalid map\nThe map is not surrounded by walls\n");
+	if (error == E_INVALID_LINE)
+		ft_printf("%s is not a valide key", content);
 }
 
 int	check_map(t_info *info, t_list **head)

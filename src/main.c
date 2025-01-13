@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/08 16:47:48 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/10 16:26:34 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ int	main(const int argc, char **argv)
 	ft_bzero(&vars, sizeof(t_mlx));
 	init_info(&info);
 	vars.stats = &info;
-	vars.mlx = mlx_init();
 	if (argc != 2)
 		return (1);
 	if (parsing_cube(argv[1], &info) == 0)
 		return (1);
 	ft_printf("PARSING ✅\n");
+	vars.mlx = mlx_init();
 	init_data_texture(&info, &vars);
 	vars.map = info.map;
 	init_vars(&vars);

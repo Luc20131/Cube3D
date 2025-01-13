@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:46:06 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/10 14:08:13 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/13 17:10:24 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*get_key_name(int key)
 	return ("");
 }
 
-int	valid_texture(t_info *info, int i)
+int	valid_texture(t_info *info, int i, int print)
 {
 	int	fd;
 
@@ -34,7 +34,7 @@ int	valid_texture(t_info *info, int i)
 	if (check_format(info->texture_path[i], ".xpm") == E_FORMAT)
 		return (E_NOT_XPM);
 	fd = open(info->texture_path[i], O_RDONLY);
-	if (fd == -1)
+	if (print && fd == -1)
 		return (E_CANT_OPEN);
 	close (fd);
 	return (SUCCESS);
@@ -43,22 +43,30 @@ int	valid_texture(t_info *info, int i)
 int	valid_color(t_info *info, int print)
 {
 	int	i;
+	int	countf;
+	int countc;
 
 	i = -1;
+	countf = 0;
+	countc = 0;
 	while (++i < 3)
 	{
 		if (info->ceiling[i] == -1)
-		{
-			if (print)
-				error_msg(E_WRONG_COLOR, "C");
-			return (0);
-		}
+			countc++;
 		if (info->floor[i] == -1)
-		{
-			if (print)
-				error_msg(E_WRONG_COLOR, "F");
-			return (0);
-		}
+			countf++;
+	}
+	if (countc > 1 || countf > 1)
+	{
+		if (countc == 3 && print)
+			error_msg(E_NO_COLOR, "C");
+		else if (countc > 1 && print)
+			error_msg(E_WRONG_COLOR, "C");
+		if (countf == 3 && print)
+			error_msg(E_NO_COLOR, "F");
+		else if (countf > 1 && print)
+			error_msg(E_WRONG_COLOR, "F");
+		return (0);
 	}
 	return (1);
 }
@@ -71,7 +79,7 @@ int	valid_key(t_info *info, int print)
 	i = -1;
 	while (++i < 4)
 	{
-		result = valid_texture(info, i);
+		result = valid_texture(info, i, print);
 		if (result != SUCCESS)
 		{
 			if (print)

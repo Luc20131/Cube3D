@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/10 14:29:22 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/13 16:33:17 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ typedef enum e_key
 	KEY_WE,
 	KEY_EA,
 	KEY_F,
-	KEY_C
+	KEY_C,
+	SKIP
 }			t_key;
 
 typedef enum e_statut
@@ -33,13 +34,16 @@ typedef enum e_statut
 	E_NO_KEY,
 	E_WRONG_KEY,
 	E_WRONG_COLOR,
+	E_NO_COLOR,
 	E_NO_MORE_KEY,
 	E_INVALID_MAP,
 	E_INVALID_CHARACTER,
+	E_INVALID_LINE,
 	E_NO_PLAYER,
 	E_TO_MANY_PLAYER,
 	E_HOLE,
 	E_NOT_XPM,
+	E_DUPLICATE_KEY,
 	SUCCESS,
 	FINISH
 }			t_statut;
@@ -73,7 +77,7 @@ int		check_valid_chr_map(char **map);
 int		check_map(t_info *info, t_list **head);
 void	error_msg(int error, char *content);
 void	freetab(char **tab);
-int		get_arg(char *argv, t_info *info);
+int		get_arg(t_info *info);
 int		valid_key(t_info *info, int print);
 int		skip_space(char *line);
 int		skip_key_word(char *key_v);
