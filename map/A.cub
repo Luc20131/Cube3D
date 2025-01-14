@@ -1,13 +1,13 @@
 WE texture/Wall.xpm
 NO texture/North.xpm
-SO texture/Wall.xpm
-EA texture/Wall.xpm
-EA texture/Wall.xpm
+SO texture/South.xpm
 
 
-C 0, 152, 10
-F 56, 0, 5
+
+C 0, 152, 255
+F 56, 0, 5         
+EA texture/1.xpm
 
 111
-1N1
+1E1
 111

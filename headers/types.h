@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/09 14:48:29 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 17:26:54 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ typedef struct s_mlx
 	t_posf			offset;
 	char			**map;
 	t_player_data	player_data;
-	t_data			animation[4];
+	t_data			anim[4];
 	struct timeval	time;
 	struct s_info	*stats;
 	size_t			fps;

@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 18:15:11 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 17:06:13 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ t_data	new_file_img(char *path, t_mlx *vars)
 {
 	t_data	image;
 
+	ft_memset(&image, 0, sizeof(t_data));
 	image.img = mlx_xpm_file_to_image(vars->mlx, path, &image.w, &image.h);
 	if (!image.img)
 	{
 		printf("Error\nImage could not be read\n");
-		exit(EXIT_FAILURE);
+		return (image);
 	}
 	image.addr = mlx_get_data_addr(image.img, &(image.bits_per_pixel), \
 		&(image.line_length), &(image.endian));
