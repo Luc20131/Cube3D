@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:46:06 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/14 13:45:00 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 15:04:51 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,13 @@ int	valid_texture(t_info *info, int i, int print)
 		return (E_WRONG_KEY);
 	if (check_format(info->texture_path[i], ".xpm") == E_FORMAT)
 		return (E_NOT_XPM);
-	fd = open(info->texture_path[i], O_RDONLY);
-	if (print && fd == -1)
-		return (E_CANT_OPEN);
-	close (fd);
+	if (print)
+	{
+		fd = open(info->texture_path[i], O_RDONLY);
+		if (fd == -1)
+			return (close(fd), E_CANT_OPEN);
+		close (fd);
+	}
 	return (SUCCESS);
 }
 

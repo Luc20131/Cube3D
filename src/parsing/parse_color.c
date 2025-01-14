@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 18:00:39 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/13 17:01:28 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 14:51:43 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	get_color_value(char *key_v)
 	while (ft_isdigit(key_v[++i]))
 		dest = dest * 10 + (key_v[i] - 48);
 	if (key_v[i] != ' ' && key_v[i] != '	'\
-	&& key_v[i] != '\n' && key_v[i] != '\0' && key_v[i] != ',')
+	&& key_v[i] != '\n' && key_v[i] != '\0' && key_v[i] != ',' \
+	&& key_v[i] != '\r')
 		return (-1);
 	if (dest < 0 || dest > 255)
 		return (-1);
@@ -88,7 +89,7 @@ int	get_color(char *key_v, t_key key, t_info *info)
 		if (old_nb == nb || index == -1)
 			return (error_msg(E_WRONG_COLOR, key_v), E_WRONG_COLOR);
 	}
-	if (key_v[index] != '\n')
+	if (key_v[index] != '\n' && key_v[index] != '\r')
 		return (E_WRONG_COLOR);
 	return (1);
 }

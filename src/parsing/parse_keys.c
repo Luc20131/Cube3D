@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:00:05 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/14 13:35:20 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 14:48:12 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_key_word(char *line)
 	start = index;
 	if (line[index] == '\0')
 		return (0);
-	else if (line[index] == '\n')
+	else if (line[index] == '\n' || line[index] == '\r')
 		return ("SKIP");
 	while (line[index] && (line[index] != ' ' && line[index] != '	' \
 		&& line[index] != '\n'))
@@ -102,7 +102,7 @@ int	get_key_value(char *key_v, t_key key, t_info *info)
 	while (!not_a_word(key_v[index]))
 		index++;
 	end = index;
-	while (key_v[index] != '\n' && key_v[index] != '\0')
+	while (key_v[index] != '\n' && key_v[index] != '\0' && key_v[index] != '\r')
 	{
 		index += skip_space(&key_v[index]);
 		while (!not_a_word(key_v[index]))

@@ -2,7 +2,12 @@ WE texture/Wall.xpm
 NO texture/North.xpm
 SO texture/Wall.xpm
 EA texture/Wall.xpm
+EA texture/Wall.xpm
 
 
 C 0, 152, 10
 F 56, 0, 5
+
+111
+1N1
+111

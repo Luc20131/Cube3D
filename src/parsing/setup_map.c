@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:37:41 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/14 13:39:00 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 14:57:40 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ int	init_map(t_info *info, t_list *list)
 			return (E_MALLOC);
 		ft_memset(info->map[i], ' ', size_line);
 		j = -1;
-		while (((char *)list->content)[++j] && \
-		((char *)list->content)[j] != '\n')
+		while (((char *)list->content)[++j] && (((char *)list->content)[j] \
+		!= '\n' && ((char *)list->content)[j] != '\r'))
 			info->map[i][j] = ((char *)list->content)[j];
 		list = list->next;
 	}

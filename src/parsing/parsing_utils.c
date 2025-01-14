@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:19:00 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/14 14:10:01 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 15:59:03 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ void	show_map(char **map)
 	int	x;
 
 	y = -1;
+	if (ft_strlen(map[0]) > 84 || size_map(map).y > 84)
+	{
+		ft_printf("Too big for map preview\n");
+		return ;
+	}
 	while (map[++y])
 	{
 		x = -1;

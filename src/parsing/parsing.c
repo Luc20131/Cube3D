@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/14 14:05:55 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 15:45:13 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,15 @@ int	parsing_cube(char *arg, t_info *info)
 	if (result == E_NO_MORE_KEY)
 	{
 		if (!valid_key(info, 1))
-			return (0);
+			return (close(info->map_fd), 0);
 		else
 			if (get_map(info) != SUCCESS)
-				return (freetab((info)->map), 0);
+				return (close(info->map_fd), freetab((info)->map), 0);
 	}
-	else if (result == E_FORMAT)
-		return (0);
-	else if (result == E_INVALID_LINE)
-		return (0);
-	else if (result == E_WRONG_COLOR)
+	else if (result == E_FORMAT || \
+			result == E_WRONG_COLOR || \
+			result == E_INVALID_LINE || \
+			result == E_DUPLICATE_KEY)
 		return (0);
 	return (SUCCESS);
 }

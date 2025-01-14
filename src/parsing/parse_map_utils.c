@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:55:06 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/09 19:26:07 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 15:50:43 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,22 +59,6 @@ int	stats_add_back(t_stats **stats, t_pos pos)
 	(*stats)->next = newstats;
 	return (SUCCESS);
 }
-
-// int	init_first(t_stats **stats, char **map, t_pos pos)
-// {
-// 	*stats = ft_calloc(1, sizeof(t_stats));
-// 	if (!*stats)
-// 		return (E_MALLOC);
-// 	(*stats)->pos = pos;
-// 	get_dir(stats, map, (*stats)->pos);
-// 	if (check_holes(&(*stats), map, (*stats)->pos) == E_HOLE)
-// 		return (show_map(map), free_stats(stats), E_HOLE);
-// 	if (choose_dir(stats, map, (*stats)->pos) == E_MALLOC)
-// 		return (free_stats(stats), E_MALLOC);
-// 	if ((*stats)->next)
-// 		(*stats) = (*stats)->next;
-// 	return (SUCCESS);
-// }
 
 int	cmp_n_elt(char c, char *cmp)
 {
