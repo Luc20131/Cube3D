@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:00:05 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/13 16:45:19 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 13:35:20 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ char	*get_key_word(char *line)
 		return (0);
 	else if (line[index] == '\n')
 		return ("SKIP");
-	while (line[index] && (line[index] != ' ' && line[index] != '	' && line[index] != '\n'))
+	while (line[index] && (line[index] != ' ' && line[index] != '	' \
+		&& line[index] != '\n'))
 		index++;
 	if (!line[index])
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:37:41 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/10 14:40:54 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 13:39:00 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	check_valid_chr_map(char **map)
 		}
 	}
 	if (player > 1)
-		return (error_msg(E_TO_MANY_PLAYER, NULL),0);
+		return (error_msg(E_TO_MANY_PLAYER, NULL), 0);
 	else if (player < 1)
-		return (error_msg(E_NO_PLAYER, NULL),0);
+		return (error_msg(E_NO_PLAYER, NULL), 0);
 	return (1);
 }
 

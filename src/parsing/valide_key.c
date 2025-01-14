@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:46:06 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/13 17:10:24 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 13:45:00 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_key_name(int key)
 		return ("EA");
 	if (key == KEY_WE)
 		return ("WE");
-	return ("");
+	return ("NULL");
 }
 
 int	valid_texture(t_info *info, int i, int print)
@@ -40,22 +40,8 @@ int	valid_texture(t_info *info, int i, int print)
 	return (SUCCESS);
 }
 
-int	valid_color(t_info *info, int print)
+int	check_color_nb(int countc, int countf, int print)
 {
-	int	i;
-	int	countf;
-	int countc;
-
-	i = -1;
-	countf = 0;
-	countc = 0;
-	while (++i < 3)
-	{
-		if (info->ceiling[i] == -1)
-			countc++;
-		if (info->floor[i] == -1)
-			countf++;
-	}
 	if (countc > 1 || countf > 1)
 	{
 		if (countc == 3 && print)
@@ -68,6 +54,27 @@ int	valid_color(t_info *info, int print)
 			error_msg(E_WRONG_COLOR, "F");
 		return (0);
 	}
+	return (1);
+}
+
+int	valid_color(t_info *info, int print)
+{
+	int	i;
+	int	countf;
+	int	countc;
+
+	i = -1;
+	countf = 0;
+	countc = 0;
+	while (++i < 3)
+	{
+		if (info->ceiling[i] == -1)
+			countc++;
+		if (info->floor[i] == -1)
+			countf++;
+	}
+	if (!check_color_nb(countc, countf, print))
+		return (0);
 	return (1);
 }
 

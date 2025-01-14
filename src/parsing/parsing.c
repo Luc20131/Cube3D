@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/13 17:00:00 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 14:05:55 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,15 @@ int	get_arg(t_info *info)
 	while (line_key)
 	{
 		if (valid_key(info, 0))
-			return (E_NO_MORE_KEY);
+			return (nfree(line_key), E_NO_MORE_KEY);
 		key = key_finder(line_key);
 		if (key == -1)
 			return (nfree(line_key), E_INVALID_LINE);
 		else if (key != KEY_C && key != KEY_F && key != SKIP)
 		{
 			result = get_key_value(line_key, key, info);
-			if (result == E_NO_MORE_KEY)
-				return (close(info->map_fd), nfree(line_key), E_NO_MORE_KEY);
-			if (result == E_FORMAT)
-				return (close(info->map_fd), nfree(line_key), E_FORMAT);
+			if (result != SUCCESS)
+				return (close(info->map_fd), nfree(line_key), result);
 		}
 		else if (key != SKIP && get_color(line_key, key, info) == E_WRONG_COLOR)
 			return (close(info->map_fd), nfree(line_key), E_WRONG_COLOR);
