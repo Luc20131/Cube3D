@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:51:48 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/07 00:20:44 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/13 16:33:17 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ typedef enum e_key
 {
 	KEY_NO,
 	KEY_SO,
-	KEY_EA,
 	KEY_WE,
+	KEY_EA,
 	KEY_F,
-	KEY_C
+	KEY_C,
+	SKIP
 }			t_key;
 
 typedef enum e_statut
@@ -33,10 +34,16 @@ typedef enum e_statut
 	E_NO_KEY,
 	E_WRONG_KEY,
 	E_WRONG_COLOR,
+	E_NO_COLOR,
 	E_NO_MORE_KEY,
 	E_INVALID_MAP,
+	E_INVALID_CHARACTER,
+	E_INVALID_LINE,
 	E_NO_PLAYER,
+	E_TO_MANY_PLAYER,
 	E_HOLE,
+	E_NOT_XPM,
+	E_DUPLICATE_KEY,
 	SUCCESS,
 	FINISH
 }			t_statut;
@@ -51,12 +58,13 @@ typedef struct s_stats
 
 int		get_map(t_info *info);
 int		cmp_n_elt(char c, char *cmp);
-void	clean_map(char **map, t_stats **stats);
-int		parse_map(char **map, t_pos pos);
+// void	clean_map(char **map, t_stats **stats);
+// int		parse_map(char **map, t_pos pos);
+int		parse_map(char **map);
 int		stats_add_back(t_stats **stats, t_pos pos);
 int		init_first(t_stats **stats, char **map, t_pos pos);
 int		get_dir(t_stats **stats, char **map, t_pos pos);
-int		check_holes(t_stats **stats, char **map, t_pos pos);
+// int		check_holes(t_stats **stats, char **map, t_pos pos);
 int		choose_dir(t_stats **stats, char **map, t_pos pos);
 int		init_map(t_info *info, t_list *list);
 void	free_stats(t_stats **stats);
@@ -67,11 +75,10 @@ int		init_info(t_info *info);
 int		check_format(char *map, char *find);
 int		check_valid_chr_map(char **map);
 int		check_map(t_info *info, t_list **head);
-void	error_msg(int error);
-int		valid_key(t_info *info);
+void	error_msg(int error, char *content);
 void	freetab(char **tab);
-int		get_arg(char *argv, t_info *info);
-int		valid_key(t_info *info);
+int		get_arg(t_info *info);
+int		valid_key(t_info *info, int print);
 int		skip_space(char *line);
 int		skip_key_word(char *key_v);
 int		not_a_word(char c);

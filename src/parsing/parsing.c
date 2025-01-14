@@ -6,38 +6,39 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/07 00:18:45 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 16:58:51 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include "cube3d.h"
 
-int	get_arg(char *argv, t_info *info)
+int	get_arg(t_info *info)
 {
 	char	*line_key;
 	int		key;
+	int		result;
 
-	info->map_fd = open(argv, O_RDONLY);
-	if (info->map_fd == -1)
-		return (E_CANT_OPEN);
 	line_key = get_next_line(info->map_fd);
 	while (line_key)
 	{
-		key = key_finder(line_key);
-		if (key == -1 && valid_key(info))
+		if (valid_key(info, 0))
 			return (nfree(line_key), E_NO_MORE_KEY);
-		else if (key != KEY_C && key != KEY_F)
+		key = key_finder(line_key);
+		if (key == -1)
+			return (nfree(line_key), E_INVALID_LINE);
+		else if (key != KEY_C && key != KEY_F && key != SKIP)
 		{
-			if (get_key_value(line_key, key, info) == E_NO_MORE_KEY)
-				return (close(info->map_fd), nfree(line_key), E_NO_MORE_KEY);
+			result = get_key_value(line_key, key, info);
+			if (result != SUCCESS)
+				return (nfree(line_key), result);
 		}
-		else if (get_color(line_key, key, info) == E_WRONG_COLOR)
+		else if (key != SKIP && get_color(line_key, key, info) == E_WRONG_COLOR)
 			return (close(info->map_fd), nfree(line_key), E_WRONG_COLOR);
 		nfree (line_key);
 		line_key = get_next_line(info->map_fd);
 	}
-	return (SUCCESS);
+	return (E_NO_MORE_KEY);
 }
 
 int	init_info(t_info *info)
@@ -71,20 +72,23 @@ int	parsing_cube(char *arg, t_info *info)
 	int		result;
 
 	if (check_format(arg, ".cub") == E_FORMAT)
-		return (error_msg(E_FORMAT), 0);
-	result = get_arg(arg, info);
+		return (error_msg(E_FORMAT, arg), 0);
+	info->map_fd = open(arg, O_RDONLY);
+	if (info->map_fd == -1)
+		return (error_msg(E_CANT_OPEN, arg), 0);
+	result = get_arg(info);
 	if (result == E_NO_MORE_KEY)
 	{
-		if (!valid_key(info))
-			return (error_msg(E_WRONG_KEY), 0);
+		if (!valid_key(info, 1))
+			return (close(info->map_fd), 0);
 		else
 			if (get_map(info) != SUCCESS)
-				return (error_msg(E_INVALID_MAP), \
-				freetab((info)->map), 0);
+				return (close(info->map_fd), freetab((info)->map), 0);
 	}
-	else if (result == E_WRONG_COLOR)
-		return (error_msg(E_WRONG_COLOR), 0);
-	else if (result == E_CANT_OPEN)
-		return (error_msg(E_CANT_OPEN), 0);
+	else if (result == E_FORMAT || \
+			result == E_WRONG_COLOR || \
+			result == E_INVALID_LINE || \
+			result == E_DUPLICATE_KEY)
+		return (close(info->map_fd), 0);
 	return (SUCCESS);
 }

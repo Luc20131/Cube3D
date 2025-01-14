@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/08 16:48:32 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 17:26:54 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <stdint.h>
-# include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <sys/types.h>
@@ -176,7 +175,7 @@ typedef struct s_mlx
 	t_posf			offset;
 	char			**map;
 	t_player_data	player_data;
-	t_data			animation[4];
+	t_data			anim[4];
 	struct timeval	time;
 	struct s_info	*stats;
 	size_t			fps;
@@ -195,8 +194,8 @@ enum e_dir
 {
 	NO,
 	SO,
-	WE,
-	EA
+	EA,
+	WE
 };
 
 typedef struct s_info
@@ -206,7 +205,7 @@ typedef struct s_info
 	int		ceiling[3];
 	int		floor[3];
 	int		texture_valid[4];
-	/*0 NO + 1 SO + 2 WE + 3 EA*/
+	/*0 NO + 1 SO + 2 EA + 3 WE*/
 	t_data	img_texture[4];
 	t_mlx	*display;
 	t_pos	player;

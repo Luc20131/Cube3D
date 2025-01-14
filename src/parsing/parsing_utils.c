@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:19:00 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 15:59:03 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,65 +17,62 @@ void	freetab(char **tab)
 	int	i;
 
 	i = 0;
+	if (!tab)
+		return ;
 	while (tab[i])
 		nfree(tab[i++]);
 	nfree(tab);
 }
 
-int	valid_key(t_info *info)
+void	error_msg_map(int error, char *content)
 {
-	int	i;
-	int	fd;
-
-	i = -1;
-	while (++i < 4)
-	{
-		if (!info->texture_path[i][0])
-			return (0);
-		if (check_format(info->texture_path[i], ".xpm") == E_FORMAT)
-			return (0);
-		fd = open(info->texture_path[i], O_RDONLY);
-		if (fd == -1)
-			return (0);
-		close (fd);
-	}
-	i = -1;
-	while (++i < 3)
-	{
-		if (info->ceiling[i] == -1)
-			return (0);
-		if (info->floor[i] == -1)
-			return (0);
-	}
-	return (1);
+	if (error == E_INVALID_MAP)
+		ft_printf("This file doesn't contain a map\n");
+	if (error == E_TO_MANY_PLAYER)
+		ft_printf("Invalid map\nTo nany player on the map\n");
+	if (error == E_NO_PLAYER)
+		ft_printf("Invalid map\nNo player on the map\n", content);
+	if (error == E_INVALID_CHARACTER)
+		ft_printf("Invalid map\n%c is not a valid character\n", content[0]);
+	if (error == E_HOLE)
+		ft_printf("Invalid map\nThe map is not surrounded by walls\n");
 }
 
-void	error_msg(int error)
+void	error_msg(int error, char *content)
 {
 	ft_printf("Error\n");
 	if (error == E_MALLOC)
 		ft_printf("Malloc failed\n");
 	if (error == E_WRONG_COLOR)
-		ft_printf("Wrong color\n");
+		ft_printf("%s color is wrong\n", content);
+	if (error == E_NO_COLOR)
+		ft_printf("%s doesn't exist\n", content);
 	if (error == E_WRONG_KEY)
-		ft_printf("Texture invalid\n");
-	if (error == E_INVALID_MAP)
-		ft_printf("Invalid map\n");
+		ft_printf("%s doesn't exist\n", content);
 	if (error == E_FORMAT)
-		ft_printf("Invalid extension\n");
+		ft_printf("%s\nInvalid extension\n", content);
 	if (error == E_CANT_OPEN)
-		ft_printf("Can't open file\n");
+		ft_printf("%s can not be open\n", content);
+	if (error == E_NOT_XPM)
+		ft_printf("%s is not a xpm file\n", content);
+	if (error == E_DUPLICATE_KEY)
+		ft_printf("%s is already assigned\n", content);
+	if (error == E_INVALID_LINE)
+		ft_printf("%s is not a valide key", content);
+	error_msg_map(error, content);
 }
 
 int	check_map(t_info *info, t_list **head)
 {
 	int	result;
 
+	if (!*head)
+		return (error_msg(E_INVALID_MAP, NULL), E_MALLOC);
 	if (init_map(info, *head) == E_MALLOC)
 		return (ft_lstclear(head, nfree), E_MALLOC);
 	if (!check_valid_chr_map(info->map))
 		return (ft_lstclear(head, nfree), E_INVALID_MAP);
-	result = parse_map(info->map, info->player);
+	result = parse_map(info->map);
 	if (result == E_HOLE)
 		return (ft_lstclear(head, nfree), E_HOLE);
 	if (result == E_MALLOC)
@@ -89,6 +86,11 @@ void	show_map(char **map)
 	int	x;
 
 	y = -1;
+	if (ft_strlen(map[0]) > 84 || size_map(map).y > 84)
+	{
+		ft_printf("Too big for map preview\n");
+		return ;
+	}
 	while (map[++y])
 	{
 		x = -1;

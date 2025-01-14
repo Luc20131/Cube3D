@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:31:17 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/13 14:38:27 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/09 15:38:43 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 
 	while (current->y < wall_top->y)
 	{
-		pixel.x = SKY_COLOR;
+		pixel.r = vars->stats->ceiling[0];
+		pixel.g = vars->stats->ceiling[1];
+		pixel.b = vars->stats->ceiling[2];
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
 		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
@@ -32,7 +34,9 @@ int	print_floor(t_pos *current, t_mlx *vars)
 
 	while (current->y < vars->layer[LAYER_RAYCAST].h)
 	{
-		pixel.x = GROUND_COLOR;
+		pixel.r = vars->stats->floor[0];
+		pixel.g = vars->stats->floor[1];
+		pixel.b = vars->stats->floor[2];
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
 		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;

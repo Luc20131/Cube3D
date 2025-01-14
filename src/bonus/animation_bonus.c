@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   animation_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/08 16:51:54 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 17:26:54 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3d.h"
-#include <wait.h>
+#include <sys/time.h>
 /* 1/8 s */
 #define ANIME_TIME	125
 
@@ -40,12 +40,12 @@ t_data	*get_img_frame(t_mlx	*vars)
 	if (!vars->player_data.is_moving)
 	{
 		time = 0;
-		return (&vars->animation[0]);
+		return (&vars->anim[0]);
 	}
 	else
 	{
 		time = tv.tv_usec / 1000;
 		frame = (time / ANIME_TIME) % 4;
-		return (&vars->animation[frame]);
+		return (&vars->anim[frame]);
 	}
 }

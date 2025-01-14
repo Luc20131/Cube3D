@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:37:41 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/14 14:57:40 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,15 @@ int	check_valid_chr_map(char **map)
 		while (map[y][++x])
 		{
 			if (!cmp_n_elt(map[y][x], "NESW01 "))
-				return (0);
+				return (error_msg(E_INVALID_CHARACTER, &map[y][x]), 0);
 			if (cmp_n_elt(map[y][x], "NESW"))
 				player++;
 		}
 	}
-	if (player != 1)
-		return (0);
+	if (player > 1)
+		return (error_msg(E_TO_MANY_PLAYER, NULL), 0);
+	else if (player < 1)
+		return (error_msg(E_NO_PLAYER, NULL), 0);
 	return (1);
 }
 
@@ -94,8 +96,8 @@ int	init_map(t_info *info, t_list *list)
 			return (E_MALLOC);
 		ft_memset(info->map[i], ' ', size_line);
 		j = -1;
-		while (((char *)list->content)[++j] && \
-		((char *)list->content)[j] != '\n')
+		while (((char *)list->content)[++j] && (((char *)list->content)[j] \
+		!= '\n' && ((char *)list->content)[j] != '\r'))
 			info->map[i][j] = ((char *)list->content)[j];
 		list = list->next;
 	}
