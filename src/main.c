@@ -82,10 +82,9 @@ int	main(const int argc, char **argv)
 	init_info(&info);
 	vars.stats = &info;
 	if (argc != 2)
-		return (1);
+		return (printf("Error\nNot enough arguments\n"), 1);
 	if (parsing_cube(argv[1], &info) == 0)
 		return (1);
-	ft_printf("PARSING ✅\n");
 	vars.map = info.map;
 	vars.mlx = mlx_init();
 	if (init_data_texture(&info, &vars) == E_MALLOC)

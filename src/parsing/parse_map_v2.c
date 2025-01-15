@@ -61,5 +61,5 @@ int	parse_map(char **map)
 				map[pos.y][pos.x] = 'V';
 		}
 	}
-	return (show_map(map), clean_map(map), SUCCESS);
+	return (clean_map(map), SUCCESS);
 }

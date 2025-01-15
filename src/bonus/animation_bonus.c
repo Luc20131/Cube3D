@@ -31,7 +31,7 @@ void	is_moving(t_mlx *vars)
 
 t_data	*get_img_frame(t_mlx	*vars)
 {
-	static int 				frame = 0;
+	static int				frame = 0;
 	static struct timeval	tv;
 	static int				time = 0;
 
