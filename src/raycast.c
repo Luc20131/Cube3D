@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/07 20:43:18 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/16 16:51:32 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,6 @@ void	side_dist_and_stepper(t_ray	*ray)
 		ray->side_dist.y = (ray->map_pos.y + 1.0 - ray->pos.y) \
 		* ray->delta_dist.y;
 	}
-}
-
-int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars)
-{
-	t_pos	current;
-	t_data	img_wall;
-
-	current.x = wall_top->x;
-	current.y = 0;
-	if (current.y >= wall_top->y)
-		current.y = wall_top->y;
-	img_wall = select_texture(vars->stats->img_texture, vars);
-	print_ceilling(&current, vars, wall_top);
-	print_wall(&current, vars, end, &img_wall);
-	print_floor(&current, vars);
-	return (0);
 }
 
 void	stop_casting(t_ray *ray, char **map, t_pos size_map)
@@ -141,6 +125,5 @@ int	raycast(t_mlx *vars)
 	}
 	mlx_put_image_to_window(vars->mlx, vars->win, \
 		vars->layer[LAYER_RAYCAST].img, 0, 0);
-
 	return (0);
 }

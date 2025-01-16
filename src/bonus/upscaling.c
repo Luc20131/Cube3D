@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   upscaling.c                                          :+:      :+:    :+: */
+/*   upscaling.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>            +#+  +:+       +#+  */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/30 16:54:13 by lrichaud            ###   ########.fr    */
+/*   Updated: 2025/01/16 16:55:05 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ void	upscale_rc_to_screen(t_data *raycast, t_data *screen)
 {
 	t_upscale	scale;
 
-	scale.ratio_w = (float) screen->w /raycast->w  ;
-	scale.ratio_h = (float) screen->h / raycast->h ;
+	scale.ratio_w = (float) screen->w / raycast->w;
+	scale.ratio_h = (float) screen->h / raycast->h;
 	scale.rc_pos.y = 0;
 	scale.rc_pos.x = 0;
 	scale.nb_pixels = screen->bits_per_pixel >> 3;

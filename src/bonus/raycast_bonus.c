@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycast_bonus.c                                          :+:      :+:    :+:   */
+/*   raycast_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/06 06:11:59 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/16 17:01:26 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	side_dist_and_stepper(t_ray	*ray)
 	}
 }
 
-int		print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
+int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars, t_ray *ray)
 {
 	t_pos	current;
 	t_data	img_wall;
@@ -134,10 +134,5 @@ int	raycast(t_mlx *vars)
 		wall_printer_from_cast(&vars->ray, vars, &origin);
 		origin.x += PIX_PER_RAY;
 	}
-	put_img_to_img(get_img_frame(vars), &vars->layer[LAYER_RAYCAST]);
-	put_img_to_img(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_RAYCAST]);
-	upscale_rc_to_screen(&vars->layer[LAYER_RAYCAST], &vars->layer[LAYER_SCREEN]);
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_SCREEN].img, 0, 0);
-	fps(vars);
 	return (0);
 }

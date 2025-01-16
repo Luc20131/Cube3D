@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:32:36 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/07 13:26:35 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/16 16:50:53 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	get_and_display_pixel(t_mlx *vars, t_pos tex, t_pos end, int y)
 		get_darker_color(coef, &pixel);
 		((int *)vars->layer[LAYER_RAYCAST].addr) \
 			[y * (line_length) + end.x] = pixel.x;
-		((int *)vars->layer[LAYER_RAYCAST].addr)[(vars->layer[LAYER_RAYCAST].h - y - 1) * \
-			line_length + end.x] = pixel.x;
+		((int *)vars->layer[LAYER_RAYCAST].addr)[(vars->layer[LAYER_RAYCAST].h \
+		- y - 1) * line_length + end.x] = pixel.x;
 	}
 }
 

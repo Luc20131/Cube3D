@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:31:17 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/05 16:16:45 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/16 17:05:02 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,8 @@ void	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 			if (vars->ray.perp_wall_dist > 0.5)
 				get_darker_color(inverse_distance, &pixel);
 		}
-		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
-			line_length + current->x] = pixel.x;
-		current->y++;
+		((int *)vars->layer[LAYER_RAYCAST].addr)[((current->y++) * line_length) \
+		+ current->x] = pixel.x;
 	}
 }
 

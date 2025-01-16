@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/07 20:53:18 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/16 17:02:31 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # ifdef BONUS
 #  include "bonus.h"
 # else
-	#  define WIDTH WIDTH_WIN
-	#  define HEIGHT HEIGHT_WIN
+#  define WIDTH WIDTH_WIN
+#  define HEIGHT HEIGHT_WIN
 #  include "types.h"
 # endif
 
@@ -85,6 +85,8 @@ t_pos			tile_selector(t_tile tile[49], int *stats);
 
 // ------------ UTILS -------------
 
+int				print_display_from_ray(t_pos *wall_top, t_pos *end, \
+				t_mlx *vars);
 void			print_wall(t_pos *current, t_mlx *vars, \
 				t_pos *end, t_data *img);
 t_data			select_texture(t_data img[4], t_mlx *vars);
@@ -93,7 +95,7 @@ void			print_map(char *map[]);
 void			exit_game(t_mlx *vars);
 int				tick(t_mlx *vars);
 void			nfree(void *pointer);
-int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
-int	print_floor(t_pos *current, t_mlx *vars);
+int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
+int				print_floor(t_pos *current, t_mlx *vars);
 
 #endif

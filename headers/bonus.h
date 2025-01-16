@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/08 16:50:16 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/16 14:48:54 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	flashlight(t_pos pixel_pos, t_color *color);
 int		print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
 int		print_floor(t_pos *current, t_mlx *vars);
 void	fps(const t_mlx *vars);
+void	collision(t_mlx *vars, t_posf pos, t_pos dir, int axe);
 
 typedef struct s_upscale
 {
