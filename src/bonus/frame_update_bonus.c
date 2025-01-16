@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   frame_update_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/15 07:56:38 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/15 18:34:25 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	tick(t_mlx *vars)
 		collision(vars, vars->player_data.float_pos, (t_pos){1, -1}, 1);
 	}
 	player_pos_update(vars, vars->map);
-	raycast(vars);
+	map(vars);
 	return (1);
 }
 
@@ -91,7 +91,7 @@ u_int	find_pixel_color(t_pos *index, t_pos *size, t_pos *origin, t_mlx *vars)
 	map_size = size_map(vars->map);
 	if (index->y == 0 || index->y == size->y - 1)
 		color = 0x003F3F3F;
-	else if (index->x < origin->x || index->y < origin->y \
+	else if (origin->x + index->x < 0 || origin->y + index->y < 0 \
 		|| origin->x + index->x >= map_size.x * TILE_SIZE \
 		|| origin->y + index->y >= map_size.y * TILE_SIZE)
 		color = 0x00000000;
@@ -130,15 +130,15 @@ int	init_mini_map(t_mlx *vars)
 	t_pos			origin;
 	t_data			*minimap;
 
-	minimap = &vars->layer[LAYER_MINIMAP];
 	size.x = MINIMAP_SIZE * TILE_SIZE;
 	size.y = MINIMAP_SIZE * TILE_SIZE;
 	origin.x = vars->player_data.float_pos.x * TILE_SIZE \
 		+ (PLAYER_SIZE >> 2) - (size.x >> 1);
 	origin.y = vars->player_data.float_pos.y * TILE_SIZE \
 		+ (PLAYER_SIZE >> 1) - (size.y >> 1);
-	if (minimap->addr == NULL)
+	if (vars->layer[LAYER_MINIMAP].addr == NULL)
 		vars->layer[LAYER_MINIMAP] = new_img(vars, size.x, size.y);
+	minimap = &vars->layer[LAYER_MINIMAP];
 	create_pixel(vars, &origin, &size, minimap);
 	put_data_to_img(minimap, vars->layer[LAYER_MONITOR], 0, 0);
 	draw_square(minimap, (t_pos){(size.x + PLAYER_SIZE) >> 1, \

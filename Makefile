@@ -3,7 +3,7 @@ ECHO = echo -e
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -O2 -DHEIGHT_WIN=$(SCREEN_HEIGHT) -DWIDTH_WIN=$(SCREEN_WIDTH)
+CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -DHEIGHT_WIN=$(SCREEN_HEIGHT) -DWIDTH_WIN=$(SCREEN_WIDTH) -g3
 NAME = cub3D
 NAME_BONUS = $(NAME)_bonus
 HEADER = ./headers/cube3d.h ./headers/parsing.h ./headers/types.h
