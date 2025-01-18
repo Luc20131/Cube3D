@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3d.h"
+#include "../../headers/cube3d.h"
 
 int	event_mouse(int button, int x, int y, void *param)
 {

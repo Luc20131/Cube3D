@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cube3d.h"
+#include "../../headers/types.h"
 
 int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 {
@@ -57,7 +58,6 @@ void	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 	t_posf		tex;
 	t_color		pixel;
 	const float	inverse_distance = (1. / (vars->ray.perp_wall_dist * 2));
-	const int	line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
 	const float	step = ((float)img->h / (end->y - current->y));
 
 	tex.x = init_pixel_tex_x(&vars->ray, vars) * img->pixels;
@@ -77,7 +77,7 @@ void	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 				get_darker_color(inverse_distance, &pixel);
 		}
 		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
-			line_length + current->x] = pixel.x;
+			vars->layer[LAYER_RAYCAST].bits_per_line + current->x] = pixel.x;
 		current->y++;
 	}
 }

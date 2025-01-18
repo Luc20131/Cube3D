@@ -1,9 +1,9 @@
 MAKE = @make --no-print-directory
-ECHO = echo -e
+ECHO = echo
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -DHEIGHT_WIN=$(SCREEN_HEIGHT) -DWIDTH_WIN=$(SCREEN_WIDTH) -g3
+CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -DHEIGHT_WIN=$(SCREEN_HEIGHT) -DWIDTH_WIN=$(SCREEN_WIDTH) -g3 -O2
 NAME = cub3D
 NAME_BONUS = $(NAME)_bonus
 HEADER = ./headers/cube3d.h ./headers/parsing.h ./headers/types.h
@@ -77,14 +77,14 @@ all : $(MINILIBX)
 	$(call normitest)
 	$(call prompt,$(BLUE),"Creating $(NAME)")
 ifneq ("$(wildcard ${NAME_BONUS})", "")
-	rm -rf $(OBJ_COMMON)
+	rm -rf $(OBJ_COMMON) $(NAME_BONUS)
 endif
 	$(MAKE) $(NAME)
 
 bonus : $(MINILIBX)
 	$(call prompt,$(BLUE),"Creating $(NAME_BONUS)")
 ifneq ("$(wildcard ${NAME})", "")
-	rm -rf $(OBJ_COMMON)
+	rm -rf $(OBJ_COMMON) $(NAME)
 endif
 	$(MAKE) $(NAME_BONUS) CFLAGS="$(CFLAGS) -DBONUS -DHEIGHT=$(RAYCAST_HEIGHT) -DWIDTH=$(RAYCAST_WIDTH)"
 

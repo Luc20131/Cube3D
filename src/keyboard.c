@@ -32,9 +32,7 @@ int	key_released(const int keycode, t_mlx *vars)
 int	key_hook(const int keycode, t_mlx *vars)
 {
 	if (keycode == 65307)
-	{
 		exit_game(vars);
-	}
 	else if (keycode == 'd')
 		vars->player_data.movement.right = 1;
 	else if (keycode == 'a')
@@ -47,7 +45,7 @@ int	key_hook(const int keycode, t_mlx *vars)
 		vars->player_data.movement.rotating = -1;
 	else if (keycode == 65361)
 		vars->player_data.movement.rotating = 1;
-	else if (keycode == 't')
+	else if (keycode == 'f')
 		vars->light = !(vars->light);
 	return (0);
 }

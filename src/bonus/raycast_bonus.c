@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "cube3d.h"
-#include "../../headers/bonus.h"
-#include "../../headers/parsing.h"
 
 #define PIX_PER_RAY 1
 
@@ -110,11 +108,11 @@ void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *wall_top)
 	wall_top->x -= PIX_PER_RAY;
 }
 
-int	raycast(t_mlx *vars)
+void	raycast(t_mlx *vars)
 {
 	t_pos	origin;
 
-	gettimeofday(&vars->time, NULL);
+
 	origin = vars->player_data.pixel_pos;
 	vars->ray.pos.x = vars->player_data.float_pos.x;
 	vars->ray.pos.y = vars->player_data.float_pos.y;
@@ -138,6 +136,4 @@ int	raycast(t_mlx *vars)
 	put_img_to_img(&vars->layer[LAYER_OVERLAY], &vars->layer[LAYER_RAYCAST]);
 	upscale_rc_to_screen(&vars->layer[LAYER_RAYCAST], &vars->layer[LAYER_SCREEN]);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->layer[LAYER_SCREEN].img, 0, 0);
-	fps(vars);
-	return (0);
 }

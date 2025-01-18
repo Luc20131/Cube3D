@@ -18,7 +18,7 @@ void	get_and_display_pixel(t_mlx *vars, t_pos tex, t_pos end, int y)
 	float			coef;
 	static float	half_img;
 	static int		line_length;
-
+	// const t_data	*img_raycast = vars->layer[LAYER_RAYCAST];
 	line_length = vars->layer[LAYER_RAYCAST].line_length >> 2;
 	half_img = vars->layer[LAYER_RAYCAST].h >> 1;
 	if ((tex.x < vars->layer[LAYER_FLOOR].w && tex.x > 0) || \
@@ -31,8 +31,8 @@ void	get_and_display_pixel(t_mlx *vars, t_pos tex, t_pos end, int y)
 		get_darker_color(coef, &pixel);
 		((int *)vars->layer[LAYER_RAYCAST].addr) \
 			[y * (line_length) + end.x] = pixel.x;
-		((int *)vars->layer[LAYER_RAYCAST].addr)[(vars->layer[LAYER_RAYCAST].h - y - 1) * \
-			line_length + end.x] = pixel.x;
+		((int *)vars->layer[LAYER_RAYCAST].addr)[ \
+			(vars->layer[LAYER_RAYCAST].h - y - 1) * line_length + end.x] = pixel.x;
 	}
 }
 

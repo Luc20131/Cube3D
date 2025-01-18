@@ -87,13 +87,13 @@ void	player_pov_on_start(t_mlx *vars)
 	const char	pov_direction = vars->map[pos.y][pos.x];
 
 	if (pov_direction == 'N')
-		set_starting_direction(vars, NORTH);
+		set_starting_direction(vars, e_north);
 	else if (pov_direction == 'S')
-		set_starting_direction(vars, SOUTH);
+		set_starting_direction(vars, e_south);
 	else if (pov_direction == 'E')
-		set_starting_direction(vars, EAST);
+		set_starting_direction(vars, e_east);
 	else if (pov_direction == 'W')
-		set_starting_direction(vars, WEST);
+		set_starting_direction(vars, e_west);
 }
 
 void	player_pos_update(t_mlx *vars, char **map)

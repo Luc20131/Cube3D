@@ -70,7 +70,7 @@ void	upscale_rc_to_screen(t_data *raycast, t_data *screen)
 {
 	t_upscale	scale;
 
-	scale.ratio_w = (float) screen->w /raycast->w  ;
+	scale.ratio_w = (float) screen->w / raycast->w;
 	scale.ratio_h = (float) screen->h / raycast->h ;
 	scale.rc_pos.y = 0;
 	scale.rc_pos.x = 0;

@@ -39,7 +39,7 @@ void	side_dist_and_stepper(t_ray	*ray)
 	}
 }
 
-int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars)
+int	print_texture_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars)
 {
 	t_pos	current;
 	t_data	img_wall;
@@ -109,14 +109,14 @@ void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *wall_top)
 	end.y = line_height + (vars->layer[LAYER_RAYCAST].h >> 1);
 	while (i < PIX_PER_RAY)
 	{
-		print_display_from_ray(wall_top, &end, vars);
+		print_texture_from_ray(wall_top, &end, vars);
 		i++;
 		wall_top->x++;
 	}
 	wall_top->x -= PIX_PER_RAY;
 }
 
-int	raycast(t_mlx *vars)
+void	raycast(t_mlx *vars)
 {
 	t_pos	origin;
 
@@ -141,6 +141,4 @@ int	raycast(t_mlx *vars)
 	}
 	mlx_put_image_to_window(vars->mlx, vars->win, \
 		vars->layer[LAYER_RAYCAST].img, 0, 0);
-
-	return (0);
 }

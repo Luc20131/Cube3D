@@ -27,6 +27,7 @@ void	flashlight(t_pos pixel_pos, t_color *color);
 int		print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
 int		print_floor(t_pos *current, t_mlx *vars);
 void	fps(const t_mlx *vars);
+void	create_pixel(t_mlx *vars, t_pos *origin, t_pos *size, t_data *minimap);
 
 typedef struct s_upscale
 {

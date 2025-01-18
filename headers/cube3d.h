@@ -55,7 +55,7 @@ void			autotile_generator(char **map, t_mlx *g);
 
 // ------------ RAYCAST -------------
 
-int				raycast(t_mlx *vars);
+void				raycast(t_mlx *vars);
 
 // ------------ IMG UTILS -------------
 
@@ -93,7 +93,7 @@ void			print_map(char *map[]);
 void			exit_game(t_mlx *vars);
 int				tick(t_mlx *vars);
 void			nfree(void *pointer);
-int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
-int	print_floor(t_pos *current, t_mlx *vars);
+int				print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
+int				print_floor(t_pos *current, t_mlx *vars);
 
 #endif

@@ -205,7 +205,6 @@ typedef struct s_info
 	int		ceiling[3];
 	int		floor[3];
 	int		texture_valid[4];
-	/*0 NO + 1 SO + 2 EA + 3 WE*/
 	t_data	img_texture[4];
 	t_mlx	*display;
 	t_pos	player;
@@ -217,10 +216,10 @@ typedef struct s_info
 
 enum
 {
-	NORTH = -1,
-	EAST,
-	SOUTH,
-	WEST,
+	e_north = -1,
+	e_east,
+	e_south,
+	e_west,
 };
 
 #endif //TYPES_H
