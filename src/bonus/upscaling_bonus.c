@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   upscaling.c                                          :+:      :+:    :+: */
+/*   upscaling_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>            +#+  +:+       +#+  */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/30 16:54:13 by lrichaud            ###   ########.fr    */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/cube3d.h"
+#include "../../headers/cub3d.h"
 
 void	upscaling_first_line(t_data *raycast, t_data *screen, t_upscale *scale)
 {
@@ -82,5 +82,27 @@ void	upscale_rc_to_screen(t_data *raycast, t_data *screen)
 		upscaling_first_line(raycast, screen, &scale);
 		upscale_next_lines(raycast, screen, &scale);
 		scale.rc_pos.y++;
+	}
+}
+
+void	put_img_to_img(t_data *src, t_data *dst)
+{
+	int		x;
+	int		y;
+	t_posf	ratio;
+	t_color	pixel;
+
+	ratio.x = (float)src->w / dst->w;
+	ratio.y = (float)src->h / dst->h;
+	y = -1;
+	while (++y < dst->h)
+	{
+		x = -1;
+		while (++x < dst->w)
+		{
+			pixel.x = get_pixel_img(src, x * ratio.x, y * ratio.y);
+			if (pixel.r + pixel.g + pixel.b != 0)
+				((int *)dst->addr)[y * (dst->line_length >> 2) + x] = pixel.x;
+		}
 	}
 }

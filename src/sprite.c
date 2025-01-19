@@ -6,13 +6,11 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/15 07:56:38 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3d.h"
-#include <math.h>
-#include <stdio.h>
+#include "cub3d.h"
 
 void	my_destroy_img(void *mlx, void *img)
 {
@@ -26,28 +24,6 @@ int	create_trgb(const int t, const int r, const int g, const int b)
 		(r & ((1 << 8) - 1)) << 16 | \
 		(g & ((1 << 8) - 1)) << 8 | \
 		(b & ((1 << 8) - 1)));
-}
-
-void	put_img_to_img(t_data *src, t_data *dst)
-{
-	int		x;
-	int		y;
-	t_posf	ratio;
-	t_color	pixel;
-
-	ratio.x = (float)src->w / dst->w;
-	ratio.y = (float)src->h / dst->h;
-	y = -1;
-	while (++y < dst->h)
-	{
-		x = -1;
-		while (++x < dst->w)
-		{
-			pixel.x = get_pixel_img(src, x * ratio.x, y * ratio.y);
-			if (pixel.r + pixel.g + pixel.b != 0)
-				((int *)dst->addr)[y * (dst->line_length >> 2) + x] = pixel.x;
-		}
-	}
 }
 
 int	put_pixel_valid(t_data img, int x, int y)

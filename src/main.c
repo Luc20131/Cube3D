@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/14 17:26:54 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3d.h"
-#include "parsing.h"
+#include "cub3d.h"
 
 void	delete_all_img(t_mlx *vars)
 {
@@ -33,7 +32,7 @@ void	delete_all_img(t_mlx *vars)
 	my_destroy_img(vars->mlx, vars->anim[3].img);
 }
 
-void	exit_game(t_mlx *vars)
+int	exit_game(t_mlx *vars)
 {
 	int	i;
 
@@ -93,6 +92,7 @@ int	main(const int argc, char **argv)
 	player_pov_on_start(&vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
+	mlx_hook(vars.win, DestroyNotify, StructureNotifyMask, exit_game, &vars);
 	mlx_loop_hook(vars.mlx, tick, &vars);
 	mlx_do_key_autorepeatoff(vars.mlx);
 	mlx_loop(vars.mlx);

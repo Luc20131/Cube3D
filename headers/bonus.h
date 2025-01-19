@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/08 16:50:16 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:36:54 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,21 @@ int		print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top);
 int		print_floor(t_pos *current, t_mlx *vars);
 void	fps(const t_mlx *vars);
 void	create_pixel(t_mlx *vars, t_pos *origin, t_pos *size, t_data *minimap);
+int		*fill_dir_v(int *c, char **map, t_pos pos, t_pos fill);
+int		*fill_dir_h(int *c, char **map, t_pos pos, t_pos fill);
+int		*l_corner_dir(int *c, t_pos pos, t_mlx g, char **map);
+int		*face_corner_v(int *c, t_pos pos, t_mlx g, char **map);
+int		*face_corner_h(int *c, t_pos pos, t_mlx g, char **map);
+int		*x_dir(int *c, t_pos pos, t_mlx g, t_pos map_size);
+void	draw_square(t_data *img, t_pos origin, int size, int color);
+
+// ------------ MINIMAP -------------
+
+void	draw_map(t_mlx *game);
+int		map_gen(t_mlx *vars, char **map_tab);
+void	start_tiles_init(t_mlx *g);
+void	autotile_generator(char **map, t_mlx *g);
+t_pos	tile_selector(t_tile tile[49], int *stats);
 
 typedef struct s_upscale
 {

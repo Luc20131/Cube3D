@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   casting_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 02:06:05 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/07 00:28:50 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <limits.h>
-#include "cube3d.h"
+#include "cub3d.h"
 
 void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 {
@@ -34,21 +33,6 @@ void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 int	is_player(const char c)
 {
 	return (c == 'N' || c == 'E' || c == 'S' || c == 'W');
-}
-
-t_pos	tile_selector(t_tile tile[49], int *stats)
-{
-	int		i;
-
-	i = -1;
-	while (++i < 50)
-	{
-		if (*stats == tile[i].dir)
-		{
-			return (tile[i].pos);
-		}
-	}
-	return (tile[47].pos);
 }
 
 void	stop_casting(t_ray *ray, char **map, t_pos size_map)

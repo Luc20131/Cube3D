@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/14 17:26:54 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:56:51 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,5 +221,13 @@ enum
 	SOUTH,
 	WEST,
 };
+
+typedef struct s_stats
+{
+	struct s_stats	*prev;
+	int				dir;
+	t_pos			pos;
+	struct s_stats	*next;
+}	t_stats;
 
 #endif //TYPES_H

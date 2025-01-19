@@ -8,13 +8,13 @@ CPPFLAGS = -DHEIGHT_WIN=$(SCREEN_HEIGHT) -DWIDTH_WIN=$(SCREEN_WIDTH)
 ALLFLAGS = $(CFLAGS) $(IFLAGS) $(CPPFLAGS)
 NAME = cub3D
 NAME_BONUS = $(NAME)_bonus
-HEADER = ./headers/cube3d.h ./headers/parsing.h ./headers/types.h
+HEADER = ./headers/cub3d.h ./headers/parsing.h ./headers/types.h
 SRC_DIR=src/
 
 SRC_LIST_COMMON:= init.c keyboard.c casting_utils.c main.c sprite.c draw_utils.c
 SRC_LIST_MANDATORY:= frame_update.c raycast.c draw.c
 SRC_LIST_P:= parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c valide_key.c parse_map_v2.c
-SRC_LIST_BONUS:= upscaling.c map_autotile_bonus.c map_autotile_utils_bonus.c bonus.c mouse_bonus.c draw_bonus.c floor_ceilling_ray_bonus.c frame_update_bonus.c raycast_bonus.c map_gen_bonus.c map_inits_bonus.c animation_bonus.c
+SRC_LIST_BONUS:= upscaling_bonus.c map_autotile_bonus.c map_autotile_utils_bonus.c miscellaneous_bonus.c mouse_bonus.c draw_bonus.c floor_ceilling_ray_bonus.c frame_update_bonus.c raycast_bonus.c map_gen_bonus.c map_inits_bonus.c animation_bonus.c
 
 SRC_COMMON=$(addprefix $(SRC_DIR),$(SRC_LIST_COMMON)) $(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))
 SRC_MANDATORY= $(addprefix $(SRC_DIR),$(SRC_LIST_MANDATORY)) $(SRC_COMMON)
@@ -41,8 +41,8 @@ NB_FILES=$(words $(OBJ_MANDATORY))
 SCREEN_HEIGHT := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2))
 SCREEN_WIDTH := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1))
 
-RAYCAST_HEIGHT := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)) / 4)
-RAYCAST_WIDTH := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)) / 4)
+RAYCAST_HEIGHT := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)) / 2)
+RAYCAST_WIDTH := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)) / 2)
 
 GREEN="\033[0;32m"
 RED="\033[0;31m"
@@ -59,7 +59,7 @@ endef
 
 define normitest
 	@$(ECHO) $(BLUE)"Test norminette..."$(END_COLOUR)
-	@if norminette $(SRC_DIR) $(HEADER) $(LIBFT_SRC_FULL) | grep Error; then \
+	@if norminette $(SRC_DIR) $(HEADER) $(LIBFT_DIR) | grep Error; then \
 		$(ECHO) $(RED)"\n================ Norminette KO ================"$(END_COLOUR); \
 	else \
 		$(ECHO) $(GREEN)"\n================ Norminette OK ================"$(END_COLOUR); \

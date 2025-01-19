@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   frame_update_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/15 18:34:25 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/cube3d.h"
+#include "../../headers/cub3d.h"
 
 void	map(t_mlx *vars)
 {
@@ -105,7 +105,7 @@ int	init_mini_map(t_mlx *vars)
 	minimap = &vars->layer[MINIMAP];
 	create_pixel(vars, &origin, &size, minimap);
 	put_data_to_img(minimap, vars->layer[MONITOR], 0, 0);
-	draw_square(minimap, (t_pos){(size.x + PLAYER_SIZE) >> 1, \
-		(size.y + PLAYER_SIZE) >> 1}, PLAYER_SIZE, 0xFF0FFF0F);
+	draw_square(minimap, (t_pos){(size.x - PLAYER_SIZE) >> 1, \
+		(size.y - PLAYER_SIZE) >> 1}, PLAYER_SIZE, 0xFF0FFF0F);
 	return (1);
 }

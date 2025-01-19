@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   floor_ceilling_ray_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:32:36 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/07 13:26:35 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3d.h"
+#include "cub3d.h"
 
 void	get_and_display_pixel(t_mlx *vars, t_pos tex, t_pos end, int y)
 {

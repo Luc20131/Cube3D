@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
+#include "../headers/cub3d.h"
 
 void	get_player_pos(char **map, t_mlx *vars)
 {

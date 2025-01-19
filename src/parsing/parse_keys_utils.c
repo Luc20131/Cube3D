@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_keys_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 15:17:18 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/14 14:42:34 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:57:28 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3d.h"
-#include "parsing.h"
+#include "cub3d.h"
 
 int	skip_space(char *line)
 {

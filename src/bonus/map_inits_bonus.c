@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_inits_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:10:14 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/cube3d.h"
+#include "../../headers/cub3d.h"
 
 void	tile_assembler(t_tile *tile, int nb, t_pos pos)
 {
@@ -82,4 +82,19 @@ void	start_tiles_init(t_mlx *g)
 	tile_assembler(&g->tile[17], 16, (t_pos){1, 8});
 	tile_assembler(&g->tile[18], 438, (t_pos){2, 2});
 	middle_tiles_init(g->tile, g);
+}
+
+t_pos	tile_selector(t_tile tile[49], int *stats)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 50)
+	{
+		if (*stats == tile[i].dir)
+		{
+			return (tile[i].pos);
+		}
+	}
+	return (tile[47].pos);
 }
