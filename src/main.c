@@ -15,14 +15,14 @@
 
 void	delete_all_img(t_mlx *vars)
 {
-	my_destroy_img(vars->mlx, vars->layer[LAYER_SCREEN].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_OVERLAY].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_MINIMAP].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_MAP].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_RAYCAST].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_FLOOR].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_MONITOR].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_ACHANGER].img);
+	my_destroy_img(vars->mlx, vars->layer[SCREEN].img);
+	my_destroy_img(vars->mlx, vars->layer[OVERLAY].img);
+	my_destroy_img(vars->mlx, vars->layer[MINIMAP].img);
+	my_destroy_img(vars->mlx, vars->layer[MAP].img);
+	my_destroy_img(vars->mlx, vars->layer[RAYCAST].img);
+	my_destroy_img(vars->mlx, vars->layer[FLOOR].img);
+	my_destroy_img(vars->mlx, vars->layer[MONITOR].img);
+	my_destroy_img(vars->mlx, vars->layer[ACHANGER].img);
 	my_destroy_img(vars->mlx, vars->stats->img_texture[0].img);
 	my_destroy_img(vars->mlx, vars->stats->img_texture[1].img);
 	my_destroy_img(vars->mlx, vars->stats->img_texture[2].img);

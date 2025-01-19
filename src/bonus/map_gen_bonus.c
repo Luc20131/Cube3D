@@ -63,7 +63,7 @@ void	draw_map(t_mlx *game)
 	k = -1;
 	start_tiles_init(game);
 	autotile_generator(game->map, game);
-	game->layer[LAYER_MAP] = new_img(game, game->size_map.x * TILE_SIZE, \
+	game->layer[MAP] = new_img(game, game->size_map.x * TILE_SIZE, \
 		game->size_map.y * TILE_SIZE);
 	while (++j < game->size_map.y)
 	{
@@ -92,7 +92,7 @@ u_int	find_pixel_color(t_pos *index, t_pos *size, t_pos *origin, t_mlx *vars)
 		color = 0x00000000;
 	else
 	{
-		color = get_pixel_img(&vars->layer[LAYER_MAP], \
+		color = get_pixel_img(&vars->layer[MAP], \
 			origin->x + index->x, origin->y + index->y);
 	}
 	return (color);

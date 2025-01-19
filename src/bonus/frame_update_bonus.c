@@ -22,19 +22,19 @@ void	map(t_mlx *vars)
 		vars->stats->map_is_create = 1;
 		draw_map(vars);
 		nfree(vars->stats_tile);
-		vars->layer[LAYER_MINIMAP] = new_img(vars, MINIMAP_SIZE * TILE_SIZE, \
+		vars->layer[MINIMAP] = new_img(vars, MINIMAP_SIZE * TILE_SIZE, \
 			MINIMAP_SIZE * TILE_SIZE);
 		init_mini_map(vars);
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win, \
-			vars->layer[LAYER_MINIMAP].img, minimap_offset, 100);
+			vars->layer[MINIMAP].img, minimap_offset, 100);
 	}
 	else
 	{
 		init_mini_map(vars);
 		raycast(vars);
 		mlx_put_image_to_window(vars->mlx, vars->win,
-			vars->layer[LAYER_MINIMAP].img, minimap_offset, 100);
+			vars->layer[MINIMAP].img, minimap_offset, 100);
 	}
 	fps(vars);
 }
@@ -68,6 +68,7 @@ void	collision(t_mlx *vars, t_posf pos, t_pos dir, int axe)
 
 int	tick(t_mlx *vars)
 {
+	mouse_bonus(vars);
 	if (vars->player_data.movement.forward)
 	{
 		collision(vars, vars->player_data.float_pos, (t_pos){1, 1}, 0);
@@ -85,7 +86,6 @@ int	tick(t_mlx *vars)
 		collision(vars, vars->player_data.float_pos, (t_pos){1, -1}, 1);
 	}
 	player_pos_update(vars, vars->map);
-	mouse_bonus(vars);
 	map(vars);
 	return (1);
 }
@@ -102,9 +102,9 @@ int	init_mini_map(t_mlx *vars)
 		+ (PLAYER_SIZE >> 2) - (size.x >> 1);
 	origin.y = vars->player_data.float_pos.y * TILE_SIZE \
 		+ (PLAYER_SIZE >> 1) - (size.y >> 1);
-	minimap = &vars->layer[LAYER_MINIMAP];
+	minimap = &vars->layer[MINIMAP];
 	create_pixel(vars, &origin, &size, minimap);
-	put_data_to_img(minimap, vars->layer[LAYER_MONITOR], 0, 0);
+	put_data_to_img(minimap, vars->layer[MONITOR], 0, 0);
 	draw_square(minimap, (t_pos){(size.x + PLAYER_SIZE) >> 1, \
 		(size.y + PLAYER_SIZE) >> 1}, PLAYER_SIZE, 0xFF0FFF0F);
 	return (1);

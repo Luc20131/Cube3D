@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/bonus.h"
+#include "../../headers/cube3d.h"
 
 void	upscaling_first_line(t_data *raycast, t_data *screen, t_upscale *scale)
 {

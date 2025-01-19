@@ -152,15 +152,15 @@ typedef struct s_ray
 
 enum e_layer
 {
-	LAYER_SCREEN,
-	LAYER_OVERLAY,
-	LAYER_TILE_MAP,
-	LAYER_MINIMAP,
-	LAYER_MAP,
-	LAYER_RAYCAST,
-	LAYER_FLOOR,
-	LAYER_MONITOR,
-	LAYER_ACHANGER
+	SCREEN,
+	OVERLAY,
+	TILE_MAP,
+	MINIMAP,
+	MAP,
+	RAYCAST,
+	FLOOR,
+	MONITOR,
+	ACHANGER
 };
 
 typedef struct s_mlx
@@ -216,10 +216,10 @@ typedef struct s_info
 
 enum
 {
-	e_north = -1,
-	e_east,
-	e_south,
-	e_west,
+	NORTH = -1,
+	EAST,
+	SOUTH,
+	WEST,
 };
 
 #endif //TYPES_H

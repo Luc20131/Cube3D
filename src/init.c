@@ -44,12 +44,12 @@ void	init_vars(t_mlx *vars)
 	vars->offset.x = (TILE_SIZE >> 1) - (PLAYER_SIZE >> 1);
 	vars->offset.y = TILE_SIZE >> 1;
 	vars->win = mlx_new_window(vars->mlx, WIDTH_WIN, HEIGHT_WIN, "Cub3D");
-	vars->layer[LAYER_SCREEN] = new_img(vars, WIDTH_WIN, HEIGHT_WIN);
-	vars->layer[LAYER_RAYCAST] = new_img(vars, WIDTH, HEIGHT);
-	vars->layer[LAYER_OVERLAY] = new_file_img("texture/Overlay.xpm", vars);
-	vars->layer[LAYER_FLOOR] = new_file_img("texture/Ground.xpm", vars);
-	vars->layer[LAYER_MONITOR] = new_file_img("texture/monitoring.xpm", vars);
-	vars->layer[LAYER_ACHANGER] = new_file_img("texture/SusMap.xpm", vars);
+	vars->layer[SCREEN] = new_img(vars, WIDTH_WIN, HEIGHT_WIN);
+	vars->layer[RAYCAST] = new_img(vars, WIDTH, HEIGHT);
+	vars->layer[OVERLAY] = new_file_img("texture/Overlay.xpm", vars);
+	vars->layer[FLOOR] = new_file_img("texture/Ground.xpm", vars);
+	vars->layer[MONITOR] = new_file_img("texture/monitoring.xpm", vars);
+	vars->layer[ACHANGER] = new_file_img("texture/SusMap.xpm", vars);
 	vars->anim[0] = new_file_img("texture/animation/Flashlight1.xpm", vars);
 	vars->anim[1] = new_file_img("texture/animation/Flashlight2.xpm", vars);
 	vars->anim[2] = new_file_img("texture/animation/Flashlight3.xpm", vars);
@@ -87,13 +87,13 @@ void	player_pov_on_start(t_mlx *vars)
 	const char	pov_direction = vars->map[pos.y][pos.x];
 
 	if (pov_direction == 'N')
-		set_starting_direction(vars, e_north);
+		set_starting_direction(vars, NORTH);
 	else if (pov_direction == 'S')
-		set_starting_direction(vars, e_south);
+		set_starting_direction(vars, SOUTH);
 	else if (pov_direction == 'E')
-		set_starting_direction(vars, e_east);
+		set_starting_direction(vars, EAST);
 	else if (pov_direction == 'W')
-		set_starting_direction(vars, e_west);
+		set_starting_direction(vars, WEST);
 }
 
 void	player_pos_update(t_mlx *vars, char **map)

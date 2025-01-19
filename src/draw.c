@@ -21,8 +21,8 @@ int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 		pixel.r = vars->stats->ceiling[0];
 		pixel.g = vars->stats->ceiling[1];
 		pixel.b = vars->stats->ceiling[2];
-		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
-		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
+		((int *)vars->layer[RAYCAST].addr)[current->y * \
+		(vars->layer[RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);
@@ -32,13 +32,13 @@ int	print_floor(t_pos *current, t_mlx *vars)
 {
 	t_color	pixel;
 
-	while (current->y < vars->layer[LAYER_RAYCAST].h)
+	while (current->y < vars->layer[RAYCAST].h)
 	{
 		pixel.r = vars->stats->floor[0];
 		pixel.g = vars->stats->floor[1];
 		pixel.b = vars->stats->floor[2];
-		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
-		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
+		((int *)vars->layer[RAYCAST].addr)[current->y * \
+		(vars->layer[RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);
@@ -48,17 +48,17 @@ void	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 {
 	t_posf		tex;
 	t_color		pixel;
-	const int	line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
+	const int	line_length = (vars->layer[RAYCAST].line_length >> 2);
 	const float	step = ((float)img->h / (end->y - current->y));
 
 	tex.x = init_pixel_tex_x(&vars->ray, vars) * img->pixels;
 	tex.y = init_pixel_tex_y(current, step);
-	while ((current->y < end->y) & (current->y < vars->layer[LAYER_RAYCAST].h))
+	while ((current->y < end->y) & (current->y < vars->layer[RAYCAST].h))
 	{
 		tex.y += step;
 		pixel.x = *(unsigned int *)((img->addr + (int)tex.y * \
 			img->line_length) + ((int)tex.x));
-		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
+		((int *)vars->layer[RAYCAST].addr)[current->y * \
 			line_length + current->x] = pixel.x;
 		current->y++;
 	}

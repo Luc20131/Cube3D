@@ -29,7 +29,7 @@ void	error_msg_map(int error, char *content)
 	if (error == E_INVALID_MAP)
 		ft_printf("This file doesn't contain a map\n");
 	if (error == E_TO_MANY_PLAYER)
-		ft_printf("Invalid map\nTo nany player on the map\n");
+		ft_printf("Invalid map\nTo many player on the map\n");
 	if (error == E_NO_PLAYER)
 		ft_printf("Invalid map\nNo player on the map\n", content);
 	if (error == E_INVALID_CHARACTER)
@@ -58,7 +58,7 @@ void	error_msg(int error, char *content)
 	if (error == E_DUPLICATE_KEY)
 		ft_printf("%s is already assigned\n", content);
 	if (error == E_INVALID_LINE)
-		ft_printf("%s is not a valide key", content);
+		ft_printf("%s is not a valid key", content);
 	error_msg_map(error, content);
 }
 

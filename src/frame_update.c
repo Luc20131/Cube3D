@@ -53,7 +53,7 @@ u_int	find_pixel_color(t_pos *index, t_pos *size, t_pos *origin, t_mlx *vars)
 		color = 0x00000000;
 	else
 	{
-		color = get_pixel_img(&vars->layer[LAYER_MAP], \
+		color = get_pixel_img(&vars->layer[MAP], \
 			origin->x + index->x, origin->y + index->y);
 	}
 	return (color);

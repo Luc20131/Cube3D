@@ -16,8 +16,8 @@
 # ifdef BONUS
 #  include "bonus.h"
 # else
-	#  define WIDTH WIDTH_WIN
-	#  define HEIGHT HEIGHT_WIN
+#  define WIDTH WIDTH_WIN
+#  define HEIGHT HEIGHT_WIN
 #  include "types.h"
 # endif
 
@@ -55,7 +55,8 @@ void			autotile_generator(char **map, t_mlx *g);
 
 // ------------ RAYCAST -------------
 
-void				raycast(t_mlx *vars);
+void			raycast(t_mlx *vars);
+void			stop_casting(t_ray *ray, char **map, t_pos size_map);
 
 // ------------ IMG UTILS -------------
 

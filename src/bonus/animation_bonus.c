@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "cube3d.h"
-#include <sys/time.h>
-/* 1/8 s */
 #define ANIME_TIME	125
 
 void	is_moving(t_mlx *vars)

@@ -18,21 +18,22 @@ void	get_and_display_pixel(t_mlx *vars, t_pos tex, t_pos end, int y)
 	float			coef;
 	static float	half_img;
 	static int		line_length;
-	// const t_data	*img_raycast = vars->layer[LAYER_RAYCAST];
-	line_length = vars->layer[LAYER_RAYCAST].line_length >> 2;
-	half_img = vars->layer[LAYER_RAYCAST].h >> 1;
-	if ((tex.x < vars->layer[LAYER_FLOOR].w && tex.x > 0) || \
-		(tex.y < vars->layer[LAYER_FLOOR].h && tex.y > 0))
+	const t_data	*img_raycast = &vars->layer[RAYCAST];
+
+	line_length = img_raycast->line_length >> 2;
+	half_img = img_raycast->h >> 1;
+	if ((tex.x < vars->layer[FLOOR].w && tex.x > 0) || \
+		(tex.y < vars->layer[FLOOR].h && tex.y > 0))
 	{
-		pixel.x = get_pixel_img(&vars->layer[LAYER_FLOOR], tex.x, tex.y);
+		pixel.x = get_pixel_img(&vars->layer[FLOOR], tex.x, tex.y);
 		coef = ((y - half_img) / (half_img)) / 3;
 		if (vars->light)
 			flashlight((t_pos){end.x, y}, &pixel);
 		get_darker_color(coef, &pixel);
-		((int *)vars->layer[LAYER_RAYCAST].addr) \
+		((int *)img_raycast->addr) \
 			[y * (line_length) + end.x] = pixel.x;
-		((int *)vars->layer[LAYER_RAYCAST].addr)[ \
-			(vars->layer[LAYER_RAYCAST].h - y - 1) * line_length + end.x] = pixel.x;
+		((int *)img_raycast->addr) \
+			[(img_raycast->h - y - 1) * line_length + end.x] = pixel.x;
 	}
 }
 
@@ -55,10 +56,10 @@ int	print_floor_ceilling(t_mlx *vars, t_ray *ray, t_pos *end)
 																	ray->pos.y;
 		current_floor.x = weight * ray->floor_wall.x + (0.5 - weight) * \
 																	ray->pos.x;
-		floor_tex.x = (int)(current_floor.x * vars->layer[LAYER_FLOOR].w) \
-										% vars->layer[LAYER_FLOOR].w;
-		floor_tex.y = (int)(current_floor.y * vars->layer[LAYER_FLOOR].h) \
-										% vars->layer[LAYER_FLOOR].h;
+		floor_tex.x = (int)(current_floor.x * vars->layer[FLOOR].w) \
+										% vars->layer[FLOOR].w;
+		floor_tex.y = (int)(current_floor.y * vars->layer[FLOOR].h) \
+										% vars->layer[FLOOR].h;
 		get_and_display_pixel(vars, floor_tex, *end, y);
 	}
 	return (0);

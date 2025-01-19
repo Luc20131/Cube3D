@@ -3,7 +3,9 @@ ECHO = echo
 
 CC = cc
 IFLAGS = -Iheaders/
-CFLAGS = -Werror -Wall -Wextra ${IFLAGS} -DHEIGHT_WIN=$(SCREEN_HEIGHT) -DWIDTH_WIN=$(SCREEN_WIDTH) -g3 -O2
+CFLAGS = -Werror -Wall -Wextra -O2
+CPPFLAGS = -DHEIGHT_WIN=$(SCREEN_HEIGHT) -DWIDTH_WIN=$(SCREEN_WIDTH)
+ALLFLAGS = $(CFLAGS) $(IFLAGS) $(CPPFLAGS)
 NAME = cub3D
 NAME_BONUS = $(NAME)_bonus
 HEADER = ./headers/cube3d.h ./headers/parsing.h ./headers/types.h
@@ -16,7 +18,7 @@ SRC_LIST_BONUS:= upscaling.c map_autotile_bonus.c map_autotile_utils_bonus.c bon
 
 SRC_COMMON=$(addprefix $(SRC_DIR),$(SRC_LIST_COMMON)) $(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))
 SRC_MANDATORY= $(addprefix $(SRC_DIR),$(SRC_LIST_MANDATORY)) $(SRC_COMMON)
-SRC_BONUS:= $(addprefix $(SRC_DIR)bonus/,$(SRC_LIST_BONUS)) $(SRC_COMMON)
+SRC_BONUS= $(addprefix $(SRC_DIR)bonus/,$(SRC_LIST_BONUS)) $(SRC_COMMON)
 
 OBJ_DIR=obj/
 OBJ_MANDATORY=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_MANDATORY))
@@ -32,10 +34,9 @@ LIBFT = $(LIBFT_DIR)libft.a
 
 MINILIBX = minilibx-linux/libmlx_Linux.a
 
-NB_FILES=$(words $(OBJ_COMMON) $(OBJ_MANDATORY))
+NB_FILES=$(words $(OBJ_MANDATORY))
 
-NB_FILES_BONUS=$(words $(OBJ_BONUS))
-NB_OBJ := $(words $(wildcard obj/*.o obj/parsing/*.o obj/bonus/*.o))
+#NB_OBJ = $(words $(wildcard obj/*.o obj/parsing/*.o obj/bonus/*.o))
 
 SCREEN_HEIGHT := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2))
 SCREEN_WIDTH := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1))
@@ -49,7 +50,7 @@ BLUE="\033[0;34m"
 END_COLOUR="\033[0m"
 
 define percent
-	@echo -n $(BLUE)"[$$(echo "scale=2; $$(find $(OBJ_DIR) -maxdepth 2 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(GREEN)
+	@echo -n $(BLUE)"[$$(echo "scale=2; $$(find $(OBJ_DIR) -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(GREEN)
 endef
 
 define prompt
@@ -77,31 +78,31 @@ all : $(MINILIBX)
 	$(call normitest)
 	$(call prompt,$(BLUE),"Creating $(NAME)")
 ifneq ("$(wildcard ${NAME_BONUS})", "")
-	rm -rf $(OBJ_COMMON) $(NAME_BONUS)
+	@rm -rf $(OBJ_COMMON) $(OBJ_BONUS) $(NAME_BONUS)
 endif
 	$(MAKE) $(NAME)
 
 bonus : $(MINILIBX)
 	$(call prompt,$(BLUE),"Creating $(NAME_BONUS)")
 ifneq ("$(wildcard ${NAME})", "")
-	rm -rf $(OBJ_COMMON) $(NAME)
+	@rm -rf $(OBJ_COMMON) $(OBJ_MANDATORY) $(NAME)
 endif
-	$(MAKE) $(NAME_BONUS) CFLAGS="$(CFLAGS) -DBONUS -DHEIGHT=$(RAYCAST_HEIGHT) -DWIDTH=$(RAYCAST_WIDTH)"
+	$(MAKE) $(NAME_BONUS) NB_FILES=$(words $(SRC_BONUS)) CPPFLAGS="$(CPPFLAGS) -DBONUS -DHEIGHT=$(RAYCAST_HEIGHT) -DWIDTH=$(RAYCAST_WIDTH)"
 
 $(OBJ_DIR)%.o:  $(SRC_DIR)%.c Makefile $(HEADER)
 	$(call percent)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(ALLFLAGS) -c $< -o $@
 	@echo -n $(END_COLOUR)
 
 $(NAME) : $(LIBFT) $(OBJ_DIR) $(OBJ_MANDATORY) $(OBJ_COMMON)
 	$(call percent)
-	$(CC) $(CFLAGS) -o $@ $(OBJ_MANDATORY) $(INCLUDE)
+	$(CC) $(ALLFLAGS) -o $@ $(OBJ_MANDATORY) $(INCLUDE)
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
 
 $(NAME_BONUS) : $(LIBFT) $(OBJ_DIR) $(OBJ_COMMON) $(OBJ_DIR_BONUS) $(OBJ_BONUS) $(OBJ_MANDATORY) ./headers/bonus.h
 	$(call percent)
-	$(CC) $(CFLAGS) -o $@ $(OBJ_BONUS) $(INCLUDE)
+	$(CC) $(ALLFLAGS) -o $@ $(OBJ_BONUS) $(INCLUDE)
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME_BONUS) compiled")
 
@@ -136,5 +137,5 @@ run :
 	@./$(NAME) map/42.cub
 
 debug :
-	$(MAKE) libft.a -C libft CFLAG="$(CFLAG) -g3"
-	$(MAKE) re CFLAG="$(CFLAG) -g3"
+	$(MAKE) re -C libft CFLAGS="$(CFLAGS) -g3"
+	$(MAKE) re CFLAGS="$(CFLAGS) -g3"
