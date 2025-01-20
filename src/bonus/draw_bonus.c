@@ -106,8 +106,8 @@ t_data	img_cut(t_pos pos, t_mlx *vars, t_pos pos_)
 		while (++j < slice.height)
 		{
 			put_pixel_img(&vars->layer[MAP], pos_.x + j, pos_.y + i, \
-		get_pixel_img(&vars->layer[ACHANGER], slice.x + j, slice.y + i));
+		get_pixel_img(&vars->layer[TILES], slice.x + j, slice.y + i));
 		}
 	}
-	return (vars->layer[ACHANGER]);
+	return (vars->layer[TILES]);
 }

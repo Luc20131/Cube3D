@@ -21,7 +21,7 @@ void	delete_all_img(t_mlx *vars)
 	my_destroy_img(vars->mlx, vars->layer[RAYCAST].img);
 	my_destroy_img(vars->mlx, vars->layer[FLOOR].img);
 	my_destroy_img(vars->mlx, vars->layer[MONITOR].img);
-	my_destroy_img(vars->mlx, vars->layer[ACHANGER].img);
+	my_destroy_img(vars->mlx, vars->layer[TILES].img);
 	my_destroy_img(vars->mlx, vars->stats->img_texture[0].img);
 	my_destroy_img(vars->mlx, vars->stats->img_texture[1].img);
 	my_destroy_img(vars->mlx, vars->stats->img_texture[2].img);
@@ -46,7 +46,7 @@ int	exit_game(t_mlx *vars)
 		mlx_destroy_window(vars->mlx, vars->win);
 	mlx_destroy_display(vars->mlx);
 	nfree(vars->mlx);
-	exit(1);
+	exit(0);
 }
 
 int	check_collision(t_pos index, const t_mlx *vars, char direction)
@@ -86,6 +86,8 @@ int	main(const int argc, char **argv)
 		return (1);
 	vars.map = info.map;
 	vars.mlx = mlx_init();
+	if (!vars.mlx)
+		return (1);
 	if (init_data_texture(&info, &vars) == E_MALLOC)
 		return (exit_game(&vars), 1);
 	init_vars(&vars);

@@ -160,7 +160,7 @@ enum e_layer
 	RAYCAST,
 	FLOOR,
 	MONITOR,
-	ACHANGER
+	TILES
 };
 
 typedef struct s_mlx
