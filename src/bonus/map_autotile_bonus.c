@@ -78,7 +78,7 @@ int	*init_dir(int *c, t_pos pos, t_mlx g, t_pos map_size)
 	return (c);
 }
 
-void	autotile_dir(char **map, t_mlx *g, int *t, t_pos pos)
+int	autotile_dir(char **map, t_mlx *g, int *t, t_pos pos)
 {
 	int		i;
 	int		*dir;
@@ -87,12 +87,15 @@ void	autotile_dir(char **map, t_mlx *g, int *t, t_pos pos)
 	map_size = size_map(map);
 	i = -1;
 	dir = ft_calloc(9, sizeof(int));
+	if (dir == NULL)
+		return (E_MALLOC);
 	while (++i < 9)
 		dir[i] = 1;
 	dir = init_dir(dir, pos, *g, map_size);
 	*t = (1 * dir[0] + 2 * dir[1] + 4 * dir[2] + 8 * dir[3] + \
 		16 * dir[4] + 32 * dir[5] + 64 * dir[6] + 128 * dir[7] + 256 * dir[8]);
 	nfree(dir);
+	return (0);
 }
 
 void	autotile_generator(char **map, t_mlx *g)

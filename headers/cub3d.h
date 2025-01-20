@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUBE3D_H
-# define CUBE3D_H
+#ifndef CUB3D_H
+# define CUB3D_H
 
 # ifdef BONUS
 #  include "bonus.h"
@@ -20,7 +20,7 @@
 #  define HEIGHT HEIGHT_WIN
 #  include "types.h"
 # endif
-#  include "parsing.h"
+# include "parsing.h"
 
 t_tab_size		char_tab_len(char **tab);
 void			wall(t_data *img, float distance);
