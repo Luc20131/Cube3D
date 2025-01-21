@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/19 09:36:54 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/21 02:34:39 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int		*face_corner_v(int *c, t_pos pos, t_mlx g, char **map);
 int		*face_corner_h(int *c, t_pos pos, t_mlx g, char **map);
 int		*x_dir(int *c, t_pos pos, t_mlx g, t_pos map_size);
 void	draw_square(t_data *img, t_pos origin, int size, int color);
+void	collision(t_mlx *vars, t_posf pos, t_pos dir, int axe);
 
 // ------------ MINIMAP -------------
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   frame_update_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/21 02:34:28 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,33 +37,6 @@ void	map(t_mlx *vars)
 			vars->layer[MINIMAP].img, minimap_offset, 100);
 	}
 	fps(vars);
-}
-
-void	collision(t_mlx *vars, t_posf pos, t_pos dir, int axe)
-{
-	if (axe == 0)
-	{
-		if (vars->map[(int)pos.y]
-			[(int)(pos.x + (PLAYER_SPEED * vars->ray.dir.x) * dir.x)] != '1')
-			vars->player_data.float_pos.x += (PLAYER_SPEED \
-				* vars->ray.dir.x) * dir.x;
-		if (vars->map[(int)(pos.y + (PLAYER_SPEED \
-			* vars->ray.dir.y) * dir.y)] \
-			[(int)pos.x] != '1')
-			vars->player_data.float_pos.y += (PLAYER_SPEED \
-				* vars->ray.dir.y) * dir.y;
-	}
-	else if (axe == 1)
-	{
-		if (vars->map[(int)pos.y]
-			[(int)(pos.x + (PLAYER_SPEED * vars->ray.dir.y) * dir.x)] != '1')
-			vars->player_data.float_pos.x += (PLAYER_SPEED \
-				* vars->ray.dir.y) * dir.x;
-		if (vars->map[(int)(pos.y + (PLAYER_SPEED * vars->ray.dir.x) * dir.y)] \
-		[(int)pos.x] != '1')
-			vars->player_data.float_pos.y += (PLAYER_SPEED \
-				* vars->ray.dir.x) * dir.y;
-	}
 }
 
 int	tick(t_mlx *vars)
