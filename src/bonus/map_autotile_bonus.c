@@ -6,13 +6,13 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:28:03 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/21 14:58:19 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/cube3d.h"
 
-int	*x_dir(int *c, t_pos pos, t_mlx g, t_pos map_size)
+int	*x_dir(int c[9], t_pos pos, t_mlx g, t_pos map_size)
 {
 	if (pos.x -1 >= 0 && pos.y -1 >= 0 && g.map[pos.x -1][pos.y -1] == '0')
 		c[0] = '0' - 48;
@@ -39,7 +39,7 @@ int	*x_dir(int *c, t_pos pos, t_mlx g, t_pos map_size)
 	return (c);
 }
 
-int	*plus_dir(int *c, t_pos pos, t_mlx g, t_pos map_size)
+int	*plus_dir(int c[9], t_pos pos, t_mlx g, t_pos map_size)
 {
 	if (pos.x -1 >= 0)
 		if (g.map[pos.x -1][pos.y] == '0')
@@ -60,7 +60,7 @@ int	*plus_dir(int *c, t_pos pos, t_mlx g, t_pos map_size)
 	return (c);
 }
 
-int	*init_dir(int *c, t_pos pos, t_mlx g, t_pos map_size)
+int *init_dir(int c[9], t_pos pos, t_mlx g, t_pos map_size)
 {
 	int	i;
 
@@ -75,27 +75,26 @@ int	*init_dir(int *c, t_pos pos, t_mlx g, t_pos map_size)
 		if (pos.x -1 >= 0 && g.map[pos.x -1][pos.y] == '1')
 			c = fill_dir_h(c, g.map, (t_pos){pos.x -1, pos.y}, (t_pos){0, 3});
 	}
-	return (c);
+	return (0);
 }
 
-void	autotile_dir(char **map, t_mlx *g, int *t, t_pos pos)
+int	autotile_dir(char **map, t_mlx *g, int *t, t_pos pos)
 {
 	int		i;
-	int		*dir;
+	int		dir[9];
 	t_pos	map_size;
 
 	map_size = size_map(map);
 	i = -1;
-	dir = ft_calloc(9, sizeof(int));
 	while (++i < 9)
 		dir[i] = 1;
-	dir = init_dir(dir, pos, *g, map_size);
+	init_dir(dir, pos, *g, map_size);
 	*t = (1 * dir[0] + 2 * dir[1] + 4 * dir[2] + 8 * dir[3] + \
 		16 * dir[4] + 32 * dir[5] + 64 * dir[6] + 128 * dir[7] + 256 * dir[8]);
-	nfree(dir);
+	return (0);
 }
 
-void	autotile_generator(char **map, t_mlx *g)
+int	autotile_generator(char **map, t_mlx *g)
 {
 	int		h;
 	int		w;
@@ -108,10 +107,14 @@ void	autotile_generator(char **map, t_mlx *g)
 	h = -1;
 	size = map_size.y * map_size.x;
 	g->stats_tile = ft_calloc(size, sizeof(int *));
+	if (!g->stats_tile)
+		return (1);
 	while (map[++h])
 	{
 		w = -1;
 		while (map[h][++w] != '\0')
-			autotile_dir(map, g, &g->stats_tile[++i], (t_pos){h, w});
+			if (autotile_dir(map, g, &g->stats_tile[++i], (t_pos){h, w}))
+					return (nfree(g->stats_tile), 1);
 	}
+	return (0);
 }

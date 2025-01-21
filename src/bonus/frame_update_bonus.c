@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/15 18:34:25 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/21 13:52:44 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	map(t_mlx *vars)
 	{
 		vars->stats->map_is_create = 1;
 		vars->stats->old_pos = vars->player_data.float_pos;
-		draw_map(vars);
+		if (draw_map(vars) == 1)
+			exit_game(vars);
 		nfree(vars->stats_tile);
 		init_mini_map(vars);
 		raycast(vars);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 01:43:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/07 20:53:18 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/21 14:15:43 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ int				key_released(int keycode, t_mlx *vars);
 // ------------ MINIMAP -------------
 
 t_pos			size_map(char **map);
-void			draw_map(t_mlx *game);
+int				draw_map(t_mlx *game);
 int				map_gen(t_mlx *vars, char **map_tab);
 void			start_tiles_init(t_mlx *g);
-void			autotile_generator(char **map, t_mlx *g);
+int				autotile_generator(char **map, t_mlx *g);
 
 // ------------ RAYCAST -------------
 
