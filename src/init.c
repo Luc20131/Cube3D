@@ -17,6 +17,11 @@ void	init_vars(t_mlx *vars)
 	vars->offset.x = (TILE_SIZE >> 1) - (PLAYER_SIZE >> 1);
 	vars->offset.y = TILE_SIZE >> 1;
 	vars->win = mlx_new_window(vars->mlx, WIDTH_WIN, HEIGHT_WIN, "Cub3d");
+	if (!vars->win)
+	{
+		printf("Error\nMLX window alloc failed\n");
+		exit_game(vars);
+	}
 	vars->layer[SCREEN] = new_img(vars, WIDTH_WIN, HEIGHT_WIN);
 	vars->layer[RAYCAST] = new_img(vars, WIDTH, HEIGHT);
 	get_player_pos(vars->map, vars);
