@@ -39,8 +39,8 @@ NB_FILES=$(words $(OBJ_MANDATORY))
 SCREEN_HEIGHT := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2))
 SCREEN_WIDTH := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1))
 
-RAYCAST_HEIGHT := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)) / 4)
-RAYCAST_WIDTH := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)) / 4)
+RAYCAST_HEIGHT := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)) / $$(($(SCREEN_HEIGHT) / 1080 * 2)))
+RAYCAST_WIDTH := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)) / $$(($(SCREEN_WIDTH) / 1920 * 2)))
 
 GREEN="\033[0;32m"
 RED="\033[0;31m"

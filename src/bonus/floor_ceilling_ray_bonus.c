@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:32:36 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/22 14:20:21 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	get_and_display_pixel(t_mlx *vars, t_pos tex, t_pos end, int y)
 	t_color			pixel;
 	static int		line_length;
 	const t_data	*img_raycast = &vars->layer[RAYCAST];
-	const float	inverse_distance = (1. / ((vars->ray.current_dist * 3)));
+	const float		inverse_distance = (1. / ((vars->ray.current_dist * 3)));
 
 	line_length = img_raycast->line_length >> 2;
 	if ((tex.x < vars->layer[FLOOR].w && tex.x > 0) || \

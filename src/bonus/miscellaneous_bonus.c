@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/22 14:26:28 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	fps(const t_mlx *vars)
 void	flashlight(t_pos pixel_pos, t_color *color)
 {
 	unsigned int		distance_sqrt;
-	const unsigned int	limit = HEIGHT * 100;
+	const unsigned int	limit = HEIGHT * 180;
 	const unsigned int	half_height = pixel_pos.y - (HEIGHT >> 1);
 	const unsigned int	half_width = pixel_pos.x - (WIDTH >> 1);
 	float				coef_limit;
