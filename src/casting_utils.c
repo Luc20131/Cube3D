@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   casting_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 02:06:05 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/07 00:28:50 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <limits.h>
-#include "cube3d.h"
+#include "cub3d.h"
 
 void	init_value_for_cast(t_ray *ray, t_mlx *vars, t_pos *origin)
 {
 	ray->hit = 0;
 	ray->map_pos = ray->initial_pos;
 	ray->camera_x = ((2 * origin->x) / (float) \
-		vars->layer[LAYER_RAYCAST].w) - 1;
+		vars->layer[RAYCAST].w) - 1;
 	ray->ray_dir.x = ray->dir.x + ray->plane.x * ray->camera_x;
 	ray->ray_dir.y = ray->dir.y + ray->plane.y * ray->camera_x;
 	if (ray->ray_dir.x == 0)
@@ -36,17 +35,16 @@ int	is_player(const char c)
 	return (c == 'N' || c == 'E' || c == 'S' || c == 'W');
 }
 
-t_pos	tile_selector(t_tile tile[49], int *stats)
+void	stop_casting(t_ray *ray, char **map, t_pos size_map)
 {
-	int		i;
-
-	i = -1;
-	while (++i < 50)
+	if (ray->map_pos.x < 0 || ray->map_pos.y < 0 \
+			|| ray->map_pos.x >= size_map.x \
+			|| ray->map_pos.y >= size_map.y)
 	{
-		if (*stats == tile[i].dir)
-		{
-			return (tile[i].pos);
-		}
+		ray->side_dist.x = ray->delta_dist.x + 1;
+		ray->side_dist.y = ray->delta_dist.y + 1;
+		ray->hit = 1;
 	}
-	return (tile[47].pos);
+	else if (map[ray->map_pos.y][ray->map_pos.x] > '0')
+		ray->hit = 1;
 }

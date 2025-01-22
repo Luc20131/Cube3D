@@ -6,11 +6,12 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:28:03 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/21 14:58:19 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/22 13:38:38 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/cube3d.h"
+
+#include "../../headers/cub3d.h"
 
 int	*x_dir(int c[9], t_pos pos, t_mlx g, t_pos map_size)
 {

@@ -3,26 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/14 17:26:54 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3d.h"
-#include "parsing.h"
+#include "cub3d.h"
 
 void	delete_all_img(t_mlx *vars)
 {
-	my_destroy_img(vars->mlx, vars->layer[LAYER_SCREEN].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_OVERLAY].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_MINIMAP].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_MAP].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_RAYCAST].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_FLOOR].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_MONITOR].img);
-	my_destroy_img(vars->mlx, vars->layer[LAYER_ACHANGER].img);
+	my_destroy_img(vars->mlx, vars->layer[SCREEN].img);
+	my_destroy_img(vars->mlx, vars->layer[OVERLAY].img);
+	my_destroy_img(vars->mlx, vars->layer[MINIMAP].img);
+	my_destroy_img(vars->mlx, vars->layer[MAP].img);
+	my_destroy_img(vars->mlx, vars->layer[RAYCAST].img);
+	my_destroy_img(vars->mlx, vars->layer[FLOOR].img);
+	my_destroy_img(vars->mlx, vars->layer[MONITOR].img);
+	my_destroy_img(vars->mlx, vars->layer[TILES].img);
 	my_destroy_img(vars->mlx, vars->stats->img_texture[0].img);
 	my_destroy_img(vars->mlx, vars->stats->img_texture[1].img);
 	my_destroy_img(vars->mlx, vars->stats->img_texture[2].img);
@@ -33,7 +32,7 @@ void	delete_all_img(t_mlx *vars)
 	my_destroy_img(vars->mlx, vars->anim[3].img);
 }
 
-void	exit_game(t_mlx *vars)
+int	exit_game(t_mlx *vars)
 {
 	int	i;
 
@@ -47,7 +46,7 @@ void	exit_game(t_mlx *vars)
 		mlx_destroy_window(vars->mlx, vars->win);
 	mlx_destroy_display(vars->mlx);
 	nfree(vars->mlx);
-	exit(1);
+	exit(0);
 }
 
 int	check_collision(t_pos index, const t_mlx *vars, char direction)
@@ -87,12 +86,15 @@ int	main(const int argc, char **argv)
 		return (1);
 	vars.map = info.map;
 	vars.mlx = mlx_init();
+	if (!vars.mlx)
+		return (1);
 	if (init_data_texture(&info, &vars) == E_MALLOC)
 		return (exit_game(&vars), 1);
 	init_vars(&vars);
 	player_pov_on_start(&vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
 	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
+	mlx_hook(vars.win, DestroyNotify, StructureNotifyMask, exit_game, &vars);
 	mlx_loop_hook(vars.mlx, tick, &vars);
 	mlx_do_key_autorepeatoff(vars.mlx);
 	mlx_loop(vars.mlx);

@@ -6,11 +6,11 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/21 15:45:12 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/22 13:39:27 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3d.h"
+#include "cub3d.h"
 
 void	draw_square(t_data *img, t_pos origin, int size, int color)
 {

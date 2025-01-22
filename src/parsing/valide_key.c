@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   valide_key.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:46:06 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/14 15:04:51 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:58:13 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "cub3d.h"
 
 char	*get_key_name(int key)
 {

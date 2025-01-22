@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   draw_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:31:17 by sjean             #+#    #+#             */
-/*   Updated: 2024/12/05 16:16:45 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3d.h"
+#include "cub3d.h"
+#include "../../headers/types.h"
 
 int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 {
@@ -18,15 +19,15 @@ int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
 	float	coef;
 	float	half_height;
 
-	half_height = (vars->layer[LAYER_RAYCAST].h / 2.);
+	half_height = (vars->layer[RAYCAST].h / 2.);
 	(void)wall_top;
 	while (current->y < wall_top->y)
 	{
 		pixel.x = 0xFF000030;
 		coef = (1 - current->y / half_height);
 		get_darker_color(coef, &pixel);
-		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
-		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
+		((int *)vars->layer[RAYCAST].addr)[current->y * \
+		(vars->layer[RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);
@@ -38,15 +39,15 @@ int	print_floor_bonus(t_pos *current, t_mlx *vars, t_ray *ray)
 	float	coef;
 	float	inverse_heigth;
 
-	inverse_heigth = (1. / vars->layer[LAYER_RAYCAST].h);
-	while (current->y < vars->layer[LAYER_RAYCAST].h)
+	inverse_heigth = (1. / vars->layer[RAYCAST].h);
+	while (current->y < vars->layer[RAYCAST].h)
 	{
 		pixel.x = 0xFF170501;
 		coef = ((current->y - inverse_heigth) / inverse_heigth);
 		if (ray->perp_wall_dist > 1)
 			get_darker_color(coef, &pixel);
-		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
-		(vars->layer[LAYER_RAYCAST].line_length >> 2) + current->x] = pixel.x;
+		((int *)vars->layer[RAYCAST].addr)[current->y * \
+		(vars->layer[RAYCAST].line_length >> 2) + current->x] = pixel.x;
 		current->y++;
 	}
 	return (0);
@@ -57,12 +58,11 @@ void	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 	t_posf		tex;
 	t_color		pixel;
 	const float	inverse_distance = (1. / (vars->ray.perp_wall_dist * 2));
-	const int	line_length = (vars->layer[LAYER_RAYCAST].line_length >> 2);
 	const float	step = ((float)img->h / (end->y - current->y));
 
 	tex.x = init_pixel_tex_x(&vars->ray, vars) * img->pixels;
 	tex.y = init_pixel_tex_y(current, step);
-	while ((current->y < end->y) & (current->y < vars->layer[LAYER_RAYCAST].h))
+	while ((current->y < end->y) & (current->y < vars->layer[RAYCAST].h))
 	{
 		tex.y += step;
 		if (vars->ray.perp_wall_dist > 13)
@@ -76,8 +76,8 @@ void	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 			if (vars->ray.perp_wall_dist > 0.5)
 				get_darker_color(inverse_distance, &pixel);
 		}
-		((int *)vars->layer[LAYER_RAYCAST].addr)[current->y * \
-			line_length + current->x] = pixel.x;
+		((int *)vars->layer[RAYCAST].addr)[current->y * \
+			vars->layer[RAYCAST].bits_per_line + current->x] = pixel.x;
 		current->y++;
 	}
 }
@@ -105,9 +105,9 @@ t_data	img_cut(t_pos pos, t_mlx *vars, t_pos pos_)
 		j = -1;
 		while (++j < slice.height)
 		{
-			put_pixel_img(&vars->layer[LAYER_MAP], pos_.x + j, pos_.y + i, \
-		get_pixel_img(&vars->layer[LAYER_ACHANGER], slice.x + j, slice.y + i));
+			put_pixel_img(&vars->layer[MAP], pos_.x + j, pos_.y + i, \
+		get_pixel_img(&vars->layer[TILES], slice.x + j, slice.y + i));
 		}
 	}
-	return (vars->layer[LAYER_ACHANGER]);
+	return (vars->layer[TILES]);
 }

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus.c                                            :+:      :+:    :+:   */
+/*   miscellaneous_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42.fr>                +#+  +:+       +#+  */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/12/09 06:32:34 by lrichaud            ###   ########.fr    */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/bonus.h"
+#include "../../headers/cub3d.h"
 
 char	*free_s2_to_join(const char *s1, char *s2)
 {
@@ -37,19 +37,22 @@ void	fps(const t_mlx *vars)
 
 void	flashlight(t_pos pixel_pos, t_color *color)
 {
-	unsigned int	distance_sqrt;
-	const unsigned int		limit = HEIGHT * 185;
-	float			coef_limit = (1./(limit >> 2));
+	unsigned int		distance_sqrt;
+	const unsigned int	limit = HEIGHT * 180;
+	const unsigned int	half_height = pixel_pos.y - (HEIGHT >> 1);
+	const unsigned int	half_width = pixel_pos.x - (WIDTH >> 1);
+	float				coef_limit;
 
-	distance_sqrt = ((unsigned int)(pixel_pos.y - (HEIGHT >> 1)) * ((unsigned int)(pixel_pos.y - (HEIGHT >> 1))) \
-		+ (((unsigned int)(pixel_pos.x - (WIDTH >> 1)))) * ((unsigned int)(pixel_pos.x - (WIDTH >> 1))));
+	coef_limit = (1. / (limit >> 2));
+	distance_sqrt = (half_height) * (half_height) + (half_width * half_width);
 	if (distance_sqrt < limit)
 	{
 		if (distance_sqrt > (limit * 0.65))
 		{
-			color->b = fmin(255, color->b + (color->b * (limit - distance_sqrt) * coef_limit));
-			color->g = fmin(255, color->g + (color->g * (limit - distance_sqrt) * coef_limit));
-			color->r = fmin(255, color->r + (color->r * (limit - distance_sqrt) * coef_limit));
+			coef_limit = (limit - distance_sqrt) * coef_limit;
+			color->b = fmin(255, color->b + (color->b * coef_limit));
+			color->g = fmin(255, color->g + (color->g * coef_limit));
+			color->r = fmin(255, color->r + (color->r * coef_limit));
 		}
 		else
 		{

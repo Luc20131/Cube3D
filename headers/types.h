@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/14 17:26:54 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:56:51 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,15 +152,15 @@ typedef struct s_ray
 
 enum e_layer
 {
-	LAYER_SCREEN,
-	LAYER_OVERLAY,
-	LAYER_TILE_MAP,
-	LAYER_MINIMAP,
-	LAYER_MAP,
-	LAYER_RAYCAST,
-	LAYER_FLOOR,
-	LAYER_MONITOR,
-	LAYER_ACHANGER
+	SCREEN,
+	OVERLAY,
+	TILE_MAP,
+	MINIMAP,
+	MAP,
+	RAYCAST,
+	FLOOR,
+	MONITOR,
+	TILES
 };
 
 typedef struct s_mlx
@@ -205,7 +205,6 @@ typedef struct s_info
 	int		ceiling[3];
 	int		floor[3];
 	int		texture_valid[4];
-	/*0 NO + 1 SO + 2 EA + 3 WE*/
 	t_data	img_texture[4];
 	t_mlx	*display;
 	t_pos	player;
@@ -222,5 +221,13 @@ enum
 	SOUTH,
 	WEST,
 };
+
+typedef struct s_stats
+{
+	struct s_stats	*prev;
+	int				dir;
+	t_pos			pos;
+	struct s_stats	*next;
+}	t_stats;
 
 #endif //TYPES_H

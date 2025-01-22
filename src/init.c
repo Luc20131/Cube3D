@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
+#include "../headers/cub3d.h"
 
 void	get_player_pos(char **map, t_mlx *vars)
 {
@@ -44,12 +44,12 @@ void	init_vars(t_mlx *vars)
 	vars->offset.x = (TILE_SIZE >> 1) - (PLAYER_SIZE >> 1);
 	vars->offset.y = TILE_SIZE >> 1;
 	vars->win = mlx_new_window(vars->mlx, WIDTH_WIN, HEIGHT_WIN, "Cub3D");
-	vars->layer[LAYER_SCREEN] = new_img(vars, WIDTH_WIN, HEIGHT_WIN);
-	vars->layer[LAYER_RAYCAST] = new_img(vars, WIDTH, HEIGHT);
-	vars->layer[LAYER_OVERLAY] = new_file_img("texture/Overlay.xpm", vars);
-	vars->layer[LAYER_FLOOR] = new_file_img("texture/Ground.xpm", vars);
-	vars->layer[LAYER_MONITOR] = new_file_img("texture/monitoring.xpm", vars);
-	vars->layer[LAYER_ACHANGER] = new_file_img("texture/SusMap.xpm", vars);
+	vars->layer[SCREEN] = new_img(vars, WIDTH_WIN, HEIGHT_WIN);
+	vars->layer[RAYCAST] = new_img(vars, WIDTH, HEIGHT);
+	vars->layer[OVERLAY] = new_file_img("texture/Overlay.xpm", vars);
+	vars->layer[FLOOR] = new_file_img("texture/Ground.xpm", vars);
+	vars->layer[MONITOR] = new_file_img("texture/monitoring.xpm", vars);
+	vars->layer[TILES] = new_file_img("texture/SusMap.xpm", vars);
 	vars->anim[0] = new_file_img("texture/animation/Flashlight1.xpm", vars);
 	vars->anim[1] = new_file_img("texture/animation/Flashlight2.xpm", vars);
 	vars->anim[2] = new_file_img("texture/animation/Flashlight3.xpm", vars);

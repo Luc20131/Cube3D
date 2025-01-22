@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:41:54 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/14 16:58:51 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:58:11 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
-#include "cube3d.h"
+#include "cub3d.h"
 
 int	get_arg(t_info *info)
 {

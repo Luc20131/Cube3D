@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_autotile_utils_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:22:29 by sjean             #+#    #+#             */
-/*   Updated: 2024/11/13 01:49:19 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/cube3d.h"
+#include "../../headers/cub3d.h"
 
 int	*fill_dir_h(int *c, char **map, t_pos pos, t_pos fill)
 {

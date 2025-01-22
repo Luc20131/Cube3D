@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map_v2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:52:36 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/10 15:05:13 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:57:46 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "cub3d.h"
 
 static void	clean_map(char **map)
 {

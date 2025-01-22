@@ -6,11 +6,11 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:56:26 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/07 20:43:18 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
+#include "../headers/cub3d.h"
 #define PIX_PER_RAY 1
 
 void	side_dist_and_stepper(t_ray	*ray)
@@ -39,7 +39,7 @@ void	side_dist_and_stepper(t_ray	*ray)
 	}
 }
 
-int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars)
+int	print_texture_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars)
 {
 	t_pos	current;
 	t_data	img_wall;
@@ -53,20 +53,6 @@ int	print_display_from_ray(t_pos *wall_top, t_pos *end, t_mlx *vars)
 	print_wall(&current, vars, end, &img_wall);
 	print_floor(&current, vars);
 	return (0);
-}
-
-void	stop_casting(t_ray *ray, char **map, t_pos size_map)
-{
-	if (ray->map_pos.x < 0 || ray->map_pos.y < 0 \
-			|| ray->map_pos.x >= size_map.x \
-			|| ray->map_pos.y >= size_map.y)
-	{
-		ray->side_dist.x = ray->delta_dist.x + 1;
-		ray->side_dist.y = ray->delta_dist.y + 1;
-		ray->hit = 1;
-	}
-	else if (map[ray->map_pos.y][ray->map_pos.x] > '0')
-		ray->hit = 1;
 }
 
 int	one_cast(t_ray *ray, t_mlx *vars)
@@ -103,24 +89,23 @@ void	wall_printer_from_cast(t_ray *ray, t_mlx *vars, t_pos *wall_top)
 	i = 0;
 	if (ray->perp_wall_dist == 0)
 		ray->perp_wall_dist = 0.001;
-	line_height = (int)(vars->layer[LAYER_RAYCAST].h / ray->perp_wall_dist);
-	wall_top->y = -line_height + (vars->layer[LAYER_RAYCAST].h >> 1);
+	line_height = (int)(vars->layer[RAYCAST].h / ray->perp_wall_dist);
+	wall_top->y = -line_height + (vars->layer[RAYCAST].h >> 1);
 	end = *wall_top;
-	end.y = line_height + (vars->layer[LAYER_RAYCAST].h >> 1);
+	end.y = line_height + (vars->layer[RAYCAST].h >> 1);
 	while (i < PIX_PER_RAY)
 	{
-		print_display_from_ray(wall_top, &end, vars);
+		print_texture_from_ray(wall_top, &end, vars);
 		i++;
 		wall_top->x++;
 	}
 	wall_top->x -= PIX_PER_RAY;
 }
 
-int	raycast(t_mlx *vars)
+void	raycast(t_mlx *vars)
 {
 	t_pos	origin;
 
-	origin = vars->player_data.pixel_pos;
 	vars->ray.pos.x = vars->player_data.float_pos.x;
 	vars->ray.pos.y = vars->player_data.float_pos.y;
 	vars->ray.map_pos.x = (int) vars->player_data.float_pos.x;
@@ -131,7 +116,7 @@ int	raycast(t_mlx *vars)
 		rotate_left(vars);
 	else if (vars->player_data.movement.rotating == -1)
 		rotate_right(vars);
-	while (origin.x < vars->layer[LAYER_RAYCAST].w)
+	while (origin.x < vars->layer[RAYCAST].w)
 	{
 		init_value_for_cast(&vars->ray, vars, &origin);
 		side_dist_and_stepper(&vars->ray);
@@ -140,7 +125,5 @@ int	raycast(t_mlx *vars)
 		origin.x += PIX_PER_RAY;
 	}
 	mlx_put_image_to_window(vars->mlx, vars->win, \
-		vars->layer[LAYER_RAYCAST].img, 0, 0);
-
-	return (0);
+		vars->layer[RAYCAST].img, 0, 0);
 }

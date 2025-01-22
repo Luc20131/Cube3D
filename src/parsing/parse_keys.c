@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_keys.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:00:05 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/14 14:48:12 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:57:31 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
-#include "cube3d.h"
+#include "cub3d.h"
 
 char	*get_key_word(char *line)
 {

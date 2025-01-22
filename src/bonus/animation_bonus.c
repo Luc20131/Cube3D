@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   animation_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/14 17:26:54 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3d.h"
-#include <sys/time.h>
-/* 1/8 s */
+#include "cub3d.h"
 #define ANIME_TIME	125
 
 void	is_moving(t_mlx *vars)

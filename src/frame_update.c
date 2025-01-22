@@ -6,11 +6,11 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/11/15 07:56:38 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/cube3d.h"
+#include "../headers/cub3d.h"
 
 int	tick(t_mlx *vars)
 {
@@ -53,29 +53,8 @@ u_int	find_pixel_color(t_pos *index, t_pos *size, t_pos *origin, t_mlx *vars)
 		color = 0x00000000;
 	else
 	{
-		color = get_pixel_img(&vars->layer[LAYER_MAP], \
+		color = get_pixel_img(&vars->layer[MAP], \
 			origin->x + index->x, origin->y + index->y);
 	}
 	return (color);
-}
-
-void	create_pixel(t_mlx *vars, t_pos *origin, t_pos *size, t_data *minimap)
-{
-	t_pos			index;
-	unsigned int	pixel;
-
-	index.y = 0;
-	while (index.y < size->y)
-	{
-		index.x = 0;
-		while (index.x < size->x)
-		{
-			pixel = find_pixel_color(&index, size, origin, vars);
-			put_pixel_img(minimap, index.x, index.y, pixel);
-			index.x++;
-		}
-		put_pixel_img(minimap, origin->x, origin->y, 0xFF3F3F3F);
-		put_pixel_img(minimap, index.x, index.y, 0x003F3F3F);
-		index.y++;
-	}
 }
