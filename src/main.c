@@ -34,18 +34,17 @@ void	delete_all_img(t_mlx *vars)
 
 int	exit_game(t_mlx *vars)
 {
-	int	i;
-
-	i = 0;
-	mlx_do_key_autorepeaton(vars->mlx);
-	while (vars->map[i])
-		nfree(vars->map[i++]);
-	nfree(vars->map);
-	delete_all_img(vars);
-	if (vars->win)
-		mlx_destroy_window(vars->mlx, vars->win);
-	mlx_destroy_display(vars->mlx);
-	nfree(vars->mlx);
+	if (vars->mlx)
+	{
+		if (vars->map)
+			freetab(vars->map);
+		delete_all_img(vars);
+		if (vars->win)
+			mlx_destroy_window(vars->mlx, vars->win);
+		mlx_do_key_autorepeaton(vars->mlx);
+		mlx_destroy_display(vars->mlx);
+		nfree(vars->mlx);
+	}
 	exit(0);
 }
 
@@ -78,18 +77,18 @@ int	main(const int argc, char **argv)
 	t_mlx	vars;
 
 	ft_bzero(&vars, sizeof(t_mlx));
+	vars.mlx = mlx_init();
+	if (!vars.mlx)
+		exit_game(&vars);
 	init_info(&info);
 	vars.stats = &info;
 	if (argc != 2)
-		return (printf("Error\nNot enough arguments\n"), 1);
+		return (printf("Error\nNot enough arguments\n"), exit_game(&vars));
 	if (parsing_cube(argv[1], &info) == 0)
-		return (1);
+		return (exit_game(&vars));
 	vars.map = info.map;
-	vars.mlx = mlx_init();
-	if (!vars.mlx)
-		return (1);
 	if (init_data_texture(&info, &vars) == E_MALLOC)
-		return (exit_game(&vars), 1);
+		exit_game(&vars);
 	init_vars(&vars);
 	player_pov_on_start(&vars);
 	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);

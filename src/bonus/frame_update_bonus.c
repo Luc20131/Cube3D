@@ -26,7 +26,7 @@ void	map(t_mlx *vars)
 			MINIMAP_SIZE * TILE_SIZE);
 		init_mini_map(vars);
 		raycast(vars);
-		mlx_put_image_to_window(vars->mlx, vars->win, \
+		mlx_put_image_to_window(vars->mlx, vars->win,
 			vars->layer[MINIMAP].img, minimap_offset, 100);
 	}
 	else
@@ -41,7 +41,6 @@ void	map(t_mlx *vars)
 
 int	tick(t_mlx *vars)
 {
-	mouse_bonus(vars);
 	if (vars->player_data.movement.forward)
 	{
 		collision(vars, vars->player_data.float_pos, (t_pos){1, 1}, 0);

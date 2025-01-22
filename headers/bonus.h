@@ -15,9 +15,6 @@
 # include "types.h"
 # include <sys/time.h>
 
-void	mouse_move(t_mlx *vars);
-void	mouse_bonus(t_mlx *vars);
-void	init_bonus(t_mlx *vars);
 t_data	*get_img_frame(t_mlx *vars);
 int		print_floor_bonus(t_pos *current, t_mlx *vars, t_ray *ray);
 t_data	img_cut(t_pos pos, t_mlx *vars, t_pos pos_);
@@ -44,6 +41,7 @@ int		map_gen(t_mlx *vars, char **map_tab);
 void	start_tiles_init(t_mlx *g);
 void	autotile_generator(char **map, t_mlx *g);
 t_pos	tile_selector(t_tile tile[49], int *stats);
+int		init_bonus(t_mlx *vars);
 
 typedef struct s_upscale
 {

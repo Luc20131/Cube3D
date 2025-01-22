@@ -35,10 +35,10 @@ void			player_pov_on_start(t_mlx *vars);
 // ------------ PLAYER -------------
 
 int				is_player(char c);
-t_pos			get_player_index(char **map);
 void			player_pos_update(t_mlx *vars, char **map);
 void			rotate_right(t_mlx *vars);
 void			rotate_left(t_mlx *vars);
+void			get_player_pos(char **map, t_mlx *vars);
 
 // ------------ KEYBOARD -------------
 

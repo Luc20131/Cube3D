@@ -11,10 +11,10 @@ NAME_BONUS = $(NAME)_bonus
 HEADER = ./headers/cub3d.h ./headers/parsing.h ./headers/types.h
 SRC_DIR=src/
 
-SRC_LIST_COMMON:= init.c keyboard.c casting_utils.c main.c sprite.c draw_utils.c
-SRC_LIST_MANDATORY:= frame_update.c raycast.c draw.c
+SRC_LIST_COMMON:= keyboard.c casting_utils.c main.c sprite.c draw_utils.c
+SRC_LIST_MANDATORY:= init.c frame_update.c raycast.c draw.c
 SRC_LIST_P:= parse_keys.c parse_map.c parse_color.c parsing.c parse_keys_utils.c setup_map.c parse_map_utils.c parsing_utils.c inits_textures.c valide_key.c parse_map_v2.c
-SRC_LIST_BONUS:= upscaling_bonus.c map_autotile_bonus.c map_autotile_utils_bonus.c miscellaneous_bonus.c mouse_bonus.c draw_bonus.c floor_ceilling_ray_bonus.c frame_update_bonus.c raycast_bonus.c map_gen_bonus.c map_inits_bonus.c animation_bonus.c collision_bonus.c
+SRC_LIST_BONUS:= init_bonus.c upscaling_bonus.c map_autotile_bonus.c map_autotile_utils_bonus.c miscellaneous_bonus.c draw_bonus.c floor_ceilling_ray_bonus.c frame_update_bonus.c raycast_bonus.c map_gen_bonus.c map_inits_bonus.c animation_bonus.c collision_bonus.c
 
 SRC_COMMON=$(addprefix $(SRC_DIR),$(SRC_LIST_COMMON)) $(addprefix $(SRC_DIR)parsing/,$(SRC_LIST_P))
 SRC_MANDATORY= $(addprefix $(SRC_DIR),$(SRC_LIST_MANDATORY)) $(SRC_COMMON)
@@ -36,13 +36,11 @@ MINILIBX = minilibx-linux/libmlx_Linux.a
 
 NB_FILES=$(words $(OBJ_MANDATORY))
 
-#NB_OBJ = $(words $(wildcard obj/*.o obj/parsing/*.o obj/bonus/*.o))
-
 SCREEN_HEIGHT := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2))
 SCREEN_WIDTH := $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1))
 
-RAYCAST_HEIGHT := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)) / 2)
-RAYCAST_WIDTH := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)) / 2)
+RAYCAST_HEIGHT := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)) / 4)
+RAYCAST_WIDTH := $(shell expr $(firstword $(shell xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)) / 4)
 
 GREEN="\033[0;32m"
 RED="\033[0;31m"
@@ -100,7 +98,7 @@ $(NAME) : $(LIBFT) $(OBJ_DIR) $(OBJ_MANDATORY) $(OBJ_COMMON)
 	@echo -n $(END_COLOUR)
 	$(call prompt,$(GREEN),"$(NAME) compiled")
 
-$(NAME_BONUS) : $(LIBFT) $(OBJ_DIR) $(OBJ_COMMON) $(OBJ_DIR_BONUS) $(OBJ_BONUS) $(OBJ_MANDATORY) ./headers/bonus.h
+$(NAME_BONUS) : $(LIBFT) $(OBJ_DIR) $(OBJ_COMMON) $(OBJ_DIR_BONUS) $(OBJ_BONUS) ./headers/bonus.h
 	$(call percent)
 	$(CC) $(ALLFLAGS) -o $@ $(OBJ_BONUS) $(INCLUDE)
 	@echo -n $(END_COLOUR)

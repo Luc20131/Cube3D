@@ -31,12 +31,12 @@
 # ifdef BONUS
 #  include <sys/time.h>
 #  include <bits/types/struct_timeval.h>
+#  define MINIMAP_SIZE 5
 # endif
 # define TILE_SIZE 64
 # define PLAYER_SPEED 0.08
 # define PLAYER_SIZE 8
-# define ROT_SPEED 0.08
-# define MINIMAP_SIZE 5
+# define ROT_SPEED 0.1
 
 typedef unsigned char	t_uchar;
 typedef unsigned int	t_uint;
@@ -181,7 +181,6 @@ typedef struct s_mlx
 	size_t			fps;
 	t_ray			ray;
 	unsigned int	light;
-	int				mouse;
 }	t_mlx;
 
 typedef struct s_tab_size

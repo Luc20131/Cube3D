@@ -60,10 +60,9 @@ int	check_format(char *map, char *find)
 
 	var = ft_strnstr(map, find, ft_strlen(map));
 	if (ft_strlen(map) > ft_strlen(find) && var && \
-	ft_strlen(var) == ft_strlen(find))
+			ft_strlen(var) == ft_strlen(find))
 		return (SUCCESS);
-	else
-		return (E_FORMAT);
+	return (E_FORMAT);
 }
 
 int	parsing_cube(char *arg, t_info *info)

@@ -58,7 +58,7 @@ void	error_msg(int error, char *content)
 	if (error == E_DUPLICATE_KEY)
 		ft_printf("%s is already assigned\n", content);
 	if (error == E_INVALID_LINE)
-		ft_printf("%s is not a valid key", content);
+		ft_printf("%s is not a valid key\n", content);
 	error_msg_map(error, content);
 }
 

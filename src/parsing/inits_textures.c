@@ -36,7 +36,7 @@ t_data	new_file_img(char *path, t_mlx *vars)
 	if (!image.img)
 	{
 		printf("Error\nImage could not be read\n");
-		return (image);
+		exit_game(vars);
 	}
 	image.addr = mlx_get_data_addr(image.img, &(image.bits_per_pixel), \
 		&(image.line_length), &(image.endian));
@@ -51,7 +51,10 @@ t_data	new_img(t_mlx *vars, unsigned int width, unsigned int height)
 
 	frame.img = mlx_new_image(vars->mlx, width, height);
 	if (!frame.img)
+	{
+		printf("Error\nMLX new_image failed	");
 		exit_game(vars);
+	}
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, \
 		&frame.line_length, &frame.endian);
 	frame.h = height;
