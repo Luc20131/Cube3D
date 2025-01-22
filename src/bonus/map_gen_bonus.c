@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/22 13:39:27 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/22 13:59:58 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ int	draw_map(t_mlx *game)
 	start_tiles_init(game);
 	if (autotile_generator(game->map, game) == 1)
 		return (nfree(game->stats_tile), 1);
-	game->layer[LAYER_MAP] = new_img(game, game->size_map.x * TILE_SIZE, \
+	game->layer[MAP] = new_img(game, game->size_map.x * TILE_SIZE, \
 		game->size_map.y * TILE_SIZE);
-	if (!game->layer[LAYER_MAP].img)
+	if (!game->layer[MAP].img)
 		return (nfree(game->stats_tile), 1);
 	while (++tab.y < game->size_map.y)
 	{
@@ -78,4 +78,46 @@ int	draw_map(t_mlx *game)
 		}
 	}
 	return (0);
+}
+
+u_int	find_pixel_color(t_pos *index, t_pos *size, t_pos *origin, t_mlx *vars)
+{
+	t_pos			map_size;
+	unsigned int	color;
+
+	map_size = size_map(vars->map);
+	if (index->y == 0 || index->y == size->y - 1 \
+		|| index->x == 0 || index->x == size->y - 1)
+		color = 0x003F3F3F;
+	else if (origin->x + index->x < 0 || origin->y + index->y < 0 \
+		|| origin->x + index->x >= map_size.x * TILE_SIZE \
+		|| origin->y + index->y >= map_size.y * TILE_SIZE)
+		color = 0x00000000;
+	else
+	{
+		color = get_pixel_img(&vars->layer[MAP], \
+			origin->x + index->x, origin->y + index->y);
+	}
+	return (color);
+}
+
+void	create_pixel(t_mlx *vars, t_pos *origin, t_pos *size, t_data *minimap)
+{
+	t_pos			index;
+	unsigned int	pixel;
+
+	index.y = 0;
+	while (index.y < size->y)
+	{
+		index.x = 0;
+		while (index.x < size->x)
+		{
+			pixel = find_pixel_color(&index, size, origin, vars);
+			put_pixel_img(minimap, index.x, index.y, pixel);
+			index.x++;
+		}
+		put_pixel_img(minimap, origin->x, origin->y, 0xFF3F3F3F);
+		put_pixel_img(minimap, index.x, index.y, 0x003F3F3F);
+		index.y++;
+	}
 }

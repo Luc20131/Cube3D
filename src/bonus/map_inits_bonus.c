@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:10:14 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/22 13:39:41 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/22 13:53:17 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,19 @@ void	start_tiles_init(t_mlx *g)
 	tile_assembler(&g->tile[17], 16, (t_pos){1, 8});
 	tile_assembler(&g->tile[18], 438, (t_pos){2, 2});
 	middle_tiles_init(g->tile);
+}
+
+t_pos	tile_selector(t_tile tile[49], int *stats)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 50)
+	{
+		if (*stats == tile[i].dir)
+		{
+			return (tile[i].pos);
+		}
+	}
+	return (tile[47].pos);
 }
