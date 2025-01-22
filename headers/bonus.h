@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 06:32:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/21 02:34:39 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/22 13:46:22 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ void	collision(t_mlx *vars, t_posf pos, t_pos dir, int axe);
 
 // ------------ MINIMAP -------------
 
-void	draw_map(t_mlx *game);
+int		draw_map(t_mlx *game);
 int		map_gen(t_mlx *vars, char **map_tab);
 void	start_tiles_init(t_mlx *g);
-void	autotile_generator(char **map, t_mlx *g);
+int		autotile_generator(char **map, t_mlx *g);
 t_pos	tile_selector(t_tile tile[49], int *stats);
 int		init_bonus(t_mlx *vars);
 

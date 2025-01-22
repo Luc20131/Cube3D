@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_gen_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 23:52:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/22 13:59:58 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,30 +51,33 @@ void	print_tile_to_image(t_data *img, int tile_x, int tile_y)
 	}
 }
 
-void	draw_map(t_mlx *game)
+int	draw_map(t_mlx *game)
 {
-	int		i;
-	int		j;
 	int		k;
+	t_pos	tab;
 	t_pos	pos;
 	t_pos	pos_;
 
-	j = -1;
+	tab.y = -1;
 	k = -1;
 	start_tiles_init(game);
-	autotile_generator(game->map, game);
+	if (autotile_generator(game->map, game) == 1)
+		return (nfree(game->stats_tile), 1);
 	game->layer[MAP] = new_img(game, game->size_map.x * TILE_SIZE, \
 		game->size_map.y * TILE_SIZE);
-	while (++j < game->size_map.y)
+	if (!game->layer[MAP].img)
+		return (nfree(game->stats_tile), 1);
+	while (++tab.y < game->size_map.y)
 	{
-		i = -1;
-		while (++i < game->size_map.x)
+		tab.x = -1;
+		while (++tab.x < game->size_map.x)
 		{
-			pos_ = (t_pos){i * TILE_SIZE, j * TILE_SIZE};
+			pos_ = (t_pos){tab.x * TILE_SIZE, tab.y * TILE_SIZE};
 			pos = tile_selector(game->tile, &game->stats_tile[++k]);
 			img_cut(pos, game, pos_);
 		}
 	}
+	return (0);
 }
 
 u_int	find_pixel_color(t_pos *index, t_pos *size, t_pos *origin, t_mlx *vars)
