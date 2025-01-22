@@ -85,7 +85,7 @@ bonus : $(MINILIBX)
 ifneq ("$(wildcard ${NAME})", "")
 	@rm -rf $(OBJ_COMMON) $(OBJ_MANDATORY) $(NAME)
 endif
-	$(MAKE) $(NAME_BONUS) NB_FILES=$(words $(SRC_BONUS)) CPPFLAGS="$(CPPFLAGS) -DBONUS -DHEIGHT=$(RAYCAST_HEIGHT) -DWIDTH=$(RAYCAST_WIDTH)"
+	$(MAKE) $(NAME_BONUS) HEADER="$(HEADER) ./headers/bonus.h" NB_FILES=$(words $(SRC_BONUS)) CPPFLAGS="$(CPPFLAGS) -DBONUS -DHEIGHT=$(RAYCAST_HEIGHT) -DWIDTH=$(RAYCAST_WIDTH)"
 
 $(OBJ_DIR)%.o:  $(SRC_DIR)%.c Makefile $(HEADER)
 	$(call percent)

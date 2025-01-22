@@ -25,7 +25,7 @@ void	init_vars(t_mlx *vars)
 	vars->layer[SCREEN] = new_img(vars, WIDTH_WIN, HEIGHT_WIN);
 	vars->layer[RAYCAST] = new_img(vars, WIDTH, HEIGHT);
 	vars->layer[OVERLAY] = new_file_img("texture/Overlay.xpm", vars);
-	vars->layer[FLOOR] = new_file_img("texture/Ground.xpm", vars);
+	vars->layer[FLOOR] = new_file_img(GROUND, vars);
 	vars->layer[MONITOR] = new_file_img("texture/monitoring.xpm", vars);
 	vars->layer[TILES] = new_file_img("texture/SusMap.xpm", vars);
 	vars->anim[0] = new_file_img("texture/animation/Flashlight1.xpm", vars);

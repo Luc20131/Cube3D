@@ -38,7 +38,7 @@ void	fps(const t_mlx *vars)
 void	flashlight(t_pos pixel_pos, t_color *color)
 {
 	unsigned int		distance_sqrt;
-	const unsigned int	limit = HEIGHT * 180;
+	const unsigned int	limit = HEIGHT * 100;
 	const unsigned int	half_height = pixel_pos.y - (HEIGHT >> 1);
 	const unsigned int	half_width = pixel_pos.x - (WIDTH >> 1);
 	float				coef_limit;

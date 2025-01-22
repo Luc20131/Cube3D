@@ -14,6 +14,7 @@
 # define BONUS_H
 # include "types.h"
 # include <sys/time.h>
+# define GROUND "texture/Ground.xpm"
 
 t_data	*get_img_frame(t_mlx *vars);
 int		print_floor_bonus(t_pos *current, t_mlx *vars, t_ray *ray);

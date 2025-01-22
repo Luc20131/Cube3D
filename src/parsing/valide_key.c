@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:46:06 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/19 09:58:13 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/01/22 12:56:54 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	valid_texture(t_info *info, int i, int print)
 	{
 		fd = open(info->texture_path[i], O_RDONLY);
 		if (fd == -1)
-			return (close(fd), E_CANT_OPEN);
+			return (E_CANT_OPEN);
 		close (fd);
 	}
 	return (SUCCESS);

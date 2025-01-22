@@ -13,46 +13,6 @@
 #include "cub3d.h"
 #include "../../headers/types.h"
 
-int	print_ceilling(t_pos *current, t_mlx *vars, t_pos *wall_top)
-{
-	t_color	pixel;
-	float	coef;
-	float	half_height;
-
-	half_height = (vars->layer[RAYCAST].h / 2.);
-	(void)wall_top;
-	while (current->y < wall_top->y)
-	{
-		pixel.x = 0xFF000030;
-		coef = (1 - current->y / half_height);
-		get_darker_color(coef, &pixel);
-		((int *)vars->layer[RAYCAST].addr)[current->y * \
-		(vars->layer[RAYCAST].line_length >> 2) + current->x] = pixel.x;
-		current->y++;
-	}
-	return (0);
-}
-
-int	print_floor_bonus(t_pos *current, t_mlx *vars, t_ray *ray)
-{
-	t_color	pixel;
-	float	coef;
-	float	inverse_heigth;
-
-	inverse_heigth = (1. / vars->layer[RAYCAST].h);
-	while (current->y < vars->layer[RAYCAST].h)
-	{
-		pixel.x = 0xFF170501;
-		coef = ((current->y - inverse_heigth) / inverse_heigth);
-		if (ray->perp_wall_dist > 1)
-			get_darker_color(coef, &pixel);
-		((int *)vars->layer[RAYCAST].addr)[current->y * \
-		(vars->layer[RAYCAST].line_length >> 2) + current->x] = pixel.x;
-		current->y++;
-	}
-	return (0);
-}
-
 void	print_wall(t_pos *current, t_mlx *vars, t_pos *end, t_data *img)
 {
 	t_posf		tex;
