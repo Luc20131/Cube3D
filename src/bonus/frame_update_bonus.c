@@ -6,7 +6,7 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 18:46:09 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/21 02:34:28 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/22 13:32:53 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ void	map(t_mlx *vars)
 	if (vars->stats->map_is_create == 0)
 	{
 		vars->stats->map_is_create = 1;
-		draw_map(vars);
+		vars->stats->old_pos = vars->player_data.float_pos;
+		if (draw_map(vars) == 1)
+			exit_game(vars);
 		nfree(vars->stats_tile);
 		vars->layer[MINIMAP] = new_img(vars, MINIMAP_SIZE * TILE_SIZE, \
 			MINIMAP_SIZE * TILE_SIZE);
