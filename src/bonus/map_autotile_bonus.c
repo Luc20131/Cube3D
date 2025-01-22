@@ -6,10 +6,9 @@
 /*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:28:03 by sjean             #+#    #+#             */
-/*   Updated: 2025/01/22 13:38:38 by sjean            ###   ########.fr       */
+/*   Updated: 2025/01/22 14:03:23 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../headers/cub3d.h"
 
@@ -61,7 +60,7 @@ int	*plus_dir(int c[9], t_pos pos, t_mlx g, t_pos map_size)
 	return (c);
 }
 
-int *init_dir(int c[9], t_pos pos, t_mlx g, t_pos map_size)
+int	*init_dir(int c[9], t_pos pos, t_mlx g, t_pos map_size)
 {
 	int	i;
 
@@ -115,7 +114,7 @@ int	autotile_generator(char **map, t_mlx *g)
 		w = -1;
 		while (map[h][++w] != '\0')
 			if (autotile_dir(map, g, &g->stats_tile[++i], (t_pos){h, w}))
-					return (nfree(g->stats_tile), 1);
+				return (nfree(g->stats_tile), 1);
 	}
 	return (0);
 }
