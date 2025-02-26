@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: sjean <sjean@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 22:52:12 by lrichaud          #+#    #+#             */
-/*   Updated: 2025/01/19 09:45:48 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2025/02/26 03:01:48 by sjean            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	main(const int argc, char **argv)
 	mlx_hook(vars.win, KeyRelease, KeyReleaseMask, key_released, &vars);
 	mlx_hook(vars.win, DestroyNotify, StructureNotifyMask, exit_game, &vars);
 	mlx_loop_hook(vars.mlx, tick, &vars);
-	mlx_do_key_autorepeatoff(vars.mlx);
+	// mlx_do_key_autorepeatoff(vars.mlx);
 	mlx_loop(vars.mlx);
 	return (0);
 }
